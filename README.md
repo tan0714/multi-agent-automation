@@ -1,5 +1,5 @@
 <h1 align="center">
-	🦉 OWL: Towards General Multi-Agent Assistant for Real-World Task Automation
+	🦉 OWL: Optimized Workforce Learning for General Multi-Agent Assistance in Real-World Task Automation
 </h1>
 
 🦉 OWL is a cutting-edge framework for multi-agent collaboration that pushes the boundaries of task automation, built on top of the [Camel-AI Framework](https://github.com/camel-ai/camel). 
