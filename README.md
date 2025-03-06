@@ -5,13 +5,13 @@
 🦉 OWL is a cutting-edge framework for multi-agent collaboration that pushes the boundaries of task automation, built on top of the [CAMEL-AI Framework](https://github.com/camel-ai/camel). 
 OWL ranks #1 among open-source frameworks on GAIA benchmark.
 
-Our vision is to revolutionize how AI agents collaborate to solve real-world tasks. By leveraging role-playing mechanisms and dynamic agent interactions, OWL enables more natural, efficient, and robust task automation across diverse domains.
+Our vision is to revolutionize how AI agents collaborate to solve real-world tasks. By leveraging dynamic agent interactions, OWL enables more natural, efficient, and robust task automation across diverse domains.
 
 <!-- # Key Features -->
 
 # 🔥 News
 
-- **[2025.03.06]**: We open-source the codebase of 🦉 OWL project.
+- **[2025.03.07]**: We open-source the codebase of 🦉 OWL project.
 
 ## 🛠️ Installation
 
@@ -75,8 +75,8 @@ python run_gaia_roleplaying.py
 - [ ] Enhance the toolkit ecosystem with more specialized tools for domain-specific tasks.
 - [ ] Develop more sophisticated agent interaction patterns and communication protocols
 
-# Architecture
+<!-- # Architecture
 
 
 
-# Cite
+# Cite -->
