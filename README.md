@@ -50,9 +50,21 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 </div>
 
 <!-- # Key Features -->
-<!-- # 📋 Table of Contents -->
+# 📋 Table of Contents
 
-
+- [📋 Table of Contents](#-table-of-contents)
+- [🔥 News](#-news)
+- [🛠️ Installation](#️-installation)
+	- [**Clone the Github repository**](#clone-the-github-repository)
+	- [**Set up Environment**](#set-up-environment)
+	- [**Install Dependencies**](#install-dependencies)
+	- [**Setup Environment Variables**](#setup-environment-variables)
+- [🚀 Quick Start](#-quick-start)
+- [🧪 Experiments](#-experiments)
+- [⏱️ Future Plans](#️-future-plans)
+- [📄 License](#-license)
+- [🖊️ Cite](#️-cite)
+- [🔥 Community](#-community)
 
 
 # 🔥 News
@@ -121,8 +133,6 @@ python run_gaia_roleplaying.py
 - [ ] Enhance the toolkit ecosystem with more specialized tools for domain-specific tasks.
 - [ ] Develop more sophisticated agent interaction patterns and communication protocols
 
-<!-- # Architecture
-
 
 # 📄 License
 
@@ -133,7 +143,7 @@ The source code is licensed under Apache 2.0.
 If you find this repo useful, please cite:
 
 
-```bibtex
+```
 @misc{owl2025,
   title        = {OWL: Optimized Workforce Learning for General Multi-Agent Assistance in Real-World Task Automation},
   author       = {{CAMEL-AI.org}},
@@ -143,13 +153,9 @@ If you find this repo useful, please cite:
 }
 ```
 
-<!-- # 🔥 Community
-
+# 🔥 Community
 Join us for further discussions!
-
-<p align="center">
-  <img src="./assets/qr_code.jpg" alt="OWL WeChat QR Code" width="200"/>
-</p> -->
+![](./assets/community.png)
 
 
 
