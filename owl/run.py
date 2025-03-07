@@ -33,14 +33,20 @@ def construct_society(question: str) -> OwlRolePlaying:
         model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
-    tools_list = [*WebToolkit(web_agent_model=assistant_model, planning_agent_model=assistant_model).get_tools(),
-    *DocumentProcessingToolkit().get_tools(),
-    *VideoAnalysisToolkit().get_tools(), # This requires OpenAI and Qwen Key
-    *CodeExecutionToolkit().get_tools(),
-    *ImageAnalysisToolkit(model=assistant_model).get_tools(),
-    *AudioAnalysisToolkit().get_tools(), # This requires OpenAI Key
-    *SearchToolkit(model=assistant_model).get_tools(),
-    *ExcelToolkit().get_tools()]
+    tools_list = [
+        *WebToolkit(
+            headless=False, 
+            web_agent_model=assistant_model, 
+            planning_agent_model=assistant_model
+        ).get_tools(),
+        *DocumentProcessingToolkit().get_tools(),
+        *VideoAnalysisToolkit().get_tools(),  # This requires OpenAI and Qwen Key
+        *CodeExecutionToolkit().get_tools(),
+        *ImageAnalysisToolkit(model=assistant_model).get_tools(),
+        *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
+        *SearchToolkit(model=assistant_model).get_tools(),
+        *ExcelToolkit().get_tools()
+    ]
 
     user_role_name = 'user'
     user_agent_kwargs = dict(model=user_model)
