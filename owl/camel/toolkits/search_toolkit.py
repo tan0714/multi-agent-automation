@@ -26,6 +26,7 @@ from retry import retry
 from camel.toolkits.base import BaseToolkit
 from camel.toolkits import FunctionTool
 from camel.messages import BaseMessage
+from camel.models import BaseModelBackend
 from camel.agents import ChatAgent
 from camel.models import ModelFactory
 from camel.types import ModelType, ModelPlatformType
@@ -36,6 +37,9 @@ class SearchToolkit(BaseToolkit):
     This class provides methods for searching information on the web using
     search engines like Google, DuckDuckGo, Wikipedia and Wolfram Alpha, Brave.
     """
+
+    def __init__(self, model: Optional[BaseModelBackend] = None):
+        self.model = model
 
     @dependencies_required("wikipedia")
     @retry(ConnectionError, delay=3)
@@ -698,15 +702,9 @@ class SearchToolkit(BaseToolkit):
             The search result containing url and necessary information.
         """
 
-        model = ModelFactory.create(
-            model_type=ModelType.GPT_4O_MINI,
-            model_platform=ModelPlatformType.OPENAI,
-            model_config_dict={"temperature": 0, "top_p": 1}
-        )
-
         search_agent = ChatAgent(
             "You are a helpful search agent.",
-            model=model,
+            model=self.model,
             tools=[FunctionTool(self.search_wiki), FunctionTool(self.search_google), FunctionTool(self.search_archived_webpage)]
         )
 

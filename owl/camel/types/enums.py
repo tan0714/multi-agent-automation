@@ -149,6 +149,7 @@ class ModelType(UnifiedModelType, Enum):
     QWEN_2_5_32B = "qwen2.5-32b-instruct"
     QWEN_2_5_14B = "qwen2.5-14b-instruct"
     QWEN_QWQ_32B = "qwq-32b-preview"
+    QWEN_OMNI_TURBO = "qwen-omni-turbo"
 
     # Yi models (01-ai)
     YI_LIGHTNING = "yi-lightning"
@@ -404,6 +405,7 @@ class ModelType(UnifiedModelType, Enum):
             ModelType.QWEN_2_5_32B,
             ModelType.QWEN_2_5_14B,
             ModelType.QWEN_QWQ_32B,
+            ModelType.QWEN_OMNI_TURBO,
         }
 
     @property
@@ -502,6 +504,7 @@ class ModelType(UnifiedModelType, Enum):
             ModelType.INTERNLM2_PRO_CHAT,
             ModelType.TOGETHER_MIXTRAL_8_7B,
             ModelType.SGLANG_MISTRAL_7B,
+            ModelType.QWEN_OMNI_TURBO,
         }:
             return 32_768
         elif self in {

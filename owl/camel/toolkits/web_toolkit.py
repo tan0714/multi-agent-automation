@@ -14,7 +14,7 @@ from camel.toolkits.base import BaseToolkit
 from camel.toolkits import FunctionTool, VideoAnalysisToolkit
 from camel.messages import BaseMessage
 from camel.agents import ChatAgent
-from camel.models import ModelFactory
+from camel.models import ModelFactory, BaseModelBackend
 from camel.types import ModelType, ModelPlatformType
 
 import io
@@ -717,8 +717,9 @@ class WebToolkit(BaseToolkit):
                  headless=True,
                  cache_dir: Optional[str] = None,
                  page_script_path: Optional[str] = None,
-                 model: Literal['gpt-4o', 'gpt-4o-mini'] = 'gpt-4o',
-                 history_window: int = 5
+                 history_window: int = 5,
+                 web_agent_model: Optional[BaseModelBackend] = None,
+                 planning_agent_model: Optional[BaseModelBackend] = None,
                  ): 
         
         self.browser = BaseBrowser(
@@ -728,10 +729,12 @@ class WebToolkit(BaseToolkit):
             )
         
         self.history_window = history_window
+        self.web_agent_model = web_agent_model
+        self.planning_agent_model = planning_agent_model
         
         self.history = []
         # self.search_toolkit = SearchToolkit()
-        self.web_agent, self.planning_agent = self._initialize_agent(model)
+        self.web_agent, self.planning_agent = self._initialize_agent()
         
     
     def _reset(self):
@@ -741,28 +744,24 @@ class WebToolkit(BaseToolkit):
         os.makedirs(self.browser.cache_dir, exist_ok=True)
     
     
-    def _initialize_agent(self, model: Literal['gpt-4o', 'gpt-4o-mini']) -> Tuple[ChatAgent, ChatAgent]:
+    def _initialize_agent(self) -> Tuple[ChatAgent, ChatAgent]:
         r"""Initialize the agent."""
-        if model == 'gpt-4o':
+        if self.web_agent_model is None:
             web_agent_model = ModelFactory.create(
                 model_platform=ModelPlatformType.OPENAI,
                 model_type=ModelType.GPT_4O,
                 model_config_dict={"temperature": 0, "top_p": 1}
             )
-        elif model == 'gpt-4o-mini':
-            web_agent_model = ModelFactory.create(
+        else:
+            web_agent_model = self.web_agent_model
+
+        if self.planning_agent_model is None:
+            planning_model = ModelFactory.create(
                 model_platform=ModelPlatformType.OPENAI,
-                model_type=ModelType.GPT_4O_MINI,
-                model_config_dict={"temperature": 0, "top_p": 1}
+                model_type=ModelType.O3_MINI,
             )
         else:
-            raise ValueError("Invalid model type.")
-        
-        planning_model = ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.O3_MINI,
-        )
-        
+            planning_model = self.planning_agent_model
         
         system_prompt = """
 You are a helpful web agent that can assist users in browsing the web.

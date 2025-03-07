@@ -35,7 +35,7 @@ class DocumentProcessingToolkit(BaseToolkit):
     """
     def __init__(self, cache_dir: Optional[str] = None):
         self.image_tool = ImageAnalysisToolkit()
-        self.audio_tool = AudioAnalysisToolkit()
+        # self.audio_tool = AudioAnalysisToolkit()
         self.excel_tool = ExcelToolkit()
 
         self.cache_dir = "tmp/"
@@ -59,9 +59,9 @@ class DocumentProcessingToolkit(BaseToolkit):
             res = self.image_tool.ask_question_about_image(document_path, "Please make a detailed caption about the image.")
             return True, res
         
-        if any(document_path.endswith(ext) for ext in ['.mp3', '.wav']):
-            res = self.audio_tool.ask_question_about_audio(document_path, "Please transcribe the audio content to text.")
-            return True, res
+        # if any(document_path.endswith(ext) for ext in ['.mp3', '.wav']):
+        #     res = self.audio_tool.ask_question_about_audio(document_path, "Please transcribe the audio content to text.")
+        #     return True, res
         
         if any(document_path.endswith(ext) for ext in ['xls', 'xlsx']):
             res = self.excel_tool.extract_excel_content(document_path)

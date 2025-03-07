@@ -47,12 +47,12 @@ class OwlRolePlaying(RolePlaying):
         self.assistant_sys_msg: Optional[BaseMessage]
         self.user_sys_msg: Optional[BaseMessage]
 
-        self.is_reasoning_task = self._judge_if_reasoning_task(self.task_prompt)
+        # self.is_reasoning_task = self._judge_if_reasoning_task(self.task_prompt)
 
-        if self.is_reasoning_task:
-            logger.info("The task is judged as a reasoning or coding task. The assistant agent will use the reasoning model O3-MINI.")
-        else:
-            logger.info("The assistant agent will use the default model.")
+        # if self.is_reasoning_task:
+        #     logger.info("The task is judged as a reasoning or coding task. The assistant agent will use the reasoning model O3-MINI.")
+        # else:
+        #     logger.info("The assistant agent will use the default model.")
         
         self._init_agents(
             init_assistant_sys_msg,
@@ -60,7 +60,7 @@ class OwlRolePlaying(RolePlaying):
             assistant_agent_kwargs=self.assistant_agent_kwargs,
             user_agent_kwargs=self.user_agent_kwargs,
             output_language=self.output_language,
-            is_reasoning_task=self.is_reasoning_task
+            # is_reasoning_task=self.is_reasoning_task
         )
         
         
@@ -97,12 +97,12 @@ class OwlRolePlaying(RolePlaying):
             elif 'model' not in user_agent_kwargs:
                 user_agent_kwargs.update(dict(model=self.model))
         
-        # If the task is a reasoning task, the assistant agent should use the reasoning model O3-MINI
-        if is_reasoning_task:
-            assistant_agent_kwargs['model'] = ModelFactory.create(
-                model_platform=ModelPlatformType.OPENAI,
-                model_type=ModelType.O3_MINI,
-            )
+        # # If the task is a reasoning task, the assistant agent should use the reasoning model O3-MINI
+        # if is_reasoning_task:
+        #     assistant_agent_kwargs['model'] = ModelFactory.create(
+        #         model_platform=ModelPlatformType.OPENAI,
+        #         model_type=ModelType.O3_MINI,
+        #     )
 
         self.assistant_agent = ChatAgent(
             init_assistant_sys_msg,
@@ -119,25 +119,25 @@ class OwlRolePlaying(RolePlaying):
         self.user_sys_msg = self.user_agent.system_message
         
     
-    def _judge_if_reasoning_task(self, question: str) -> bool:
-        r"""Judge if the question is a reasoning task."""
+    # def _judge_if_reasoning_task(self, question: str) -> bool:
+    #     r"""Judge if the question is a reasoning task."""
         
-        LLM = OpenAIModel(model_type=ModelType.O3_MINI)
-        prompt = f"""
-        Please judge whether the following question is a reasoning or coding task, which can be solved by reasoning without leveraging external resources, or is suitable for writing code to solve the task.
-        If it is a reasoning or coding task, please return only "yes".
-        If it is not a reasoning or coding task, please return only "no".
-        Note: 
-        - If the question required some world knowledge to answer the question, please carefully judge it, because the model's own knowledge is often unreliable.
-        - If it is suitable for writing codes (e.g. process excel files, write simulation codes, etc.), in most cases, it can be considered as a coding task.
-        Question: <question>{question}</question>
-        """
-        messages = [{"role": "user", "content": prompt}]
-        resp = LLM.run(messages)
-        if 'yes' in resp.choices[0].message.content.lower():
-            return True
-        else:
-            return False
+    #     LLM = OpenAIModel(model_type=ModelType.O3_MINI)
+    #     prompt = f"""
+    #     Please judge whether the following question is a reasoning or coding task, which can be solved by reasoning without leveraging external resources, or is suitable for writing code to solve the task.
+    #     If it is a reasoning or coding task, please return only "yes".
+    #     If it is not a reasoning or coding task, please return only "no".
+    #     Note: 
+    #     - If the question required some world knowledge to answer the question, please carefully judge it, because the model's own knowledge is often unreliable.
+    #     - If it is suitable for writing codes (e.g. process excel files, write simulation codes, etc.), in most cases, it can be considered as a coding task.
+    #     Question: <question>{question}</question>
+    #     """
+    #     messages = [{"role": "user", "content": prompt}]
+    #     resp = LLM.run(messages)
+    #     if 'yes' in resp.choices[0].message.content.lower():
+    #         return True
+    #     else:
+    #         return False
         
 
     def _construct_gaia_sys_msgs(self):
