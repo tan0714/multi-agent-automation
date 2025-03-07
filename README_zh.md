@@ -36,11 +36,15 @@
 
 </h4>
 
+<div align="center" style="background-color: #f0f7ff; padding: 10px; border-radius: 5px; margin: 15px 0;">
+  <h3 style="color: #1e88e5; margin: 0;">
+    🏆 OWL 在 GAIA 基准测试中取得 <span style="color: #d81b60; font-weight: bold; font-size: 1.2em;">58.18</span> 平均分，在开源框架中排名 <span style="color: #d81b60; font-weight: bold; font-size: 1.2em;">🏅️ #1</span>！ 🏆
+  </h3>
+</div>
+
 <div align="center">
 
 🦉 OWL 是一个前沿的多智能体协作框架，推动任务自动化的边界，构建在 [CAMEL-AI Framework](https://github.com/camel-ai/camel)。
-
-OWL 在 GAIA 基准测试中取得 **58.18** 平均分，在开源框架中排名 🏅️ #1。
 
 我们的愿景是彻底变革 AI 智能体协作解决现实任务的方式。通过利用动态智能体交互，OWL 实现了跨多领域更自然、高效且稳健的任务自动化。
 
