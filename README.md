@@ -117,9 +117,6 @@ python run_gaia_roleplaying.py
 <!-- # Architecture
 
 
-
-<!-- # Cite --> -->
-
 # 📄 License
 
 The source code is licensed under Apache 2.0.
@@ -138,6 +135,16 @@ If you find this repo useful, please cite:
   year         = {2025}
 }
 ```
+
+# 🔥 Community
+
+Join us for further discussions!
+
+<p align="center">
+  <img src="./assets/qr_code.jpg" alt="OWL WeChat QR Code" width="200"/>
+</p>
+
+
 
 [docs-image]: https://img.shields.io/badge/Documentation-EB3ECC
 [docs-url]: https://camel-ai.github.io/camel/index.html
