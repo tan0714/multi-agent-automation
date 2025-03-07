@@ -1,19 +1,20 @@
 <h1 align="center">
 	🦉 OWL: Optimized Workforce Learning for General Multi-Agent Assistance in Real-World Task Automation
+  🦉 OWL: 优化劳动力学习的通用智能体，用于处理现实世界的自动化任务
 </h1>
 
 
 <div align="center">
 
-[![Documentation][docs-image]][docs-url]
+[![文档][docs-image]][docs-url]
 [![Discord][discord-image]][discord-url]
 [![X][x-image]][x-url]
 [![Reddit][reddit-image]][reddit-url]
-[![Wechat][wechat-image]][wechat-url]
-[![Wechat][owl-image]][owl-url]
+[![微信][wechat-image]][wechat-url]
+[![微信][owl-image]][owl-url]
 [![Hugging Face][huggingface-image]][huggingface-url]
 [![Star][star-image]][star-url]
-[![Package License][package-license-image]][package-license-url]
+[![软件许可证][package-license-image]][package-license-url]
 
 
 </div>
@@ -24,24 +25,24 @@
 <div align="center">
 <h4 align="center">
 
-[中文阅读](https://github.com/camel-ai/owl/tree/main/README_zh.md) |
-[Community](https://github.com/camel-ai/owl#community) |
-[Installation](#️-installation) |
-[Examples](https://github.com/camel-ai/owl/tree/main/owl) |
-[Paper](https://arxiv.org/abs/2303.17760) |
-[Citation](#-community) |
-[Contributing](https://github.com/camel-ai/owl/graphs/contributors) |
+[English README](https://github.com/camel-ai/owl/tree/main) |
+[社区](https://github.com/camel-ai/camel#community) |
+[安装](#️-installation) |
+[示例](https://github.com/camel-ai/owl/tree/main/owl) |
+[论文](https://arxiv.org/abs/2303.17760) |
+[引用](#-community) |
+[贡献](https://github.com/camel-ai/owl/graphs/contributors) |
 [CAMEL-AI](https://www.camel-ai.org/)
 
 </h4>
 
 <div align="center">
 
-🦉 OWL is a cutting-edge framework for multi-agent collaboration that pushes the boundaries of task automation, built on top of the [CAMEL-AI Framework](https://github.com/camel-ai/camel).
+🦉 OWL 是一个前沿的多智能体协作框架，推动任务自动化的边界，构建在 [CAMEL-AI Framework](https://github.com/camel-ai/camel)。
 
-OWL achieves **58.18** average score on GAIA benchmark and ranks 🏅️ #1 among open-source frameworks.
+OWL 在 GAIA 基准测试中取得 **58.18** 平均分，在开源框架中排名 🏅️ #1。
 
-Our vision is to revolutionize how AI agents collaborate to solve real-world tasks. By leveraging dynamic agent interactions, OWL enables more natural, efficient, and robust task automation across diverse domains.
+我们的愿景是彻底变革 AI 智能体协作解决现实任务的方式。通过利用动态智能体交互，OWL 实现了跨多领域更自然、高效且稳健的任务自动化。
 
 </div>
 
@@ -51,104 +52,104 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 </div>
 
 <!-- # Key Features -->
-# 📋 Table of Contents
+# 📋 目录
 
-- [📋 Table of Contents](#-table-of-contents)
-- [🔥 News](#-news)
-- [🎬 Demo Video](#-demo-video)
-- [🛠️ Installation](#️-installation)
-	- [**Clone the Github repository**](#clone-the-github-repository)
-	- [**Set up Environment**](#set-up-environment)
-	- [**Install Dependencies**](#install-dependencies)
-	- [**Setup Environment Variables**](#setup-environment-variables)
-- [🚀 Quick Start](#-quick-start)
-- [🧪 Experiments](#-experiments)
-- [⏱️ Future Plans](#️-future-plans)
-- [📄 License](#-license)
-- [🖊️ Cite](#️-cite)
-- [🔥 Community](#-community)
+- [📋 目录](#-table-of-contents)
+- [🔥 新闻](#-news)
+- [🎬 演示视频](#-demo-video)
+- [🛠️ 安装](#️-installation)
+	- [**克隆 Github 仓库**](#clone-the-github-repository)
+	- [**设置环境**](#set-up-environment)
+	- [**安装依赖**](#install-dependencies)
+	- [**设置环境变量**](#setup-environment-variables)
+- [🚀 快速开始](#-quick-start)
+- [🧪 实验](#-experiments)
+- [⏱️ 未来计划](#️-future-plans)
+- [📄 许可证](#-license)
+- [🖊️ 引用](#️-cite)
+- [🔥 社区](#-community)
 
 
-# 🔥 News
+# 🔥 新闻
 
-- **[2025.03.07]**: We open-source the codebase of 🦉 OWL project.
+- **[2025.03.07]**: 我们开源了 🦉 OWL 项目的代码库。
 
-# 🎬 Demo Video
+# 🎬 演示视频
 
 https://private-user-images.githubusercontent.com/55657767/420211368-f29f477d-7eef-46da-8d7a-8f3bcf506da2.mp4
 
 https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-136a-485f-8df3-f10d9b4e63ec.mp4
 
-# 🛠️ Installation
+# 🛠️ 安装
 
-## **Clone the Github repository**
+## **克隆 Github 仓库**
 
 ```bash
 git clone https://github.com/camel-ai/owl.git
 cd owl
 ```
 
-## **Set up Environment**
+## **设置环境**
 
-Using Conda (recommended):
+使用 Conda（推荐）：
 ```bash
 conda create -n owl python=3.11
 conda activate owl
 ```
 
-Using venv (alternative):
+使用 venv（备用）：
 ```bash
 python -m venv owl_env
-# On Windows
+# Windows 系统
 owl_env\Scripts\activate
-# On Unix or MacOS
+# Unix 或 MacOS 系统
 source owl_env/bin/activate
 ```
 
-## **Install Dependencies**
+## **安装依赖**
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-## **Setup Environment Variables** 
+## **设置环境变量**  
 
-In the `owl/.env_example` file, you will find all the necessary API keys along with the websites where you can register for each service. To use these API services, follow these steps:
+在 `owl/.env_example` 文件中，你可以找到所有必要的 API 密钥以及各服务的注册网址。要使用这些 API 服务，请按照以下步骤操作：
 
-1. *Copy and Rename*: Duplicate the `.env_example` file and rename the copy to `.env`.
-2. *Fill in Your Keys*: Open the `.env` file and insert your API keys in the corresponding fields. 
+1. *复制并重命名*: 复制 `.env_example` 文件，并将副本重命名为 `.env`。
+2. *填写你的密钥*: 打开 `.env` 文件，在相应字段中填入你的 API 密钥。 
 
-# 🚀 Quick Start
+# 🚀 快速开始
    
-Run the following minimal example:
+运行以下最小示例：
 
 ```bash
 python owl/run.py
 ```
 
-# 🧪 Experiments
+# 🧪 实验
 
-We provided a script to reproduce the results on GAIA. 
-You can check the `run_gaia_roleplaying.py` file and run the following command:
+我们提供了一个脚本用于复现 GAIA 上的实验结果。  
+你可以查看 `run_gaia_roleplaying.py` 文件，并运行以下命令：
 
 ```bash
 python run_gaia_roleplaying.py
 ```
 
-# ⏱️ Future Plans
+# ⏱️ 未来计划
 
-- [ ] Write a technical blog post detailing our exploration and insights in multi-agent collaboration in real-world tasks.
-- [ ] Enhance the toolkit ecosystem with more specialized tools for domain-specific tasks.
-- [ ] Develop more sophisticated agent interaction patterns and communication protocols
+- [ ] 撰写一篇技术博客，详细介绍我们在现实任务中多智能体协作方面的探索与见解。
+- [ ] 通过引入更多针对特定领域任务的专业工具，进一步完善工具生态系统。
+- [ ] 开发更复杂的智能体交互模式和通信协议
 
 
-# 📄 License
+# 📄 许可证
 
-The source code is licensed under Apache 2.0.
+源代码采用 Apache 2.0 许可证。
 
-# 🖊️ Cite
+# 🖊️ 引用
 
-If you find this repo useful, please cite:
+如果你觉得这个仓库对你有帮助，请引用：
 
 
 ```
@@ -161,8 +162,8 @@ If you find this repo useful, please cite:
 }
 ```
 
-# 🔥 Community
-Join us for further discussions!
+# 🔥 社区
+加入我们，参与更多讨论！
 ![](./assets/community.png)
 
 
