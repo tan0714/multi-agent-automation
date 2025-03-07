@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from retry import retry
 from loguru import logger
 
-from utils import OwlRolePlaying, process_tools, run_society
+from utils import OwlRolePlaying, run_society
 import os
 
 
@@ -32,30 +32,21 @@ def construct_society(question: str) -> OwlRolePlaying:
         model_type=ModelType.GPT_4O,
         model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
- 
-    
-    user_tools = []
-    assistant_tools = [
-        "WebToolkit",
-        'DocumentProcessingToolkit', 
-        'VideoAnalysisToolkit', 
-        'CodeExecutionToolkit', 
-        'ImageAnalysisToolkit', 
-        'AudioAnalysisToolkit', 
-        "SearchToolkit",
-        "ExcelToolkit",
-        ]
+
+    tools_list = [*WebToolkit(web_agent_model=assistant_model, planning_agent_model=assistant_model).get_tools(),
+    *DocumentProcessingToolkit().get_tools(),
+    *VideoAnalysisToolkit().get_tools(), # This requires OpenAI and Qwen Key
+    *CodeExecutionToolkit().get_tools(),
+    *ImageAnalysisToolkit(model=assistant_model).get_tools(),
+    *AudioAnalysisToolkit().get_tools(), # This requires OpenAI Key
+    *SearchToolkit(model=assistant_model).get_tools(),
+    *ExcelToolkit().get_tools()]
 
     user_role_name = 'user'
-    user_agent_kwargs = {
-        'model': user_model,
-        'tools': process_tools(user_tools),
-    }
+    user_agent_kwargs = dict(model=user_model)
     assistant_role_name = 'assistant'
-    assistant_agent_kwargs = {
-        'model': assistant_model,
-        'tools': process_tools(assistant_tools),
-    }
+    assistant_agent_kwargs = dict(model=assistant_model,
+    tools=tools_list)
     
     task_kwargs = {
         'task_prompt': question,
