@@ -28,12 +28,10 @@ from scenedetect.detectors import (  # type: ignore[import-untyped]
 )
 
 from camel.agents import ChatAgent
-from camel.configs import QwenConfig
 from camel.messages import BaseMessage
-from camel.models import ModelFactory, OpenAIAudioModels
+from camel.models import OpenAIAudioModels, BaseModelBackend
 from camel.toolkits.base import BaseToolkit
 from camel.toolkits.function_tool import FunctionTool
-from camel.types import ModelPlatformType, ModelType
 from camel.utils import dependencies_required
 
 from .video_downloader_toolkit import (
@@ -101,6 +99,7 @@ class VideoAnalysisToolkit(BaseToolkit):
     def __init__(
         self,
         download_directory: Optional[str] = None,
+        model: Optional[BaseModelBackend] = None,
     ) -> None:
         self._cleanup = download_directory is None
 
@@ -125,11 +124,7 @@ class VideoAnalysisToolkit(BaseToolkit):
 
         logger.info(f"Video will be downloaded to {self._download_directory}")
 
-        self.vl_model = ModelFactory.create(
-            model_platform=ModelPlatformType.QWEN,
-            model_type=ModelType.QWEN_VL_MAX,
-            model_config_dict=QwenConfig(temperature=0.2).as_dict(),
-        )
+        self.vl_model = model
 
         self.vl_agent = ChatAgent(
             model=self.vl_model, output_language="English"
