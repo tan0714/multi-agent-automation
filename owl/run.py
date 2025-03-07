@@ -1,10 +1,13 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from camel.models import ModelFactory
 from camel.toolkits import *
 from camel.types import ModelPlatformType, ModelType
 from camel.configs import ChatGPTConfig
 
 from typing import List, Dict
-from dotenv import load_dotenv
+
 from retry import retry
 from loguru import logger
 
@@ -12,7 +15,6 @@ from utils import OwlRolePlaying, run_society
 import os
 
 
-load_dotenv()
 
 
 def construct_society(question: str) -> OwlRolePlaying:
@@ -22,14 +24,14 @@ def construct_society(question: str) -> OwlRolePlaying:
     assistant_role_name = "assistant"
     
     user_model = ModelFactory.create(
-        model_platform=ModelPlatformType.OPENAI,
-        model_type=ModelType.GPT_4O,
+        model_platform=ModelPlatformType.DEFAULT,
+        model_type=ModelType.DEFAULT,
         model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
     assistant_model = ModelFactory.create(
-        model_platform=ModelPlatformType.OPENAI,
-        model_type=ModelType.GPT_4O,
+        model_platform=ModelPlatformType.DEFAULT,
+        model_type=ModelType.DEFAULT,
         model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
