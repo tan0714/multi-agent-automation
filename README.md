@@ -29,7 +29,7 @@
 [Installation](#️-installation) |
 [Examples](https://github.com/camel-ai/owl/tree/main/owl) |
 [Paper](https://arxiv.org/abs/2303.17760) |
-[Citation](#-community) |
+[Citation](https://github.com/camel-ai/owl#citation) |
 [Contributing](https://github.com/camel-ai/owl/graphs/contributors) |
 [CAMEL-AI](https://www.camel-ai.org/)
 
@@ -105,10 +105,12 @@ owl_env\Scripts\activate
 source owl_env/bin/activate
 ```
 
+
 ## **Install Dependencies**
 
 ```bash
 python -m pip install -r requirements.txt
+playwright install
 ```
 
 ## **Setup Environment Variables** 
@@ -163,7 +165,9 @@ If you find this repo useful, please cite:
 
 # 🔥 Community
 Join us for further discussions!
-![](./assets/community.png)
+<!-- ![](./assets/community.png) -->
+![](./assets/community_2.png)
+
 
 
 
