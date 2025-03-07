@@ -123,6 +123,8 @@ In the `owl/.env_example` file, you will find all the necessary API keys along w
 
 1. *Copy and Rename*: Duplicate the `.env_example` file and rename the copy to `.env`.
 2. *Fill in Your Keys*: Open the `.env` file and insert your API keys in the corresponding fields. 
+3.*For using more other models*: please refer to our camel docs:https://docs.camel-ai.org/key_modules/models. html#supported-model-platforms-in-camel
+
 
 > **Note**: For optimal performance, we strongly recommend using OpenAI models. Our experiments show that other models may result in significantly lower performance on complex tasks and benchmarks.
 
