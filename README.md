@@ -10,6 +10,7 @@
 [![X][x-image]][x-url]
 [![Reddit][reddit-image]][reddit-url]
 [![Wechat][wechat-image]][wechat-url]
+[![Wechat][owl-image]][owl-url]
 [![Hugging Face][huggingface-image]][huggingface-url]
 [![Star][star-image]][star-url]
 [![Package License][package-license-image]][package-license-url]
@@ -33,7 +34,7 @@
 </h4>
 
 <p style="line-height: 1.5; text-align: center;"> 🦉 OWL is a cutting-edge framework for multi-agent collaboration that pushes the boundaries of task automation, built on top of the [CAMEL-AI Framework](https://github.com/camel-ai/camel). 
-OWL achieves 58.18 average score on GAIA benchmark and ranks #1 among open-source frameworks.
+OWL achieves **58.18** average score on GAIA benchmark and ranks 🏅️ #1 among open-source frameworks.
 Our vision is to revolutionize how AI agents collaborate to solve real-world tasks. By leveraging dynamic agent interactions, OWL enables more natural, efficient, and robust task automation across diverse domains.</p>
 <br>
 
@@ -158,3 +159,5 @@ If you find this repo useful, please cite:
 [reddit-url]: https://www.reddit.com/r/CamelAI/
 [reddit-image]: https://img.shields.io/reddit/subreddit-subscribers/CamelAI?style=plastic&logo=reddit&label=r%2FCAMEL&labelColor=white
 [ambassador-url]: https://www.camel-ai.org/community
+[owl-url]: ./assets/qr_code.jpg
+[owl-image]: https://img.shields.io/badge/WeChat-OWLProject-brightgreen?logo=wechat&logoColor=white
