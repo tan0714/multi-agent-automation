@@ -116,12 +116,26 @@ python run_gaia_roleplaying.py
 
 
 
-# Cite -->
+<!-- # Cite --> -->
 
 # 📄 License
 
 The source code is licensed under Apache 2.0.
 
+# 🖊️ Cite
+
+If you find this repo useful, please cite:
+
+
+```bibtex
+@misc{owl2025,
+  title        = {OWL: Optimized Workforce Learning for General Multi-Agent Assistance in Real-World Task Automation},
+  author       = {{CAMEL-AI.org}},
+  howpublished = {\url{https://github.com/camel-ai/owl}},
+  note         = {Accessed: 2025-03-07},
+  year         = {2025}
+}
+```
 
 [docs-image]: https://img.shields.io/badge/Documentation-EB3ECC
 [docs-url]: https://camel-ai.github.io/camel/index.html
