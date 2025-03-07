@@ -43,7 +43,7 @@ def main():
             planning_agent_model=assistant_model
         ).get_tools(),
         *DocumentProcessingToolkit().get_tools(),
-        *VideoAnalysisToolkit().get_tools(),  # This requires OpenAI and Qwen Key
+        *VideoAnalysisToolkit(model=assistant_model).get_tools(),  # This requires OpenAI Key
         *CodeExecutionToolkit().get_tools(),
         *ImageAnalysisToolkit(model=assistant_model).get_tools(),
         *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
