@@ -24,12 +24,13 @@
 <div align="center">
 <h4 align="center">
 
+[中文阅读](https://github.com/camel-ai/owl/tree/main/README_zh.md) |
 [Community](https://github.com/camel-ai/owl#community) |
-[Installation](https://github.com/camel-ai/owl#installation) |
-[Examples](https://github.com/camel-ai/camel/tree/HEAD/examples) |
+[Installation](#️-installation) |
+[Examples](https://github.com/camel-ai/owl/tree/main/owl) |
 [Paper](https://arxiv.org/abs/2303.17760) |
 [Citation](https://github.com/camel-ai/owl#citation) |
-[Contributing](https://github.com/camel-ai/camel#contributing-to-camel-) |
+[Contributing](https://github.com/camel-ai/owl/graphs/contributors) |
 [CAMEL-AI](https://www.camel-ai.org/)
 
 </h4>
@@ -173,9 +174,9 @@ Join us for further discussions!
 [docs-image]: https://img.shields.io/badge/Documentation-EB3ECC
 [docs-url]: https://camel-ai.github.io/camel/index.html
 [star-image]: https://img.shields.io/github/stars/camel-ai/owl?label=stars&logo=github&color=brightgreen
-[star-url]: https://github.com/camel-ai/camel/stargazers
+[star-url]: https://github.com/camel-ai/owl/stargazers
 [package-license-image]: https://img.shields.io/badge/License-Apache_2.0-blue.svg
-[package-license-url]: https://github.com/camel-ai/camel/blob/master/licenses/LICENSE
+[package-license-url]: https://github.com/camel-ai/owl/blob/main/licenses/LICENSE
 
 [colab-url]: https://colab.research.google.com/drive/1AzP33O8rnMW__7ocWJhVBXjKziJXPtim?usp=sharing
 [colab-image]: https://colab.research.google.com/assets/colab-badge.svg
