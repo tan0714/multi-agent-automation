@@ -76,6 +76,8 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 
 https://private-user-images.githubusercontent.com/55657767/420211368-f29f477d-7eef-46da-8d7a-8f3bcf506da2.mp4
 
+https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-136a-485f-8df3-f10d9b4e63ec.mp4
+
 # 🛠️ Installation
 
 ## **Clone the Github repository**
