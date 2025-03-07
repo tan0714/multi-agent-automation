@@ -24,11 +24,11 @@
 <div align="center">
 <h4 align="center">
 
-[Community](https://github.com/camel-ai/camel#community) |
-[Installation](https://github.com/camel-ai/camel#installation) |
+[Community](https://github.com/camel-ai/owl#community) |
+[Installation](https://github.com/camel-ai/owl#installation) |
 [Examples](https://github.com/camel-ai/camel/tree/HEAD/examples) |
 [Paper](https://arxiv.org/abs/2303.17760) |
-[Citation](https://github.com/camel-ai/camel#citation) |
+[Citation](https://github.com/camel-ai/owl#citation) |
 [Contributing](https://github.com/camel-ai/camel#contributing-to-camel-) |
 [CAMEL-AI](https://www.camel-ai.org/)
 
