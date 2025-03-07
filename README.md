@@ -104,10 +104,12 @@ owl_env\Scripts\activate
 source owl_env/bin/activate
 ```
 
+
 ## **Install Dependencies**
 
 ```bash
 python -m pip install -r requirements.txt
+playwright install
 ```
 
 ## **Setup Environment Variables** 
