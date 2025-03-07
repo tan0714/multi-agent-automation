@@ -59,10 +59,10 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 - [🔥 News](#-news)
 - [🎬 Demo Video](#-demo-video)
 - [🛠️ Installation](#️-installation)
-	- [**Clone the Github repository**](#clone-the-github-repository)
-	- [**Set up Environment**](#set-up-environment)
-	- [**Install Dependencies**](#install-dependencies)
-	- [**Setup Environment Variables**](#setup-environment-variables)
+  - [**Clone the Github repository**](#clone-the-github-repository)
+  - [**Set up Environment**](#set-up-environment)
+  - [**Install Dependencies**](#install-dependencies)
+  - [**Setup Environment Variables**](#setup-environment-variables)
 - [🚀 Quick Start](#-quick-start)
 - [🧪 Experiments](#-experiments)
 - [⏱️ Future Plans](#️-future-plans)
@@ -172,7 +172,7 @@ If you find this repo useful, please cite:
 # 🔥 Community
 Join us for further discussions!
 <!-- ![](./assets/community.png) -->
-![](./assets/community_2.png)
+![](./assets/community_3.jpg)
 
 
 # ⭐ Star History
