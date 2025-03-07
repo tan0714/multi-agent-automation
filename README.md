@@ -136,13 +136,13 @@ If you find this repo useful, please cite:
 }
 ```
 
-# 🔥 Community
+<!-- # 🔥 Community
 
 Join us for further discussions!
 
 <p align="center">
   <img src="./assets/qr_code.jpg" alt="OWL WeChat QR Code" width="200"/>
-</p>
+</p> -->
 
 
 
