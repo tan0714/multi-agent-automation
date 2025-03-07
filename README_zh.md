@@ -122,6 +122,7 @@ python -m pip install -r requirements.txt
 
 1. *复制并重命名*: 复制 `.env_example` 文件，并将副本重命名为 `.env`。
 2. *填写你的密钥*: 打开 `.env` 文件，在相应字段中填入你的 API 密钥。 
+3. *如需使用更多其他模型*：请参考我们的 CAMEL 文档：[https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel]
 
 > **注意**：为获得最佳性能，我们强烈建议使用 OpenAI 模型。我们通过测试发现，其他模型在处理复杂任务和基准测试时可能会导致性能显著降低。
 
