@@ -1,10 +1,13 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from camel.models import ModelFactory
 from camel.toolkits import *
 from camel.types import ModelPlatformType, ModelType
 from camel.configs import ChatGPTConfig
 
 from typing import List, Dict
-from dotenv import load_dotenv
+
 from retry import retry
 from loguru import logger
 
@@ -12,7 +15,6 @@ from utils import OwlRolePlaying, process_tools, run_society
 import os
 
 
-load_dotenv()
 
 
 def construct_society(question: str) -> OwlRolePlaying:
