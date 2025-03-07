@@ -54,6 +54,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 
 - [📋 Table of Contents](#-table-of-contents)
 - [🔥 News](#-news)
+- [🎬 Demo Video](#-demo-video)
 - [🛠️ Installation](#️-installation)
 	- [**Clone the Github repository**](#clone-the-github-repository)
 	- [**Set up Environment**](#set-up-environment)
@@ -70,6 +71,10 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 # 🔥 News
 
 - **[2025.03.07]**: We open-source the codebase of 🦉 OWL project.
+
+# 🎬 Demo Video
+
+https://private-user-images.githubusercontent.com/55657767/420211368-f29f477d-7eef-46da-8d7a-8f3bcf506da2.mp4
 
 # 🛠️ Installation
 
