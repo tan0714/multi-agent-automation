@@ -137,7 +137,10 @@ playwright install
 In the `owl/.env_template` file, you will find all the necessary API keys along with the websites where you can register for each service. To use these API services, follow these steps:
 
 1. *Copy and Rename*: Duplicate the `.env_example` file and rename the copy to `.env`.
-2. *Fill in Your Keys*: Open the `.env` file and insert your API keys in the corresponding fields. 
+```bash
+cp owl/.env_template .env
+```
+2. *Fill in Your Keys*: Open the `.env` file and insert your API keys in the corresponding fields.  (For the minimal example (`run_mini.py`), you only need to configure the LLM API key (e.g., OPENAI_API_KEY).)
 3. *For using more other models*: please refer to our CAMEL models docs:https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel
 
 
@@ -145,11 +148,18 @@ In the `owl/.env_template` file, you will find all the necessary API keys along 
 
 # 🚀 Quick Start
    
-Run the following minimal example:
+Run the following demo case:
 
 ```bash
 python owl/run.py
 ```
+
+For a simpler version that only requires an LLM API key, you can try our minimal example:
+
+```bash
+python owl/run_mini.py
+```
+
 You can run OWL agent with your own task by modifying the `run.py` script:
 
 ```python

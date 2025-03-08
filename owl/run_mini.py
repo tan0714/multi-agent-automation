@@ -10,7 +10,8 @@ from camel.toolkits import (
     CodeExecutionToolkit, 
     ImageAnalysisToolkit, 
     SearchToolkit,
-    ExcelToolkit
+    ExcelToolkit,
+    FunctionTool
     )
 from camel.types import ModelPlatformType, ModelType
 from camel.configs import ChatGPTConfig
@@ -22,6 +23,7 @@ from loguru import logger
 
 from utils import OwlRolePlaying, run_society
 import os
+
 
 
 
@@ -45,17 +47,17 @@ def construct_society(question: str) -> OwlRolePlaying:
 
     tools_list = [
         *WebToolkit(
-            headless=False, # Set to True if you want to run in headless mode (e.g. on a remote server)
+            headless=False, 
             web_agent_model=assistant_model, 
             planning_agent_model=assistant_model
         ).get_tools(),
-        *DocumentProcessingToolkit().get_tools(),
-        *VideoAnalysisToolkit(model=assistant_model).get_tools(),  # This requires OpenAI Key
-        *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
-        *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
-        *ImageAnalysisToolkit(model=assistant_model).get_tools(),
-        *SearchToolkit(model=assistant_model).get_tools(),
-        *ExcelToolkit().get_tools()
+        # *DocumentProcessingToolkit().get_tools(),
+        # *VideoAnalysisToolkit(model=assistant_model).get_tools(),  # This requires OpenAI Key
+        # *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
+        # *CodeExecutionToolkit().get_tools(),
+        # *ImageAnalysisToolkit(model=assistant_model).get_tools(),
+        FunctionTool(SearchToolkit(model=assistant_model).search_duckduckgo),
+        # *ExcelToolkit().get_tools()
     ]
 
     user_role_name = 'user'
