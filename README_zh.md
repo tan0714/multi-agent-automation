@@ -139,6 +139,23 @@ python -m pip install -r requirements.txt
 python owl/run.py
 ```
 
+你可以通过修改 `run.py` 来运行自定义任务的 OWL 智能体：
+
+```python
+# Define your own task
+question = "Task description here."
+
+society = construct_society(question)
+answer, chat_history, token_count = run_society(society)
+
+logger.success(f"Answer: {answer}")
+```
+
+你可以尝试以下示例任务：
+- "查询苹果公司的最新股票价格"
+- "分析关于气候变化的最新推文情绪"
+- "帮我调试这段 Python 代码：[在此粘贴你的代码]"
+- "总结这篇研究论文的主要观点：[论文URL]"
 # 🧪 实验
 
 我们提供了一个脚本用于复现 GAIA 上的实验结果。  

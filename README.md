@@ -142,6 +142,23 @@ Run the following minimal example:
 ```bash
 python owl/run.py
 ```
+You can run OWL agent with your own task by modifying the `run.py` script:
+
+```python
+# Define your own task
+question = "Task description here."
+
+society = construct_society(question)
+answer, chat_history, token_count = run_society(society)
+
+logger.success(f"Answer: {answer}")
+```
+
+Example tasks you can try:
+- "Find the latest stock price for Apple Inc."
+- "Analyze the sentiment of recent tweets about climate change"
+- "Help me debug this Python code: [your code here]"
+- "Summarize the main points from this research paper: [paper URL]"
 
 # 🧪 Experiments
 
