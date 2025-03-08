@@ -38,15 +38,15 @@ def main():
 
     tools_list = [
         *WebToolkit(
-            headless=False, 
+            headless=False, # Set to True if you want to run in headless mode (e.g. on a remote server)
             web_agent_model=assistant_model, 
             planning_agent_model=assistant_model
         ).get_tools(),
         *DocumentProcessingToolkit().get_tools(),
         *VideoAnalysisToolkit(model=assistant_model).get_tools(),  # This requires OpenAI Key
-        *CodeExecutionToolkit().get_tools(),
-        *ImageAnalysisToolkit(model=assistant_model).get_tools(),
         *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
+        *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
+        *ImageAnalysisToolkit(model=assistant_model).get_tools(),
         *SearchToolkit(model=assistant_model).get_tools(),
         *ExcelToolkit().get_tools()
     ]

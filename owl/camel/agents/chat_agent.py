@@ -1291,18 +1291,6 @@ class ChatAgent(BaseAgent):
         args = json.loads(choice.message.tool_calls[0].function.arguments)
         tool = self.tool_dict[func_name]
 
-        # ! Here, if the agent calls advanced reasoning, provide the chat history
-        if func_name == "make_advanced_reasoning":
-            reformed_question = f"""
-            Please help an assistant to solve reasoning tasks. 
-            Here are the chat history between the assistant and the user, which may help you understand the intention of the user and the question:
-            <chat_history>{self.memory.get_context()}</chat_history>
-
-            Now please answer the following question:
-            <question>{args['question']}</question>
-            """
-            args["question"] = reformed_question
-
         result = tool(**args)
 
         assist_msg = FunctionCallingMessage(
