@@ -64,6 +64,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 - [📋 Table of Contents](#-table-of-contents)
 - [🔥 News](#-news)
 - [🎬 Demo Video](#-demo-video)
+- [✨️ Core Features](#-code-features)
 - [🛠️ Installation](#️-installation)
   - [**Clone the Github repository**](#clone-the-github-repository)
   - [**Set up Environment**](#set-up-environment)
@@ -88,6 +89,13 @@ https://private-user-images.githubusercontent.com/55657767/420211368-f29f477d-7e
 
 https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-136a-485f-8df3-f10d9b4e63ec.mp4
 
+# ✨️ Core Features
+
+- **Real-time Information Retrieval**: Leverage Wikipedia, Google Search, and other online sources for up-to-date information.
+- **Multimodal Processing**: Support for handling internet or local videos, images, and audio data.
+- **Browser Automation**: Utilize the Playwright framework for simulating browser interactions, including scrolling, clicking, input handling, downloading, navigation, and more.
+- **Document Parsing**: Extract content from Word, Excel, PDF, and PowerPoint files, converting them into text or Markdown format.
+- **Code Execution**: Write and execute Python code using interpreter.
 
 # 🛠️ Installation
 
