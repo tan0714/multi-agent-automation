@@ -126,7 +126,7 @@ playwright install
 
 ## **Setup Environment Variables** 
 
-In the `owl/.env_example` file, you will find all the necessary API keys along with the websites where you can register for each service. To use these API services, follow these steps:
+In the `owl/.env_template` file, you will find all the necessary API keys along with the websites where you can register for each service. To use these API services, follow these steps:
 
 1. *Copy and Rename*: Duplicate the `.env_example` file and rename the copy to `.env`.
 2. *Fill in Your Keys*: Open the `.env` file and insert your API keys in the corresponding fields. 
