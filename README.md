@@ -70,6 +70,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
   - [**Set up Environment**](#set-up-environment)
   - [**Install Dependencies**](#install-dependencies)
   - [**Setup Environment Variables**](#setup-environment-variables)
+  - [**使用Docker运行**](#使用docker运行)
 - [🚀 Quick Start](#-quick-start)
 - [🧪 Experiments](#-experiments)
 - [⏱️ Future Plans](#️-future-plans)
@@ -143,7 +144,31 @@ In the `owl/.env_template` file, you will find all the necessary API keys along 
 
 > **Note**: For optimal performance, we strongly recommend using OpenAI models. Our experiments show that other models may result in significantly lower performance on complex tasks and benchmarks.
 
+## **Running with Docker**
+
+If you prefer to run the OWL project using Docker, we provide full Docker support:
+
+```bash
+# Clone the repository
+git clone https://github.com/camel-ai/owl.git
+cd owl
+
+# Configure environment variables
+cp owl/.env_template owl/.env
+# Edit the .env file and fill in your API keys
+
+# Build and run the Docker container
+docker-compose up -d
+
+# Run OWL inside the container
+docker-compose exec owl bash -c "xvfb-python run.py"
+```
+
+For more detailed Docker usage instructions, including cross-platform support, optimized configurations, and troubleshooting, please refer to [DOCKER_README.md](DOCKER_README_en.md).
+
 # 🚀 Quick Start
+
+
    
 Run the following minimal example:
 

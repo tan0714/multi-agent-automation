@@ -140,6 +140,28 @@ python -m pip install -r requirements.txt
 
 > **注意**：为获得最佳性能，我们强烈建议使用 OpenAI 模型。我们通过测试发现，其他模型在处理复杂任务和基准测试时可能会导致性能显著降低。
 
+## **使用Docker运行**
+
+如果您希望使用Docker运行OWL项目，我们提供了完整的Docker支持：
+
+```bash
+# 克隆仓库
+git clone https://github.com/camel-ai/owl.git
+cd owl
+
+# 配置环境变量
+cp owl/.env_template owl/.env
+# 编辑.env文件，填入您的API密钥
+
+# 构建并运行Docker容器
+docker-compose up -d
+
+# 在容器中运行OWL
+docker-compose exec owl bash -c "xvfb-python run.py"
+```
+
+更多详细的Docker使用说明，包括跨平台支持、优化配置和故障排除，请参阅 [DOCKER_README.md](DOCKER_README.md)
+
 # 🚀 快速开始
    
 运行以下最小示例：
