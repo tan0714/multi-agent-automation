@@ -76,6 +76,7 @@
 - [📄 许可证](#-许可证)
 - [🖊️ 引用](#️-引用)
 - [🔥 社区](#-社区)
+- [❓ 常见问题](#-常见问题)
 
 
 # 🔥 新闻
@@ -138,6 +139,23 @@ python -m pip install -r requirements.txt
 python owl/run.py
 ```
 
+你可以通过修改 `run.py` 来运行自定义任务的 OWL 智能体：
+
+```python
+# Define your own task
+question = "Task description here."
+
+society = construct_society(question)
+answer, chat_history, token_count = run_society(society)
+
+logger.success(f"Answer: {answer}")
+```
+
+你可以尝试以下示例任务：
+- "查询苹果公司的最新股票价格"
+- "分析关于气候变化的最新推文情绪"
+- "帮我调试这段 Python 代码：[在此粘贴你的代码]"
+- "总结这篇研究论文的主要观点：[论文URL]"
 # 🧪 实验
 
 我们提供了一个脚本用于复现 GAIA 上的实验结果。  
@@ -179,6 +197,11 @@ python run_gaia_roleplaying.py
 ![](./assets/community_4.jpg)
 ![](./assets/meetup.jpg)
 
+# ❓ 常见问题
+
+**Q: 为什么我的Chrome浏览器显示空白页面，但控制台有输出结果？**
+
+A: 这是预期的行为。当OWL判断某个任务可以使用非浏览器工具（如搜索、代码分析等）完成时，浏览器窗口可能保持空白。浏览器仅在需要网页交互时才会被激活。我们计划在未来的更新中实现延迟加载以改善这一用户体验。
 
 
 [docs-image]: https://img.shields.io/badge/Documentation-EB3ECC

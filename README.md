@@ -75,6 +75,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 - [📄 License](#-license)
 - [🖊️ Cite](#️-cite)
 - [🔥 Community](#-community)
+- [❓ FAQ](#-faq)
 - [⭐ Star History](#-star-history)
 
 
@@ -141,6 +142,23 @@ Run the following minimal example:
 ```bash
 python owl/run.py
 ```
+You can run OWL agent with your own task by modifying the `run.py` script:
+
+```python
+# Define your own task
+question = "Task description here."
+
+society = construct_society(question)
+answer, chat_history, token_count = run_society(society)
+
+logger.success(f"Answer: {answer}")
+```
+
+Example tasks you can try:
+- "Find the latest stock price for Apple Inc."
+- "Analyze the sentiment of recent tweets about climate change"
+- "Help me debug this Python code: [your code here]"
+- "Summarize the main points from this research paper: [paper URL]"
 
 # 🧪 Experiments
 
@@ -183,11 +201,17 @@ Join us for further discussions!
 ![](./assets/community_4.jpg)
 ![](./assets/meetup.jpg)
 
+# ❓ FAQ
 
+**Q: Why is my Chrome browser showing a blank screen even though there's output in the console?**
+
+A: This is expected behavior. When OWL determines that a task can be completed using non-browser tools (like search, code analysis, etc.), the browser window may remain blank. The browser is only activated when web interaction is necessary. We plan to implement lazy loading in future updates to improve this user experience.
 
 # ⭐ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=camel-ai/owl&type=Date)](https://star-history.com/#camel-ai/owl&Date)
+
+
 
 [docs-image]: https://img.shields.io/badge/Documentation-EB3ECC
 [docs-url]: https://camel-ai.github.io/camel/index.html
