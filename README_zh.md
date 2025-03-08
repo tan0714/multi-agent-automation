@@ -133,13 +133,19 @@ python -m pip install -r requirements.txt
 
 # 🚀 快速开始
    
-运行以下最小示例：
+运行以下示例：
 
 ```bash
 python owl/run.py
 ```
 
-你可以通过修改 `run.py` 来运行自定义任务的 OWL 智能体：
+我们还提供了一个最小化示例，只需配置LLM的API密钥即可运行：
+
+```bash
+python owl/run_mini.py
+```
+
+你可以通过修改 `run.py` 脚本来运行自己的任务：
 
 ```python
 # Define your own task
