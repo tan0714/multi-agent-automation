@@ -198,8 +198,8 @@ If you find this repo useful, please cite:
 # 🔥 Community
 Join us for further discussions!
 <!-- ![](./assets/community.png) -->
-![](./assets/community_4.jpg)
-![](./assets/meetup.jpg)
+![](./assets/community_5.jpg)
+<!-- ![](./assets/meetup.jpg) -->
 
 # ❓ FAQ
 

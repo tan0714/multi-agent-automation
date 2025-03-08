@@ -194,8 +194,8 @@ python run_gaia_roleplaying.py
 # 🔥 社区
 加入我们，参与更多讨论！
 <!-- ![](./assets/community.png) -->
-![](./assets/community_4.jpg)
-![](./assets/meetup.jpg)
+![](./assets/community_5.jpg)
+<!-- ![](./assets/meetup.jpg) -->
 
 # ❓ 常见问题
 
