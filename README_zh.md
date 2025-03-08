@@ -76,6 +76,7 @@
 - [📄 许可证](#-许可证)
 - [🖊️ 引用](#️-引用)
 - [🔥 社区](#-社区)
+- [❓ 常见问题](#-常见问题)
 
 
 # 🔥 新闻
@@ -179,6 +180,11 @@ python run_gaia_roleplaying.py
 ![](./assets/community_4.jpg)
 ![](./assets/meetup.jpg)
 
+# ❓ 常见问题
+
+**Q: 为什么我的Chrome浏览器显示空白页面，但控制台有输出结果？**
+
+A: 这是预期的行为。当OWL判断某个任务可以使用非浏览器工具（如搜索、代码分析等）完成时，浏览器窗口可能保持空白。浏览器仅在需要网页交互时才会被激活。我们计划在未来的更新中实现延迟加载以改善这一用户体验。
 
 
 [docs-image]: https://img.shields.io/badge/Documentation-EB3ECC

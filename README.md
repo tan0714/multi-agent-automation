@@ -75,6 +75,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 - [📄 License](#-license)
 - [🖊️ Cite](#️-cite)
 - [🔥 Community](#-community)
+- [❓ FAQ](#-faq)
 - [⭐ Star History](#-star-history)
 
 
@@ -183,11 +184,17 @@ Join us for further discussions!
 ![](./assets/community_4.jpg)
 ![](./assets/meetup.jpg)
 
+# ❓ FAQ
 
+**Q: Why is my Chrome browser showing a blank screen even though there's output in the console?**
+
+A: This is expected behavior. When OWL determines that a task can be completed using non-browser tools (like search, code analysis, etc.), the browser window may remain blank. The browser is only activated when web interaction is necessary. We plan to implement lazy loading in future updates to improve this user experience.
 
 # ⭐ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=camel-ai/owl&type=Date)](https://star-history.com/#camel-ai/owl&Date)
+
+
 
 [docs-image]: https://img.shields.io/badge/Documentation-EB3ECC
 [docs-url]: https://camel-ai.github.io/camel/index.html
