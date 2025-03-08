@@ -40,10 +40,10 @@ def construct_society(question: str) -> OwlRolePlaying:
             planning_agent_model=assistant_model
         ).get_tools(),
         *DocumentProcessingToolkit().get_tools(),
-        *VideoAnalysisToolkit().get_tools(),  # This requires OpenAI and Qwen Key
+        # *VideoAnalysisToolkit().get_tools(),  # This requires OpenAI and Qwen Key
         *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
         *ImageAnalysisToolkit(model=assistant_model).get_tools(),
-        *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
+        # *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
         *SearchToolkit(model=assistant_model).get_tools(),
         *ExcelToolkit().get_tools()
     ]
