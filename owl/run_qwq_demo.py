@@ -1,10 +1,14 @@
+
+from dotenv import load_dotenv
+load_dotenv()
+
 from camel.models import ModelFactory
 from camel.toolkits import *
 from camel.types import ModelPlatformType, ModelType
-from camel.configs import DeepSeekConfig
+from camel.configs import ChatGPTConfig
 
 from typing import List, Dict
-from dotenv import load_dotenv
+
 from retry import retry
 from loguru import logger
 
@@ -12,7 +16,6 @@ from utils import OwlRolePlaying, run_society
 import os
 
 
-load_dotenv()
 
 
 def construct_society(question: str) -> OwlRolePlaying:
@@ -22,16 +25,21 @@ def construct_society(question: str) -> OwlRolePlaying:
     assistant_role_name = "assistant"
     
     user_model = ModelFactory.create(
-        model_platform=ModelPlatformType.DEEPSEEK,
-        model_type=ModelType.DEEPSEEK_CHAT,
-        model_config_dict=DeepSeekConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
+        model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
+        model_type="qwq-32b",
+        api_key=os.getenv("QWEN_API_KEY"),
+        url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        model_config_dict={"temperature": 0.4, "max_tokens": 4096},
     )
 
     assistant_model = ModelFactory.create(
-        model_platform=ModelPlatformType.DEEPSEEK,
-        model_type=ModelType.DEEPSEEK_CHAT,
-        model_config_dict=DeepSeekConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
+        model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
+        model_type="qwq-32b",
+        api_key=os.getenv("QWEN_API_KEY"),
+        url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        model_config_dict={"temperature": 0.4, "max_tokens": 4096},
     )
+
 
     tools_list = [
         *WebToolkit(
@@ -40,10 +48,10 @@ def construct_society(question: str) -> OwlRolePlaying:
             planning_agent_model=assistant_model
         ).get_tools(),
         *DocumentProcessingToolkit().get_tools(),
-        # *VideoAnalysisToolkit().get_tools(),  # This requires OpenAI and Qwen Key
-        *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
-        *ImageAnalysisToolkit(model=assistant_model).get_tools(),
+        # *VideoAnalysisToolkit(model=assistant_model).get_tools(),  # This requires OpenAI Key
         # *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
+        *CodeExecutionToolkit().get_tools(),
+        *ImageAnalysisToolkit(model=assistant_model).get_tools(),
         *SearchToolkit(model=assistant_model).get_tools(),
         *ExcelToolkit().get_tools()
     ]
@@ -77,6 +85,7 @@ society = construct_society(question)
 answer, chat_history, token_count = run_society(society)
 
 logger.success(f"Answer: {answer}")
+
 
 
 
