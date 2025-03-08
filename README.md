@@ -70,7 +70,8 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
   - [**Set up Environment**](#set-up-environment)
   - [**Install Dependencies**](#install-dependencies)
   - [**Setup Environment Variables**](#setup-environment-variables)
-  - [**使用Docker运行**](#使用docker运行)
+  - [**Running with Docker**](#running-with-docker)
+  
 - [🚀 Quick Start](#-quick-start)
 - [🧪 Experiments](#-experiments)
 - [⏱️ Future Plans](#️-future-plans)
