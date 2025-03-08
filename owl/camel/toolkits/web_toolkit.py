@@ -267,11 +267,13 @@ class BaseBrowser:
         """
         
         self.history = [] 
+        self.headless = headless
         self.playwright = sync_playwright().start()
-        self.browser: Browser = self.playwright.chromium.launch(headless=headless)
-
-        self.context: BrowserContext = self.browser.new_context(accept_downloads=True)
-        self.page: Page = self.context.new_page()
+        
+        self.browser: Browser = None
+        self.context: BrowserContext = None
+        self.page: Page = None
+        
         self.page_url: str = None        # stores the current page URL
         self.page_script: str = None
         # self.page_content: str = None    # stores the current page content
@@ -297,8 +299,12 @@ class BaseBrowser:
         except FileNotFoundError:
             logger.warning(f"Page script file not found: {page_script_path}")
 
-        # initialize the page into google search
-        # self.visit_page("https://www.google.com")        
+    
+    def init(self):
+        r"""Initialize the browser."""
+        self.browser = self.playwright.chromium.launch(headless=self.headless)      # launch the browser, if the headless is False, the browser will be displayed
+        self.context = self.browser.new_context(accept_downloads=True)     # create a new context   
+        self.page = self.context.new_page()                                # create a new page
     
     
     def clean_cache(self):
@@ -1036,9 +1042,11 @@ Your output should be in json format, including the following fields:
         
         self._reset()
         task_completed = False
+        
         detailed_plan = self._task_planning(task_prompt, start_url)
         logger.debug(f"Detailed plan: {detailed_plan}")
         
+        self.browser.init()
         self.browser.visit_page(start_url)
         
         for i in range(ROUND_LIMIT):
@@ -1094,6 +1102,7 @@ Your output should be in json format, including the following fields:
         else:
             simulation_result = self._get_final_answer(task_prompt)
         
+        self.browser.close()
         return simulation_result
         
     

@@ -41,7 +41,7 @@ def construct_society(question: str) -> OwlRolePlaying:
         ).get_tools(),
         *DocumentProcessingToolkit().get_tools(),
         *VideoAnalysisToolkit().get_tools(),  # This requires OpenAI and Qwen Key
-        *CodeExecutionToolkit().get_tools(),
+        *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
         *ImageAnalysisToolkit(model=assistant_model).get_tools(),
         *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
         *SearchToolkit(model=assistant_model).get_tools(),

@@ -16,7 +16,6 @@ import os
 
 
 
-
 def construct_society(question: str) -> OwlRolePlaying:
     r"""Construct the society based on the question."""
 
@@ -37,14 +36,14 @@ def construct_society(question: str) -> OwlRolePlaying:
 
     tools_list = [
         *WebToolkit(
-            headless=False, 
+            headless=False, # Set to True if you want to run in headless mode (e.g. on a remote server)
             web_agent_model=assistant_model, 
             planning_agent_model=assistant_model
         ).get_tools(),
         *DocumentProcessingToolkit().get_tools(),
         *VideoAnalysisToolkit(model=assistant_model).get_tools(),  # This requires OpenAI Key
         *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
-        *CodeExecutionToolkit().get_tools(),
+        *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
         *ImageAnalysisToolkit(model=assistant_model).get_tools(),
         *SearchToolkit(model=assistant_model).get_tools(),
         *ExcelToolkit().get_tools()
