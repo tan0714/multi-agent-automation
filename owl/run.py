@@ -2,7 +2,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from camel.models import ModelFactory
-from camel.toolkits import *
+from camel.toolkits import (
+    WebToolkit, 
+    DocumentProcessingToolkit, 
+    VideoAnalysisToolkit, 
+    AudioAnalysisToolkit, 
+    CodeExecutionToolkit, 
+    ImageAnalysisToolkit, 
+    SearchToolkit,
+    ExcelToolkit
+    )
 from camel.types import ModelPlatformType, ModelType
 from camel.configs import ChatGPTConfig
 
