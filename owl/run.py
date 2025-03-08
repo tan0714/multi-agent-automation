@@ -24,14 +24,14 @@ def construct_society(question: str) -> OwlRolePlaying:
     assistant_role_name = "assistant"
     
     user_model = ModelFactory.create(
-        model_platform=ModelPlatformType.DEFAULT,
-        model_type=ModelType.DEFAULT,
+        model_platform=ModelPlatformType.OPENAI,
+        model_type=ModelType.GPT_4O,
         model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
     assistant_model = ModelFactory.create(
-        model_platform=ModelPlatformType.DEFAULT,
-        model_type=ModelType.DEFAULT,
+        model_platform=ModelPlatformType.OPENAI,
+        model_type=ModelType.GPT_4O,
         model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
@@ -42,10 +42,10 @@ def construct_society(question: str) -> OwlRolePlaying:
             planning_agent_model=assistant_model
         ).get_tools(),
         *DocumentProcessingToolkit().get_tools(),
-        *VideoAnalysisToolkit().get_tools(),  # This requires OpenAI and Qwen Key
+        *VideoAnalysisToolkit(model=assistant_model).get_tools(),  # This requires OpenAI Key
+        *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
         *CodeExecutionToolkit().get_tools(),
         *ImageAnalysisToolkit(model=assistant_model).get_tools(),
-        *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
         *SearchToolkit(model=assistant_model).get_tools(),
         *ExcelToolkit().get_tools()
     ]
