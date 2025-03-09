@@ -109,7 +109,8 @@ ENV_GROUPS = {
             "required": False,
             "help": "Firecrawl API密钥，用于网页爬取功能。获取方式：https://www.firecrawl.dev/"
         },
-    ]
+    ],
+    "自定义环境变量": []  # 用户自定义的环境变量将存储在这里
 }
 
 def get_script_info(script_name):
@@ -126,6 +127,34 @@ def load_env_vars():
     for group in ENV_GROUPS.values():
         for var in group:
             env_vars[var["name"]] = os.environ.get(var["name"], "")
+    
+    # 加载.env文件中可能存在的其他环境变量
+    if Path(".env").exists():
+        with open(".env", "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, value = line.split("=", 1)
+                    key = key.strip()
+                    value = value.strip().strip('"\'')
+                    
+                    # 检查是否是已知的环境变量
+                    known_var = False
+                    for group in ENV_GROUPS.values():
+                        if any(var["name"] == key for var in group):
+                            known_var = True
+                            break
+                    
+                    # 如果不是已知的环境变量，添加到自定义环境变量组
+                    if not known_var and key not in env_vars:
+                        ENV_GROUPS["自定义环境变量"].append({
+                            "name": key,
+                            "label": key,
+                            "type": "text",
+                            "required": False,
+                            "help": "用户自定义环境变量"
+                        })
+                        env_vars[key] = value
     
     return env_vars
 
@@ -159,6 +188,32 @@ def save_env_vars(env_vars):
             f.write(f"{key}={value}\n")
     
     return "✅ 环境变量已保存"
+
+def add_custom_env_var(name, value, var_type):
+    """添加自定义环境变量"""
+    if not name:
+        return "❌ 环境变量名不能为空", None
+    
+    # 检查是否已存在同名环境变量
+    for group in ENV_GROUPS.values():
+        if any(var["name"] == name for var in group):
+            return f"❌ 环境变量 {name} 已存在", None
+    
+    # 添加到自定义环境变量组
+    ENV_GROUPS["自定义环境变量"].append({
+        "name": name,
+        "label": name,
+        "type": var_type,
+        "required": False,
+        "help": "用户自定义环境变量"
+    })
+    
+    # 保存环境变量
+    env_vars = {name: value}
+    save_env_vars(env_vars)
+    
+    # 返回成功消息和更新后的环境变量组
+    return f"✅ 已添加环境变量 {name}", ENV_GROUPS["自定义环境变量"]
 
 def terminate_process():
     """终止当前运行的进程"""
@@ -330,29 +385,6 @@ def extract_chat_history(logs):
         pass
     return None
 
-def modify_script(script_name, question):
-    """修改脚本以使用提供的问题"""
-    script_path = os.path.join("owl", script_name)
-    
-    with open(script_path, "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    # 查找并替换问题变量
-    if "question = " in content:
-        # 使用正则表达式替换问题字符串
-        modified_content = re.sub(
-            r'question\s*=\s*["\'].*?["\']', 
-            f'question = "{question}"', 
-            content
-        )
-        
-        with open(script_path, "w", encoding="utf-8") as f:
-            f.write(modified_content)
-        
-        return True
-    
-    return False
-
 def create_ui():
     """创建Gradio界面"""
     # 加载环境变量
@@ -434,32 +466,62 @@ def create_ui():
                 env_inputs = {}
                 save_status = gr.Textbox(label="保存状态", interactive=False)
                 
+                # 添加自定义环境变量部分
+                with gr.Accordion("添加自定义环境变量", open=True):
+                    with gr.Row():
+                        new_var_name = gr.Textbox(label="环境变量名", placeholder="例如：MY_CUSTOM_API_KEY")
+                        new_var_value = gr.Textbox(label="环境变量值", placeholder="输入值")
+                        new_var_type = gr.Dropdown(
+                            choices=["text", "password"],
+                            value="text",
+                            label="类型"
+                        )
+                    
+                    add_var_button = gr.Button("添加环境变量", variant="primary")
+                    add_var_status = gr.Textbox(label="添加状态", interactive=False)
+                    
+                    # 自定义环境变量列表
+                    custom_vars_list = gr.JSON(
+                        value=ENV_GROUPS["自定义环境变量"],
+                        label="已添加的自定义环境变量",
+                        visible=len(ENV_GROUPS["自定义环境变量"]) > 0
+                    )
+                    
+                    # 添加环境变量按钮点击事件
+                    add_var_button.click(
+                        fn=add_custom_env_var,
+                        inputs=[new_var_name, new_var_value, new_var_type],
+                        outputs=[add_var_status, custom_vars_list]
+                    )
+                
+                # 现有环境变量配置
                 for group_name, vars in ENV_GROUPS.items():
-                    with gr.Accordion(group_name, open=True):
-                        for var in vars:
-                            # 添加帮助信息
-                            gr.Markdown(f"**{var['help']}**")
-                            
-                            if var["type"] == "password":
-                                env_inputs[var["name"]] = gr.Textbox(
-                                    value=env_vars.get(var["name"], ""),
-                                    label=var["label"] + (" (必填)" if var.get("required", False) else ""),
-                                    placeholder=f"请输入{var['label']}",
-                                    type="password"
-                                )
-                            else:
-                                env_inputs[var["name"]] = gr.Textbox(
-                                    value=env_vars.get(var["name"], ""),
-                                    label=var["label"] + (" (必填)" if var.get("required", False) else ""),
-                                    placeholder=f"请输入{var['label']}"
-                                )
+                    if group_name != "自定义环境变量" or len(vars) > 0:  # 只显示非空的自定义环境变量组
+                        with gr.Accordion(group_name, open=(group_name != "自定义环境变量")):
+                            for var in vars:
+                                # 添加帮助信息
+                                gr.Markdown(f"**{var['help']}**")
+                                
+                                if var["type"] == "password":
+                                    env_inputs[var["name"]] = gr.Textbox(
+                                        value=env_vars.get(var["name"], ""),
+                                        label=var["label"] + (" (必填)" if var.get("required", False) else ""),
+                                        placeholder=f"请输入{var['label']}",
+                                        type="password"
+                                    )
+                                else:
+                                    env_inputs[var["name"]] = gr.Textbox(
+                                        value=env_vars.get(var["name"], ""),
+                                        label=var["label"] + (" (必填)" if var.get("required", False) else ""),
+                                        placeholder=f"请输入{var['label']}"
+                                    )
                 
                 save_button = gr.Button("保存环境变量", variant="primary")
                 
                 # 保存环境变量
-                save_inputs = [env_inputs[var_name] for group in ENV_GROUPS.values() for var in group for var_name in [var["name"]]]
+                save_inputs = [env_inputs[var_name] for group in ENV_GROUPS.values() for var in group for var_name in [var["name"]] if var_name in env_inputs]
                 save_button.click(
-                    fn=lambda *values: save_env_vars(dict(zip([var["name"] for group in ENV_GROUPS.values() for var in group], values))),
+                    fn=lambda *values: save_env_vars(dict(zip([var["name"] for group in ENV_GROUPS.values() for var in group if var["name"] in env_inputs], values))),
                     inputs=save_inputs,
                     outputs=save_status
                 )
@@ -494,6 +556,7 @@ def create_ui():
             - 在"运行日志"标签页查看完整日志
             - 在"聊天历史"标签页查看对话历史（如果有）
             - 在"环境变量配置"标签页配置API密钥和其他环境变量
+            - 您可以添加自定义环境变量，满足特殊需求
             
             ### ⚠️ 注意事项
             

@@ -3,6 +3,7 @@ import sys
 import importlib.util
 import re
 from pathlib import Path
+import traceback
 
 def load_module_from_path(module_name, file_path):
     """从文件路径加载Python模块"""
@@ -33,57 +34,81 @@ def run_script_with_env_question(script_name):
     # 检查脚本是否有main函数
     has_main = re.search(r'def\s+main\s*\(\s*\)\s*:', content) is not None
     
-    # 尝试查找并替换question变量
-    # 匹配多种可能的question定义模式
-    patterns = [
-        r'question\s*=\s*["\'].*?["\']',  # 简单字符串赋值
-        r'question\s*=\s*\(\s*["\'].*?["\']\s*\)',  # 带括号的字符串赋值
-        r'question\s*=\s*f["\'].*?["\']',  # f-string赋值
-        r'question\s*=\s*r["\'].*?["\']',  # 原始字符串赋值
-    ]
+    # 转义问题中的特殊字符
+    escaped_question = question.replace("\\", "\\\\").replace("\"", "\\\"").replace("'", "\\'")
     
-    question_replaced = False
-    for pattern in patterns:
-        if re.search(pattern, content):
-            # 转义问题中的特殊字符
-            escaped_question = question.replace("\\", "\\\\").replace("\"", "\\\"").replace("'", "\\'")
-            # 替换问题
-            modified_content = re.sub(
-                pattern, 
-                f'question = "{escaped_question}"', 
-                content
+    # 查找脚本中所有的question赋值
+    question_assignments = re.findall(r'question\s*=\s*(?:["\'].*?["\']|\(.*?\))', content)
+    print(f"在脚本中找到 {len(question_assignments)} 个question赋值")
+    
+    # 修改脚本内容，替换所有的question赋值
+    modified_content = content
+    
+    # 如果脚本中有question赋值，替换所有的赋值
+    if question_assignments:
+        for assignment in question_assignments:
+            modified_content = modified_content.replace(
+                assignment, 
+                f'question = "{escaped_question}"'
             )
-            question_replaced = True
-            break
-    
-    if not question_replaced:
-        # 如果没有找到question变量，尝试在main函数前插入
+        print(f"已替换脚本中的所有question赋值为: {question}")
+    else:
+        # 如果没有找到question赋值，尝试在main函数前插入
         if has_main:
-            # 在main函数前插入question变量
             main_match = re.search(r'def\s+main\s*\(\s*\)\s*:', content)
             if main_match:
                 insert_pos = main_match.start()
-                # 转义问题中的特殊字符
-                escaped_question = question.replace("\\", "\\\\").replace("\"", "\\\"").replace("'", "\\'")
                 modified_content = content[:insert_pos] + f'\n# 用户输入的问题\nquestion = "{escaped_question}"\n\n' + content[insert_pos:]
-                question_replaced = True
+                print(f"已在main函数前插入问题: {question}")
+        else:
+            # 如果没有main函数，在文件开头插入
+            modified_content = f'# 用户输入的问题\nquestion = "{escaped_question}"\n\n' + content
+            print(f"已在文件开头插入问题: {question}")
     
-    if not question_replaced:
-        # 如果仍然无法替换，尝试在文件末尾添加代码来使用用户的问题
-        modified_content = content + f'\n\n# 用户输入的问题\nquestion = "{question}"\n\n'
+    # 添加monkey patch代码，确保construct_society函数使用用户的问题
+    monkey_patch_code = f'''
+# 确保construct_society函数使用用户的问题
+original_construct_society = globals().get('construct_society')
+if original_construct_society:
+    def patched_construct_society(*args, **kwargs):
+        # 忽略传入的参数，始终使用用户的问题
+        return original_construct_society("{escaped_question}")
+    
+    # 替换原始函数
+    globals()['construct_society'] = patched_construct_society
+    print("已修补construct_society函数，确保使用用户问题")
+'''
+    
+    # 在文件末尾添加monkey patch代码
+    modified_content += monkey_patch_code
+    
+    # 如果脚本没有调用main函数，添加调用代码
+    if has_main and "__main__" not in content:
         modified_content += '''
-# 如果脚本中有construct_society函数，使用用户问题运行
-if "construct_society" in globals():
+
+# 确保调用main函数
+if __name__ == "__main__":
+    main()
+'''
+        print("已添加main函数调用代码")
+    
+    # 如果脚本没有construct_society调用，添加调用代码
+    if "construct_society" in content and "run_society" in content and "Answer:" not in content:
+        modified_content += f'''
+
+# 确保执行construct_society和run_society
+if "construct_society" in globals() and "run_society" in globals():
     try:
-        society = construct_society(question)
+        society = construct_society("{escaped_question}")
         from utils import run_society
         answer, chat_history, token_count = run_society(society)
-        print(f"Answer: {answer}")
+        print(f"Answer: {{answer}}")
     except Exception as e:
-        print(f"运行时出错: {e}")
+        print(f"运行时出错: {{e}}")
         import traceback
         traceback.print_exc()
 '''
+        print("已添加construct_society和run_society调用代码")
     
     # 执行修改后的脚本
     try:
@@ -92,35 +117,59 @@ if "construct_society" in globals():
         if str(script_dir) not in sys.path:
             sys.path.insert(0, str(script_dir))
         
-        if has_main:
-            # 如果有main函数，加载模块并调用main
-            # 创建临时文件
-            temp_script_path = script_path.with_name(f"temp_{script_path.name}")
-            with open(temp_script_path, "w", encoding="utf-8") as f:
-                f.write(modified_content)
+        # 创建临时文件
+        temp_script_path = script_path.with_name(f"temp_{script_path.name}")
+        with open(temp_script_path, "w", encoding="utf-8") as f:
+            f.write(modified_content)
+        
+        print(f"已创建临时脚本文件: {temp_script_path}")
+        
+        try:
+            # 直接执行临时脚本
+            print(f"开始执行脚本...")
             
-            try:
+            # 如果有main函数，加载模块并调用main
+            if has_main:
                 # 加载临时模块
                 module_name = f"temp_{script_path.stem}"
                 module = load_module_from_path(module_name, temp_script_path)
                 
+                # 确保模块中有question变量，并且值是用户输入的问题
+                setattr(module, "question", question)
+                
+                # 如果模块中有construct_society函数，修补它
+                if hasattr(module, "construct_society"):
+                    original_func = module.construct_society
+                    def patched_func(*args, **kwargs):
+                        return original_func(question)
+                    module.construct_society = patched_func
+                    print("已在模块级别修补construct_society函数")
+                
                 # 调用main函数
                 if hasattr(module, "main"):
+                    print("调用main函数...")
                     module.main()
                 else:
                     print(f"错误: 脚本 {script_path} 中没有main函数")
                     sys.exit(1)
-            finally:
-                # 删除临时文件
-                if temp_script_path.exists():
-                    temp_script_path.unlink()
-        else:
-            # 如果没有main函数，直接执行修改后的脚本
-            exec(modified_content, {"__file__": str(script_path)})
+            else:
+                # 如果没有main函数，直接执行修改后的脚本
+                print("直接执行脚本内容...")
+                exec(modified_content, {"__file__": str(temp_script_path)})
+        
+        except Exception as e:
+            print(f"执行脚本时出错: {e}")
+            traceback.print_exc()
+            sys.exit(1)
+        
+        finally:
+            # 删除临时文件
+            if temp_script_path.exists():
+                temp_script_path.unlink()
+                print(f"已删除临时脚本文件: {temp_script_path}")
     
     except Exception as e:
-        print(f"执行脚本时出错: {e}")
-        import traceback
+        print(f"处理脚本时出错: {e}")
         traceback.print_exc()
         sys.exit(1)
 
