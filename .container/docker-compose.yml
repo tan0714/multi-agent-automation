@@ -1,8 +1,8 @@
 services:
   owl:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: .container/Dockerfile
       args:
         # 构建参数
         BUILDKIT_INLINE_CACHE: 1
