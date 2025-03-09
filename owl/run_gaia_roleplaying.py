@@ -1,14 +1,27 @@
+# ========= Copyright 2023-2024 @ CAMEL-AI.org. All Rights Reserved. =========
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ========= Copyright 2023-2024 @ CAMEL-AI.org. All Rights Reserved. =========
+
 from dotenv import load_dotenv
-load_dotenv()
+
 
 import os
-from loguru import logger
 
 from camel.models import ModelFactory
+from camel.logger import get_logger
 from camel.toolkits import (
     AudioAnalysisToolkit,
     CodeExecutionToolkit,
-    DocumentProcessingToolkit,
     ExcelToolkit,
     ImageAnalysisToolkit,
     SearchToolkit,
@@ -19,7 +32,13 @@ from camel.types import ModelPlatformType, ModelType
 from camel.configs import ChatGPTConfig
 
 from utils import GAIABenchmark
+from camel.logger import set_log_level
 
+set_log_level(level="DEBUG")
+
+load_dotenv()
+
+logger = get_logger(__name__)
 
 # Configuration
 LEVEL = 1
@@ -65,13 +84,8 @@ def main():
             model_type=ModelType.GPT_4O,
             model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(),
         ),
-        "search": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
-            model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(),
-        ),
     }
-    
+
     # Configure toolkits
     tools = [
         *WebToolkit(
@@ -79,24 +93,22 @@ def main():
             web_agent_model=models["web"],
             planning_agent_model=models["planning"],
         ).get_tools(),
-        *DocumentProcessingToolkit().get_tools(),
-        *VideoAnalysisToolkit(model=models["video"]).get_tools(),  # This requires OpenAI Key
+        *VideoAnalysisToolkit(
+            model=models["video"]
+        ).get_tools(),  # This requires OpenAI Key
         *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
         *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
         *ImageAnalysisToolkit(model=models["image"]).get_tools(),
-        *SearchToolkit(model=models["search"]).get_tools(),
+        *SearchToolkit().get_tools(),
         *ExcelToolkit().get_tools(),
     ]
-    
+
     # Configure agent roles and parameters
     user_agent_kwargs = {"model": models["user"]}
     assistant_agent_kwargs = {"model": models["assistant"], "tools": tools}
 
     # Initialize benchmark
-    benchmark = GAIABenchmark(
-        data_dir="data/gaia",
-        save_to=f"results/result.json"
-    )
+    benchmark = GAIABenchmark(data_dir="data/gaia", save_to="results/result.json")
 
     # Print benchmark information
     print(f"Number of validation examples: {len(benchmark.valid)}")
@@ -104,8 +116,8 @@ def main():
 
     # Run benchmark
     result = benchmark.run(
-        on="valid", 
-        level=LEVEL, 
+        on="valid",
+        level=LEVEL,
         idx=test_idx,
         save_result=SAVE_RESULT,
         user_role_name="user",

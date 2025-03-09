@@ -1,42 +1,43 @@
-import sys
-sys.path.append("../")
+# ========= Copyright 2023-2024 @ CAMEL-AI.org. All Rights Reserved. =========
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ========= Copyright 2023-2024 @ CAMEL-AI.org. All Rights Reserved. =========
 
-import json
-import os
-from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Union, Tuple
+from typing import Dict, List, Optional, Tuple
 
-from tqdm import tqdm
 
 from camel.agents import ChatAgent
 from camel.responses import ChatAgentResponse
 from camel.messages.base import BaseMessage
 from camel.societies import RolePlaying
-from camel.models import OpenAIModel, ModelFactory
-from camel.types import ModelType, ModelPlatformType
+from camel.logger import get_logger
 
 
-from loguru import logger
 from copy import deepcopy
-from retry import retry
-from .common import *
+
+logger = get_logger(__name__)
 
 
 class OwlRolePlaying(RolePlaying):
-    def __init__(
-        self, 
-        **kwargs
-        ):
+    def __init__(self, **kwargs):
+        self.user_role_name = kwargs.get("user_role_name", "user")
+        self.assistant_role_name = kwargs.get("assistant_role_name", "assistant")
 
-        self.user_role_name = kwargs.get('user_role_name', 'user')
-        self.assistant_role_name = kwargs.get('assistant_role_name', 'assistant')
+        self.output_language = kwargs.get("output_language", None)
 
-        self.output_language = kwargs.get('output_language', None)
+        self.user_agent_kwargs: dict = kwargs.get("user_agent_kwargs", {})
+        self.assistant_agent_kwargs: dict = kwargs.get("assistant_agent_kwargs", {})
 
-        self.user_agent_kwargs: dict = kwargs.get('user_agent_kwargs', {})
-        self.assistant_agent_kwargs: dict = kwargs.get('assistant_agent_kwargs', {})
-
-        self.output_language = kwargs.get('output_language', None)
+        self.output_language = kwargs.get("output_language", None)
 
         super().__init__(**kwargs)
 
@@ -53,7 +54,7 @@ class OwlRolePlaying(RolePlaying):
         #     logger.info("The task is judged as a reasoning or coding task. The assistant agent will use the reasoning model O3-MINI.")
         # else:
         #     logger.info("The assistant agent will use the default model.")
-        
+
         self._init_agents(
             init_assistant_sys_msg,
             init_user_sys_msg,
@@ -62,8 +63,7 @@ class OwlRolePlaying(RolePlaying):
             output_language=self.output_language,
             # is_reasoning_task=self.is_reasoning_task
         )
-        
-        
+
     def _init_agents(
         self,
         init_assistant_sys_msg: BaseMessage,
@@ -71,7 +71,7 @@ class OwlRolePlaying(RolePlaying):
         assistant_agent_kwargs: Optional[Dict] = None,
         user_agent_kwargs: Optional[Dict] = None,
         output_language: Optional[str] = None,
-        is_reasoning_task: bool = False
+        is_reasoning_task: bool = False,
     ) -> None:
         r"""Initialize assistant and user agents with their system messages.
 
@@ -89,14 +89,14 @@ class OwlRolePlaying(RolePlaying):
         """
         if self.model is not None:
             if assistant_agent_kwargs is None:
-                assistant_agent_kwargs = {'model': self.model}
-            elif 'model' not in assistant_agent_kwargs:
+                assistant_agent_kwargs = {"model": self.model}
+            elif "model" not in assistant_agent_kwargs:
                 assistant_agent_kwargs.update(dict(model=self.model))
             if user_agent_kwargs is None:
-                user_agent_kwargs = {'model': self.model}
-            elif 'model' not in user_agent_kwargs:
+                user_agent_kwargs = {"model": self.model}
+            elif "model" not in user_agent_kwargs:
                 user_agent_kwargs.update(dict(model=self.model))
-        
+
         # # If the task is a reasoning task, the assistant agent should use the reasoning model O3-MINI
         # if is_reasoning_task:
         #     assistant_agent_kwargs['model'] = ModelFactory.create(
@@ -117,17 +117,16 @@ class OwlRolePlaying(RolePlaying):
             **(user_agent_kwargs or {}),
         )
         self.user_sys_msg = self.user_agent.system_message
-        
-    
+
     # def _judge_if_reasoning_task(self, question: str) -> bool:
     #     r"""Judge if the question is a reasoning task."""
-        
+
     #     LLM = OpenAIModel(model_type=ModelType.O3_MINI)
     #     prompt = f"""
     #     Please judge whether the following question is a reasoning or coding task, which can be solved by reasoning without leveraging external resources, or is suitable for writing code to solve the task.
     #     If it is a reasoning or coding task, please return only "yes".
     #     If it is not a reasoning or coding task, please return only "no".
-    #     Note: 
+    #     Note:
     #     - If the question required some world knowledge to answer the question, please carefully judge it, because the model's own knowledge is often unreliable.
     #     - If it is suitable for writing codes (e.g. process excel files, write simulation codes, etc.), in most cases, it can be considered as a coding task.
     #     Question: <question>{question}</question>
@@ -138,7 +137,6 @@ class OwlRolePlaying(RolePlaying):
     #         return True
     #     else:
     #         return False
-        
 
     def _construct_gaia_sys_msgs(self):
         user_system_prompt = f"""
@@ -170,7 +168,7 @@ Keep giving me instructions until you think the task is completed.
 When the task is completed, you must only reply with a single word <TASK_DONE>.
 Never say <TASK_DONE> unless my responses have solved your task.
         """
-        
+
         assistant_system_prompt = f"""
 ===== RULES OF ASSISTANT =====
 Never forget you are a assistant and I am a user. Never flip roles! Never instruct me! You have to utilize your available tools to solve the task I assigned.
@@ -204,17 +202,18 @@ Please note that our overall task may be very complicated. Here are some tips th
         """
 
         user_sys_msg = BaseMessage.make_user_message(
-            role_name=self.user_role_name, 
-            content=user_system_prompt)
-        
+            role_name=self.user_role_name, content=user_system_prompt
+        )
+
         assistant_sys_msg = BaseMessage.make_assistant_message(
-            role_name=self.assistant_role_name, 
-            content=assistant_system_prompt)
-        
+            role_name=self.assistant_role_name, content=assistant_system_prompt
+        )
+
         return user_sys_msg, assistant_sys_msg
 
-
-    def step(self, assistant_msg: BaseMessage) -> Tuple[ChatAgentResponse, ChatAgentResponse]:
+    def step(
+        self, assistant_msg: BaseMessage
+    ) -> Tuple[ChatAgentResponse, ChatAgentResponse]:
         user_response = self.user_agent.step(assistant_msg)
         if user_response.terminated or user_response.msgs is None:
             return (
@@ -226,14 +225,9 @@ Please note that our overall task may be very complicated. Here are some tips th
                 ),
             )
         user_msg = self._reduce_message_options(user_response.msgs)
-        if (
-            'n' in self.user_agent.model_config_dict.keys()
-            and self.user_agent.model_config_dict['n'] > 1
-        ):
-            self.user_agent.record_message(user_msg)
-        
+
         modified_user_msg = deepcopy(user_msg)
-        
+
         if "TASK_DONE" not in user_msg.content:
             modified_user_msg.content += f"""\n
             Here are auxiliary information about the overall task, which may help you understand the intent of the current task:
@@ -248,7 +242,7 @@ Please note that our overall task may be very complicated. Here are some tips th
             modified_user_msg.content += f"""\n
             Now please make a final answer of the original task based on our conversation : <task>{self.task_prompt}</task>
             """
-        
+
         # process assistant's response
         assistant_response = self.assistant_agent.step(modified_user_msg)
         if assistant_response.terminated or assistant_response.msgs is None:
@@ -263,7 +257,7 @@ Please note that our overall task may be very complicated. Here are some tips th
                 ),
             )
         assistant_msg = self._reduce_message_options(assistant_response.msgs)
-        
+
         modified_assistant_msg = deepcopy(assistant_msg)
         if "TASK_DONE" not in user_msg.content:
             modified_assistant_msg.content += f"""\n
@@ -272,15 +266,6 @@ Please note that our overall task may be very complicated. Here are some tips th
                 If I have written codes, remind me to run the codes.
                 If you think our task is done, reply with `TASK_DONE` to end our conversation.
             """
-
-        # To prevent recording the same memory more than once (once in chat
-        # step and once in role play), and the model generates only one
-        # response when multi-response support is enabled.
-        if (
-            'n' in self.assistant_agent.model_config_dict.keys()
-            and self.assistant_agent.model_config_dict['n'] > 1
-        ):
-            self.assistant_agent.record_message(assistant_msg)
 
         # return the modified messages
         return (
@@ -297,12 +282,13 @@ Please note that our overall task may be very complicated. Here are some tips th
         )
 
 
-class OwlGaiaRolePlaying(OwlRolePlaying):
+class OwlGAIARolePlaying(OwlRolePlaying):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-
-    def step(self, assistant_msg: BaseMessage) -> Tuple[ChatAgentResponse, ChatAgentResponse]:
+    def step(
+        self, assistant_msg: BaseMessage
+    ) -> Tuple[ChatAgentResponse, ChatAgentResponse]:
         user_response = self.user_agent.step(assistant_msg)
         if user_response.terminated or user_response.msgs is None:
             return (
@@ -315,13 +301,13 @@ class OwlGaiaRolePlaying(OwlRolePlaying):
             )
         user_msg = self._reduce_message_options(user_response.msgs)
         if (
-            'n' in self.user_agent.model_config_dict.keys()
-            and self.user_agent.model_config_dict['n'] > 1
+            "n" in self.user_agent.model_config_dict.keys()
+            and self.user_agent.model_config_dict["n"] > 1
         ):
             self.user_agent.record_message(user_msg)
-        
+
         modified_user_msg = deepcopy(user_msg)
-        
+
         if "TASK_DONE" not in user_msg.content:
             modified_user_msg.content += f"""\n
             Here are auxiliary information about the overall task, which may help you understand the intent of the current task:
@@ -348,7 +334,7 @@ class OwlGaiaRolePlaying(OwlRolePlaying):
             - If you are asked for a comma separated list, apply the above rules depending of whether the element to be put in the list is a number or a string.
             </hint>
             """
-        
+
         # process assistant's response
         assistant_response = self.assistant_agent.step(modified_user_msg)
         if assistant_response.terminated or assistant_response.msgs is None:
@@ -363,7 +349,7 @@ class OwlGaiaRolePlaying(OwlRolePlaying):
                 ),
             )
         assistant_msg = self._reduce_message_options(assistant_response.msgs)
-        
+
         modified_assistant_msg = deepcopy(assistant_msg)
         if "TASK_DONE" not in user_msg.content:
             modified_assistant_msg.content += f"""\n
@@ -372,15 +358,6 @@ class OwlGaiaRolePlaying(OwlRolePlaying):
                 If I have written codes, remind me to run the codes.
                 If you think our task is done, reply with `TASK_DONE` to end our conversation.
             """
-
-        # To prevent recording the same memory more than once (once in chat
-        # step and once in role play), and the model generates only one
-        # response when multi-response support is enabled.
-        if (
-            'n' in self.assistant_agent.model_config_dict.keys()
-            and self.assistant_agent.model_config_dict['n'] > 1
-        ):
-            self.assistant_agent.record_message(assistant_msg)
 
         # return the modified messages
         return (
@@ -397,47 +374,58 @@ class OwlGaiaRolePlaying(OwlRolePlaying):
         )
 
 
-def run_society(society: RolePlaying, round_limit: int = 15) -> Tuple[str, List[dict], dict]:
-
+def run_society(
+    society: RolePlaying, round_limit: int = 15
+) -> Tuple[str, List[dict], dict]:
     overall_completion_token_count = 0
     overall_prompt_token_count = 0
 
     chat_history = []
-    init_prompt = f"""
+    init_prompt = """
 Now please give me instructions to solve over overall task step by step. If the task requires some specific knowledge, please instruct me to use tools to complete the task.
     """
     input_msg = society.init_chat(init_prompt)
     for _round in range(round_limit):
-
         assistant_response, user_response = society.step(input_msg)
-        overall_completion_token_count += (assistant_response.info['usage']['completion_tokens'] + user_response.info['usage']['completion_tokens'])
-        overall_prompt_token_count += (assistant_response.info['usage']['prompt_tokens'] + user_response.info['usage']['prompt_tokens'])
+        overall_completion_token_count += (
+            assistant_response.info["usage"]["completion_tokens"]
+            + user_response.info["usage"]["completion_tokens"]
+        )
+        overall_prompt_token_count += (
+            assistant_response.info["usage"]["prompt_tokens"]
+            + user_response.info["usage"]["prompt_tokens"]
+        )
 
         # convert tool call to dict
         tool_call_records: List[dict] = []
-        for tool_call in assistant_response.info['tool_calls']:
+        for tool_call in assistant_response.info["tool_calls"]:
             tool_call_records.append(tool_call.as_dict())
 
         _data = {
-            'user': user_response.msg.content,
-            'assistant': assistant_response.msg.content,
-            'tool_calls': tool_call_records
+            "user": user_response.msg.content,
+            "assistant": assistant_response.msg.content,
+            "tool_calls": tool_call_records,
         }
 
         chat_history.append(_data)
         logger.info(f"Round #{_round} user_response:\n {user_response.msgs[0].content}")
-        logger.info(f"Round #{_round} assistant_response:\n {assistant_response.msgs[0].content}")
-        
-        if assistant_response.terminated or user_response.terminated or "TASK_DONE" in user_response.msg.content:
+        logger.info(
+            f"Round #{_round} assistant_response:\n {assistant_response.msgs[0].content}"
+        )
+
+        if (
+            assistant_response.terminated
+            or user_response.terminated
+            or "TASK_DONE" in user_response.msg.content
+        ):
             break
-        
+
         input_msg = assistant_response.msg
-    
-    
-    answer = chat_history[-1]['assistant']
+
+    answer = chat_history[-1]["assistant"]
     token_info = {
         "completion_token_count": overall_completion_token_count,
-        "prompt_token_count": overall_prompt_token_count
+        "prompt_token_count": overall_prompt_token_count,
     }
 
     return answer, chat_history, token_info
