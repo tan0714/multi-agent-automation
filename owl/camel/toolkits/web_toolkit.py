@@ -107,13 +107,25 @@ def _get_bool(d: Any, k: str) -> bool:
 
 def _parse_json_output(text: str) -> Dict[str, Any]:
     # judge if text is markdown format (```json ````)
-    if text.startswith("```json") and text.endswith("```"):
-        text = text.replace("```json", "").replace("```", "").strip()
+    if "```json" in text and "```" in text:
+        # Extract content between ```json and the last ```
+        start_idx = text.find("```json") + len("```json")
+        end_idx = text.rfind("```")
+        if start_idx > -1 and end_idx > start_idx:
+            text = text[start_idx:end_idx].strip()
+    
     try:
         return json.loads(text)
     except json.JSONDecodeError:
         logger.warning(f"Failed to parse JSON output: {text}")
-        return {}
+        # Try to clean the text further and attempt parsing again
+        try:
+            # Remove any extra whitespace or control characters
+            cleaned_text = text.strip()
+            return json.loads(cleaned_text)
+        except json.JSONDecodeError:
+            logger.error(f"Failed to parse JSON even after cleaning: {text}")
+            return {}
 
 
 def _reload_image(image: Image.Image):
