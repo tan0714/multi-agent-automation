@@ -3,13 +3,11 @@ load_dotenv()
 
 from camel.models import ModelFactory
 from camel.toolkits import (
-    AudioAnalysisToolkit,
     CodeExecutionToolkit,
     DocumentProcessingToolkit,
     ExcelToolkit,
     ImageAnalysisToolkit,
     SearchToolkit,
-    VideoAnalysisToolkit,
     WebToolkit,
 )
 from camel.types import ModelPlatformType, ModelType
@@ -30,38 +28,38 @@ def construct_society(question: str) -> OwlRolePlaying:
     # Create models for different components
     models = {
         "user": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.QWEN,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
         "assistant": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.QWEN,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
         "web": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.QWEN,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
         "planning": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.QWEN,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
         "video": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.QWEN,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
         "image": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.QWEN,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
         "search": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.QWEN,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
     }
@@ -74,8 +72,6 @@ def construct_society(question: str) -> OwlRolePlaying:
             planning_agent_model=models["planning"],
         ).get_tools(),
         *DocumentProcessingToolkit().get_tools(),
-        *VideoAnalysisToolkit(model=models["video"]).get_tools(), # This requires OpenAI Key
-        *AudioAnalysisToolkit().get_tools(), # This requires OpenAI Key
         *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
         *ImageAnalysisToolkit(model=models["image"]).get_tools(),
         *SearchToolkit(model=models["search"]).get_tools(),
