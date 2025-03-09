@@ -99,6 +99,7 @@ https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-13
 - **浏览器操作**：借助Playwright框架开发浏览器模拟交互，支持页面滚动、点击、输入、下载、历史回退等功能
 - **文件解析**：word、excel、PDF、PowerPoint信息提取，内容转文本/Markdown
 - **代码执行**：编写python代码，并使用解释器运行
+- **丰富工具包**：提供丰富的工具包，包括ArxivToolkit（学术论文检索）、AudioAnalysisToolkit（音频分析）、CodeExecutionToolkit（代码执行）、DalleToolkit（图像生成）、DataCommonsToolkit（数据共享）、ExcelToolkit（Excel处理）、GitHubToolkit（GitHub交互）、GoogleMapsToolkit（地图服务）、GoogleScholarToolkit（学术搜索）、ImageAnalysisToolkit（图像分析）、MathToolkit（数学计算）、NetworkXToolkit（图形分析）、NotionToolkit（Notion交互）、OpenAPIToolkit（API操作）、RedditToolkit（Reddit交互）、SearchToolkit（搜索服务）、SemanticScholarToolkit（语义学术搜索）、SymPyToolkit（符号计算）、VideoAnalysisToolkit（视频分析）、WeatherToolkit（天气查询）、WebToolkit（网页交互）等多种专业工具，满足各类特定任务需求。
 
 # 🛠️ 安装
 
