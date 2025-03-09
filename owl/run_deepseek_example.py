@@ -3,13 +3,10 @@ from camel.toolkits import *
 from camel.types import ModelPlatformType, ModelType
 from camel.configs import DeepSeekConfig
 
-from typing import List, Dict
 from dotenv import load_dotenv
-from retry import retry
 from loguru import logger
 
 from utils import OwlRolePlaying, run_society
-import os
 
 
 load_dotenv()

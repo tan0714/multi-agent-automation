@@ -4,26 +4,15 @@ load_dotenv()
 from camel.models import ModelFactory
 from camel.toolkits import (
     WebToolkit, 
-    DocumentProcessingToolkit, 
-    VideoAnalysisToolkit, 
-    AudioAnalysisToolkit, 
-    CodeExecutionToolkit, 
-    ImageAnalysisToolkit, 
     SearchToolkit,
-    ExcelToolkit,
     FunctionTool
     )
 from camel.types import ModelPlatformType, ModelType
-from camel.configs import ChatGPTConfig
 
-from typing import List, Dict
 
-from retry import retry
 from loguru import logger
 
 from utils import OwlRolePlaying, run_society
-import os
-
 
 
 
@@ -36,13 +25,11 @@ def construct_society(question: str) -> OwlRolePlaying:
     user_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4O,
-        model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
     assistant_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4O,
-        model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
     tools_list = [
@@ -51,13 +38,7 @@ def construct_society(question: str) -> OwlRolePlaying:
             web_agent_model=assistant_model, 
             planning_agent_model=assistant_model
         ).get_tools(),
-        # *DocumentProcessingToolkit().get_tools(),
-        # *VideoAnalysisToolkit(model=assistant_model).get_tools(),  # This requires OpenAI Key
-        # *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
-        # *CodeExecutionToolkit().get_tools(),
-        # *ImageAnalysisToolkit(model=assistant_model).get_tools(),
         FunctionTool(SearchToolkit(model=assistant_model).search_duckduckgo),
-        # *ExcelToolkit().get_tools()
     ]
 
     user_role_name = 'user'
