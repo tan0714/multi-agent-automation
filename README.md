@@ -73,6 +73,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
   - [**Running with Docker**](#running-with-docker)
   
 - [🚀 Quick Start](#-quick-start)
+- [🌐 Web Interface](#-web-interface)
 - [🧪 Experiments](#-experiments)
 - [⏱️ Future Plans](#️-future-plans)
 - [📄 License](#-license)
@@ -227,6 +228,23 @@ Example tasks you can try:
 - "Analyze the sentiment of recent tweets about climate change"
 - "Help me debug this Python code: [your code here]"
 - "Summarize the main points from this research paper: [paper URL]"
+
+# 🌐 Web Interface
+
+OWL now includes a web-based user interface that makes it easier to interact with the system. To start the web interface, run:
+
+```bash
+python run_app.py
+```
+
+The web interface provides the following features:
+
+- **Easy Model Selection**: Choose between different models (OpenAI, Qwen, DeepSeek, etc.)
+- **Environment Variable Management**: Configure your API keys and other settings directly from the UI
+- **Interactive Chat Interface**: Communicate with OWL agents through a user-friendly interface
+- **Task History**: View the history and results of your interactions
+
+The web interface is built using Gradio and runs locally on your machine. No data is sent to external servers beyond what's required for the model API calls you configure.
 
 # 🧪 Experiments
 
