@@ -64,7 +64,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 - [📋 Table of Contents](#-table-of-contents)
 - [🔥 News](#-news)
 - [🎬 Demo Video](#-demo-video)
-- [✨️ Core Features](#-code-features)
+- [✨️ Core Features](#-core-features)
 - [🛠️ Installation](#️-installation)
   - [**Clone the Github repository**](#clone-the-github-repository)
   - [**Set up Environment**](#set-up-environment)
@@ -171,6 +171,21 @@ answer, chat_history, token_count = run_society(society)
 
 logger.success(f"Answer: {answer}")
 ```
+
+For uploading files, simply provide the file path along with your question:
+
+```python
+# Task with a local file (e.g., file path: `tmp/example.docx`)
+question = "What is in the given DOCX file? Here is the file path: tmp/example.docx"
+
+society = construct_society(question)
+answer, chat_history, token_count = run_society(society)
+
+logger.success(f"Answer: {answer}")
+```
+
+OWL will then automatically invoke document-related tools to process the file and extract the answer.
+
 
 Example tasks you can try:
 - "Find the latest stock price for Apple Inc."

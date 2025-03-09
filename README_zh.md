@@ -166,7 +166,7 @@ answer, chat_history, token_count = run_society(society)
 logger.success(f"Answer: {answer}")
 ```
 
-上传文件时，只需在问题中额外提供文件路径：
+上传文件时，只需提供文件路径和问题：
 
 ```python
 # 处理本地文件（例如，文件路径为 `tmp/example.docx`）
@@ -177,6 +177,10 @@ answer, chat_history, token_count = run_society(society)
 
 logger.success(f"答案：{answer}")
 ```
+
+OWL 将自动调用与文档相关的工具来处理文件并提取答案。
+
+
 OWL 将自动调用与文档相关的工具来处理文件并提取答案。
 
 你可以尝试以下示例任务：
@@ -184,6 +188,7 @@ OWL 将自动调用与文档相关的工具来处理文件并提取答案。
 - "分析关于气候变化的最新推文情绪"
 - "帮我调试这段 Python 代码：[在此粘贴你的代码]"
 - "总结这篇研究论文的主要观点：[论文URL]"
+- 
 # 🧪 实验
 
 我们提供了一个脚本用于复现 GAIA 上的实验结果。  
