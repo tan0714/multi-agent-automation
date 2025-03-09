@@ -104,31 +104,30 @@ https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-13
 ## **克隆 Github 仓库**
 
 ```bash
+# 克隆 GitHub 仓库
 git clone https://github.com/camel-ai/owl.git
+
+# 进入项目目录
 cd owl
-```
 
-## **设置环境**
+# 如果你还没有安装 uv，请先安装
+pip install uv
 
-使用 Conda（推荐）：
-```bash
-conda create -n owl python=3.11
-conda activate owl
-```
+# 创建虚拟环境并安装依赖
+# 我们支持使用 Python 3.10、3.11、3.12
+uv venv .venv --python=3.10
 
-使用 venv（备用）：
-```bash
-python -m venv owl_env
-# Windows 系统
-owl_env\Scripts\activate
-# Unix 或 MacOS 系统
-source owl_env/bin/activate
-```
+# 激活虚拟环境
+# 对于 macOS/Linux
+source .venv/bin/activate
+# 对于 Windows
+.venv\Scripts\activate
 
-## **安装依赖**
+# 安装 CAMEL 及其所有依赖
+uv pip install -e .
 
-```bash
-python -m pip install -r requirements.txt
+# 完成后退出虚拟环境
+deactivate
 ```
 
 ## **设置环境变量**  
@@ -201,7 +200,7 @@ question = "Task description here."
 society = construct_society(question)
 answer, chat_history, token_count = run_society(society)
 
-print(f"Answer: {answer}")
+print(f"\033[94mAnswer: {answer}\033[0m")
 ```
 
 上传文件时，只需提供文件路径和问题：

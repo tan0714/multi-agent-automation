@@ -102,36 +102,31 @@ https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-13
 
 # 🛠️ Installation
 
-## **Clone the Github repository**
-
 ```bash
+# Clone github repo
 git clone https://github.com/camel-ai/owl.git
+
+# Change directory into project directory
 cd owl
-```
 
-## **Set up Environment**
+# Install uv if you don't have it already
+pip install uv
 
-Using Conda (recommended):
-```bash
-conda create -n owl python=3.11
-conda activate owl
-```
+# Create a virtual environment and install dependencies
+# We support using Python 3.10, 3.11, 3.12
+uv venv .venv --python=3.10
 
-Using venv (alternative):
-```bash
-python -m venv owl_env
-# On Windows
-owl_env\Scripts\activate
-# On Unix or MacOS
-source owl_env/bin/activate
-```
+# Activate the virtual environment
+# For macOS/Linux
+source .venv/bin/activate
+# For Windows
+.venv\Scripts\activate
 
+# Install CAMEL with all dependencies
+uv pip install -e .
 
-## **Install Dependencies**
-
-```bash
-python -m pip install -r requirements.txt
-playwright install
+# Exit the virtual environment when done
+deactivate
 ```
 
 ## **Setup Environment Variables** 
@@ -210,7 +205,7 @@ question = "Task description here."
 society = construct_society(question)
 answer, chat_history, token_count = run_society(society)
 
-print(f"Answer: {answer}")
+print(f"\033[94mAnswer: {answer}\033[0m")
 ```
 
 For uploading files, simply provide the file path along with your question:
@@ -221,7 +216,7 @@ question = "What is in the given DOCX file? Here is the file path: tmp/example.d
 
 society = construct_society(question)
 answer, chat_history, token_count = run_society(society)
-print(f"Answer: {answer}")
+print(f"\033[94mAnswer: {answer}\033[0m")
 ```
 
 OWL will then automatically invoke document-related tools to process the file and extract the answer.

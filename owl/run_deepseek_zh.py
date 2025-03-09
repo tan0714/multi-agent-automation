@@ -11,20 +11,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ========= Copyright 2023-2024 @ CAMEL-AI.org. All Rights Reserved. =========
+
+
+# To run this file, you need to configure the DeepSeek API key
+# You can obtain your API key from DeepSeek platform: https://platform.deepseek.com/api_keys
+# Set it as DEEPSEEK_API_KEY="your-api-key" in your .env file or add it to your environment variables
+
+
 from dotenv import load_dotenv
+
 
 from camel.models import ModelFactory
 from camel.toolkits import (
+    CodeExecutionToolkit,
+    ExcelToolkit,
     SearchToolkit,
-    WebToolkit,
 )
 from camel.types import ModelPlatformType, ModelType
+
+
+from utils import OwlRolePlaying, run_society, DocumentProcessingToolkit
+
 from camel.logger import set_log_level
 
-from utils import OwlRolePlaying, run_society
+set_log_level(level="DEBUG")
 
 load_dotenv()
-set_log_level(level="DEBUG")
 
 
 def construct_society(question: str) -> OwlRolePlaying:
@@ -34,43 +46,50 @@ def construct_society(question: str) -> OwlRolePlaying:
         question (str): The task or question to be addressed by the society.
 
     Returns:
-        OwlRolePlaying: A configured society of agents ready to address the
-            question.
+        OwlRolePlaying: A configured society of agents ready to address the question.
     """
 
     # Create models for different components
     models = {
         "user": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.DEEPSEEK,
+            model_type=ModelType.DEEPSEEK_CHAT,
             model_config_dict={"temperature": 0},
         ),
         "assistant": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.DEEPSEEK,
+            model_type=ModelType.DEEPSEEK_CHAT,
             model_config_dict={"temperature": 0},
         ),
         "web": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.DEEPSEEK,
+            model_type=ModelType.DEEPSEEK_CHAT,
             model_config_dict={"temperature": 0},
         ),
         "planning": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
+            model_platform=ModelPlatformType.DEEPSEEK,
+            model_type=ModelType.DEEPSEEK_CHAT,
+            model_config_dict={"temperature": 0},
+        ),
+        "video": ModelFactory.create(
+            model_platform=ModelPlatformType.DEEPSEEK,
+            model_type=ModelType.DEEPSEEK_CHAT,
+            model_config_dict={"temperature": 0},
+        ),
+        "image": ModelFactory.create(
+            model_platform=ModelPlatformType.DEEPSEEK,
+            model_type=ModelType.DEEPSEEK_CHAT,
             model_config_dict={"temperature": 0},
         ),
     }
 
     # Configure toolkits
     tools = [
-        *WebToolkit(
-            headless=False,  # Set to True for headless mode (e.g., on remote servers)
-            web_agent_model=models["web"],
-            planning_agent_model=models["planning"],
-        ).get_tools(),
+        *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
         SearchToolkit().search_duckduckgo,
         SearchToolkit().search_wiki,
+        *ExcelToolkit().get_tools(),
+        *DocumentProcessingToolkit().get_tools(),
     ]
 
     # Configure agent roles and parameters
@@ -90,6 +109,7 @@ def construct_society(question: str) -> OwlRolePlaying:
         user_agent_kwargs=user_agent_kwargs,
         assistant_role_name="assistant",
         assistant_agent_kwargs=assistant_agent_kwargs,
+        output_language="Chinese",
     )
 
     return society
@@ -98,7 +118,11 @@ def construct_society(question: str) -> OwlRolePlaying:
 def main():
     r"""Main function to run the OWL system with an example question."""
     # Example research question
-    question = "Navigate to Amazon.com and identify one product that is attractive to coders. Please provide me with the product name and price. No need to verify your answer."
+    question = (
+        "请分析GitHub上CAMEL-AI项目的最新统计数据。找出该项目的星标数量、"
+        "贡献者数量和最近的活跃度。然后，创建一个简单的Excel表格来展示这些数据，"
+        "并生成一个柱状图来可视化这些指标。最后，总结CAMEL项目的受欢迎程度和发展趋势。"
+    )
 
     # Construct and run the society
     society = construct_society(question)
