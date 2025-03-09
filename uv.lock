@@ -3510,6 +3510,7 @@ dependencies = [
     { name = "camel-ai", extra = ["all"] },
     { name = "chunkr-ai" },
     { name = "docx2markdown" },
+    { name = "gradio" },
 ]
 
 [package.metadata]
@@ -3517,6 +3518,7 @@ requires-dist = [
     { name = "camel-ai", extras = ["all"], specifier = "==0.2.23" },
     { name = "chunkr-ai", specifier = ">=0.0.41" },
     { name = "docx2markdown", specifier = ">=0.1.1" },
+    { name = "gradio", specifier = ">=3.50.2" },
 ]
 
 [[package]]
