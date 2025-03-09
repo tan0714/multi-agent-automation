@@ -154,6 +154,21 @@ Run the following demo case:
 python owl/run.py
 ```
 
+## Running with Different Models
+
+OWL supports various LLM backends. You can use the following scripts to run with different models:
+
+```bash
+# Run with Qwen model
+python owl/run_qwen.py
+
+# Run with Deepseek model
+python owl/run_deepseek.py
+
+# Run with other OpenAI-compatible models
+python owl/run_openai_compatiable_model.py
+```
+
 For a simpler version that only requires an LLM API key, you can try our minimal example:
 
 ```bash
@@ -169,7 +184,7 @@ question = "Task description here."
 society = construct_society(question)
 answer, chat_history, token_count = run_society(society)
 
-logger.success(f"Answer: {answer}")
+print(f"Answer: {answer}")
 ```
 
 For uploading files, simply provide the file path along with your question:
@@ -180,8 +195,7 @@ question = "What is in the given DOCX file? Here is the file path: tmp/example.d
 
 society = construct_society(question)
 answer, chat_history, token_count = run_society(society)
-
-logger.success(f"Answer: {answer}")
+print(f"Answer: {answer}")
 ```
 
 OWL will then automatically invoke document-related tools to process the file and extract the answer.

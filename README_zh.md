@@ -154,6 +154,21 @@ python owl/run.py
 python owl/run_mini.py
 ```
 
+## 使用不同的模型
+
+OWL 支持多种 LLM 后端。您可以使用以下脚本来运行不同的模型：
+
+```bash
+# 使用 Qwen 模型运行
+python owl/run_qwen.py
+
+# 使用 Deepseek 模型运行
+python owl/run_deepseek.py
+
+# 使用其他 OpenAI 兼容模型运行
+python owl/run_openai_compatiable_model.py
+```
+
 你可以通过修改 `run.py` 脚本来运行自己的任务：
 
 ```python
@@ -163,7 +178,7 @@ question = "Task description here."
 society = construct_society(question)
 answer, chat_history, token_count = run_society(society)
 
-logger.success(f"Answer: {answer}")
+print(f"Answer: {answer}")
 ```
 
 上传文件时，只需提供文件路径和问题：
@@ -175,11 +190,10 @@ question = "给定的 DOCX 文件中有什么内容？文件路径如下：tmp/e
 society = construct_society(question)
 answer, chat_history, token_count = run_society(society)
 
-logger.success(f"答案：{answer}")
+print(f"答案：{answer}")
 ```
 
 OWL 将自动调用与文档相关的工具来处理文件并提取答案。
-
 
 OWL 将自动调用与文档相关的工具来处理文件并提取答案。
 
