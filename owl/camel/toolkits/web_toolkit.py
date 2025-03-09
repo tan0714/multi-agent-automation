@@ -107,61 +107,119 @@ def _get_bool(d: Any, k: str) -> bool:
 
 
 def _parse_json_output(text: str) -> Dict[str, Any]:
-    """Extract JSON output from a string."""
+    """Extract JSON output from text, supporting non-standard formats and special characters."""
     
     markdown_pattern = r'```(?:json)?\s*(.*?)\s*```'
     markdown_match = re.search(markdown_pattern, text, re.DOTALL)
     if markdown_match:
         text = markdown_match.group(1).strip()
     
-    triple_quotes_pattern = r'"""(?:json)?\s*(.*?)\s*"""'
-    triple_quotes_match = re.search(triple_quotes_pattern, text, re.DOTALL)
-    if triple_quotes_match:
-        text = triple_quotes_match.group(1).strip()
-    
-    text = text.replace("`", '"')
-    
+    text = re.sub(r':\s*`([^`]*)`', r': "\1"', text)
+
     try:
         return json.loads(text)
     except json.JSONDecodeError:
+        fixed_text = re.sub(r'(?<!\\)"([^"]*?)(?<!\\)"', r'"\1"', text)
         try:
-            fixed_text = re.sub(r'`([^`]*)`', r'"\1"', text)
             return json.loads(fixed_text)
         except json.JSONDecodeError:
-            # Try to extract key fields
-            result = {}
-            try:
-                bool_pattern = r'"(\w+)"\s*:\s*(true|false)'
-                for match in re.finditer(bool_pattern, text, re.IGNORECASE):
-                    key, value = match.groups()
-                    result[key] = value.lower() == "true"
-                
-                str_pattern = r'"(\w+)"\s*:\s*"([^"]*)"'
-                for match in re.finditer(str_pattern, text):
-                    key, value = match.groups()
-                    result[key] = value
+            pass
+    
+    start_brace = text.find('{')
+    if start_brace == -1:
+        return {}
+    
+    brace_count = 0
+    end_brace = -1
+    
+    for i in range(start_brace, len(text)):
+        if text[i] == '{':
+            brace_count += 1
+        elif text[i] == '}':
+            brace_count -= 1
+            if brace_count == 0:
+                end_brace = i
+                break
+    
+    if end_brace == -1:
+        return {}
+    
+    json_text = text[start_brace:end_brace+1]
+    result = {}
+    
 
-                num_pattern = r'"(\w+)"\s*:\s*(-?\d+(?:\.\d+)?)'
-                for match in re.finditer(num_pattern, text):
-                    key, value = match.groups()
-                    try:
-                        result[key] = int(value)
-                    except ValueError:
-                        result[key] = float(value)
+    simple_pairs = re.finditer(r'"([^"]+)"\s*:\s*(true|false|null|\d+(?:\.\d+)?)', json_text)
+    for match in simple_pairs:
+        key, value = match.groups()
+        if value.lower() == 'true':
+            result[key] = True
+        elif value.lower() == 'false':
+            result[key] = False
+        elif value.lower() == 'null':
+            result[key] = None
+        else:
+            try:
+                result[key] = float(value) if '.' in value else int(value)
+            except ValueError:
+                result[key] = value
+
+    keys = re.findall(r'"([^"]+)"\s*:', json_text)
+    
+    for key in keys:
+        if key in result:
+            continue
+        
+        key_pattern = f'"{re.escape(key)}"\\s*:'
+        key_match = re.search(key_pattern, json_text)
+        if not key_match:
+            continue
+        
+        value_start = key_match.end()
+        value_text = json_text[value_start:].lstrip()
+        
+        if value_text.startswith('"'):
+            i = 1
+            escaped = False
+            string_value = ""
+            
+            while i < len(value_text):
+                char = value_text[i]
                 
-                empty_str_pattern = r'"(\w+)"\s*:\s*""'
-                for match in re.finditer(empty_str_pattern, text):
-                    key = match.group(1)
-                    result[key] = ""
+                if escaped:
+                    if char in ['"', '\\', '/', 'b', 'f', 'n', 'r', 't']:
+                        string_value += {'n':'\n', 'r':'\r', 't':'\t', 'b':'\b', 'f':'\f'}.get(char, char)
+                    else:
+                        string_value += '\\' + char
+                    escaped = False
+                elif char == '\\':
+                    escaped = True
+                elif char == '"':
+                    break
+                else:
+                    string_value += char
                 
-                if result:
-                    return result
-                
-                logger.warning(f"Failed to parse JSON output: {text}")
-                return {}
-            except Exception as e:
-                logger.warning(f"Error while extracting fields from JSON: {e}")
-                return {}
+                i += 1
+            
+            result[key] = string_value
+        
+        elif value_text.startswith('{') or value_text.startswith('['):
+            bracket = '{' if value_text.startswith('{') else '['
+            closing_bracket = '}' if bracket == '{' else ']'
+            bracket_count = 0
+            
+            for i, char in enumerate(value_text):
+                if char == bracket:
+                    bracket_count += 1
+                elif char == closing_bracket:
+                    bracket_count -= 1
+                    if bracket_count == 0:
+                        try:
+                            result[key] = json.loads(value_text[:i+1])
+                        except json.JSONDecodeError:
+                            result[key] = value_text[:i+1]
+                        break
+    
+    return result
 
 
 def _reload_image(image: Image.Image):
