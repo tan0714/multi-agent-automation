@@ -27,9 +27,11 @@ if %ERRORLEVEL% NEQ 0 (
         exit /b 1
     ) else (
         echo 使用新的docker compose命令
+        set COMPOSE_CMD=docker compose
     )
 ) else (
     echo Docker Compose已安装
+    set COMPOSE_CMD=docker-compose
 )
 
 REM 检查Docker是否正在运行
@@ -55,6 +57,6 @@ if not exist "owl\.env" (
 
 echo 所有检查完成，您的系统已准备好构建和运行OWL项目的Docker容器
 echo 请运行以下命令构建Docker镜像:
-echo build_docker.bat
+echo %COMPOSE_CMD% build
 
 pause 
