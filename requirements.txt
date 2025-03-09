@@ -129,7 +129,7 @@ ruff>=0.7.0
 mypy>=1.5.1
 toml>=0.10.2
 pre-commit>=3.0.0
-gradio>=3.0.0
+gradio>=4.0.0
 
 # Type stubs
 types-Pillow
@@ -141,3 +141,7 @@ types-tqdm
 types-colorama>=0.0.0
 types-requests>=2.0.0
 types-PyYAML>=6.0.0
+
+python-dotenv
+tqdm
+pathlib
