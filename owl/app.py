@@ -42,19 +42,73 @@ SCRIPT_DESCRIPTIONS = {
 # 环境变量分组
 ENV_GROUPS = {
     "模型API": [
-        {"name": "OPENAI_API_KEY", "label": "OpenAI API密钥", "type": "password", "required": True},
-        {"name": "OPENAI_API_BASE_URL", "label": "OpenAI API基础URL", "type": "text", "required": False},
-        {"name": "QWEN_API_KEY", "label": "阿里云Qwen API密钥", "type": "password", "required": False},
-        {"name": "DEEPSEEK_API_KEY", "label": "DeepSeek API密钥", "type": "password", "required": False},
+        {
+            "name": "OPENAI_API_KEY", 
+            "label": "OpenAI API密钥", 
+            "type": "password", 
+            "required": True,
+            "help": "OpenAI API密钥，用于访问GPT模型。获取方式：https://platform.openai.com/api-keys"
+        },
+        {
+            "name": "OPENAI_API_BASE_URL", 
+            "label": "OpenAI API基础URL", 
+            "type": "text", 
+            "required": False,
+            "help": "OpenAI API的基础URL，可选。如果使用代理或自定义端点，请设置此项。"
+        },
+        {
+            "name": "QWEN_API_KEY", 
+            "label": "阿里云Qwen API密钥", 
+            "type": "password", 
+            "required": False,
+            "help": "阿里云Qwen API密钥，用于访问Qwen模型。获取方式：https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key"
+        },
+        {
+            "name": "DEEPSEEK_API_KEY", 
+            "label": "DeepSeek API密钥", 
+            "type": "password", 
+            "required": False,
+            "help": "DeepSeek API密钥，用于访问DeepSeek模型。获取方式：https://platform.deepseek.com/api_keys"
+        },
     ],
     "搜索工具": [
-        {"name": "GOOGLE_API_KEY", "label": "Google API密钥", "type": "password", "required": False},
-        {"name": "SEARCH_ENGINE_ID", "label": "搜索引擎ID", "type": "text", "required": False},
+        {
+            "name": "GOOGLE_API_KEY", 
+            "label": "Google API密钥", 
+            "type": "password", 
+            "required": False,
+            "help": "Google搜索API密钥，用于网络搜索功能。获取方式：https://developers.google.com/custom-search/v1/overview"
+        },
+        {
+            "name": "SEARCH_ENGINE_ID", 
+            "label": "搜索引擎ID", 
+            "type": "text", 
+            "required": False,
+            "help": "Google自定义搜索引擎ID，与Google API密钥配合使用。获取方式：https://developers.google.com/custom-search/v1/overview"
+        },
     ],
     "其他工具": [
-        {"name": "HF_TOKEN", "label": "Hugging Face令牌", "type": "password", "required": False},
-        {"name": "CHUNKR_API_KEY", "label": "Chunkr API密钥", "type": "password", "required": False},
-        {"name": "FIRECRAWL_API_KEY", "label": "Firecrawl API密钥", "type": "password", "required": False},
+        {
+            "name": "HF_TOKEN", 
+            "label": "Hugging Face令牌", 
+            "type": "password", 
+            "required": False,
+            "help": "Hugging Face API令牌，用于访问Hugging Face模型和数据集。获取方式：https://huggingface.co/join"
+        },
+        {
+            "name": "CHUNKR_API_KEY", 
+            "label": "Chunkr API密钥", 
+            "type": "password", 
+            "required": False,
+            "help": "Chunkr API密钥，用于文档处理功能。获取方式：https://chunkr.ai/"
+        },
+        {
+            "name": "FIRECRAWL_API_KEY", 
+            "label": "Firecrawl API密钥", 
+            "type": "password", 
+            "required": False,
+            "help": "Firecrawl API密钥，用于网页爬取功能。获取方式：https://www.firecrawl.dev/"
+        },
     ]
 }
 
@@ -92,16 +146,19 @@ def save_env_vars(env_vars):
     # 更新环境变量
     for key, value in env_vars.items():
         if value:  # 只保存非空值
+            # 确保值是字符串形式，并用引号包裹
+            if not (value.startswith('"') and value.endswith('"')) and not (value.startswith("'") and value.endswith("'")):
+                value = f'"{value}"'
             existing_content[key] = value
             # 同时更新当前进程的环境变量
-            os.environ[key] = value
+            os.environ[key] = value.strip('"\'')
     
     # 写入.env文件
     with open(env_path, "w", encoding="utf-8") as f:
         for key, value in existing_content.items():
             f.write(f"{key}={value}\n")
     
-    return "环境变量已保存"
+    return "✅ 环境变量已保存"
 
 def terminate_process():
     """终止当前运行的进程"""
@@ -380,6 +437,9 @@ def create_ui():
                 for group_name, vars in ENV_GROUPS.items():
                     with gr.Accordion(group_name, open=True):
                         for var in vars:
+                            # 添加帮助信息
+                            gr.Markdown(f"**{var['help']}**")
+                            
                             if var["type"] == "password":
                                 env_inputs[var["name"]] = gr.Textbox(
                                     value=env_vars.get(var["name"], ""),
