@@ -44,7 +44,7 @@ def construct_society(question: str) -> OwlRolePlaying:
         ),
         "web": ModelFactory.create(
             model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
-            model_type="qwen-max",
+            model_type="qwen-vl-max",
             api_key=os.getenv("QWEN_API_KEY"),
             url="https://dashscope.aliyuncs.com/compatible-mode/v1",
             model_config_dict={"temperature": 0.4, "max_tokens": 4096},
@@ -58,7 +58,7 @@ def construct_society(question: str) -> OwlRolePlaying:
         ),
         "image": ModelFactory.create(
             model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
-            model_type="qwen-max",
+            model_type="qwen-vl-max",
             api_key=os.getenv("QWEN_API_KEY"),
             url="https://dashscope.aliyuncs.com/compatible-mode/v1",
             model_config_dict={"temperature": 0.4, "max_tokens": 4096},
