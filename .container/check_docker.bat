@@ -17,7 +17,7 @@ echo Docker已安装
 REM 检查Docker Compose是否安装
 where docker-compose >nul 2>nul
 if %ERRORLEVEL% NEQ 0 (
-    echo 警告: Docker Compose未找到，尝试使用新的docker compose命令
+    echo 警告: Docker-Compose未找到，尝试使用新的docker compose命令
     docker compose version >nul 2>nul
     if %ERRORLEVEL% NEQ 0 (
         echo 错误: Docker Compose未安装
@@ -30,7 +30,7 @@ if %ERRORLEVEL% NEQ 0 (
         set COMPOSE_CMD=docker compose
     )
 ) else (
-    echo Docker Compose已安装
+    echo Docker-Compose已安装
     set COMPOSE_CMD=docker-compose
 )
 
