@@ -136,7 +136,7 @@ deactivate
 
 在 `owl/.env_template` 文件中，你可以找到所有必要的 API 密钥以及各服务的注册网址。要使用这些 API 服务，请按照以下步骤操作：
 
-1. *复制并重命名*: 复制 `.env_example` 文件，并将副本重命名为 `.env`。
+1. *复制并重命名*: 复制 `.env_template` 文件，并将副本重命名为 `.env`。
 2. *填写你的密钥*: 打开 `.env` 文件，在相应字段中填入你的 API 密钥。 
 3. *如需使用更多其他模型*：请参考我们CAMEL的models文档：https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel
 

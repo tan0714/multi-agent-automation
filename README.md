@@ -135,7 +135,7 @@ deactivate
 
 In the `owl/.env_template` file, you will find all the necessary API keys along with the websites where you can register for each service. To use these API services, follow these steps:
 
-1. *Copy and Rename*: Duplicate the `.env_example` file and rename the copy to `.env`.
+1. *Copy and Rename*: Duplicate the `.env_template` file and rename the copy to `.env`.
 ```bash
 cp owl/.env_template .env
 ```
