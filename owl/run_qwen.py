@@ -39,7 +39,7 @@ def construct_society(question: str) -> OwlRolePlaying:
         ),
         "web": ModelFactory.create(
             model_platform=ModelPlatformType.QWEN,
-            model_type=ModelType.QWEN_MAX,
+            model_type=ModelType.QWEN_VL_MAX,
             model_config_dict={"temperature": 0},
         ),
         "planning": ModelFactory.create(
@@ -49,12 +49,12 @@ def construct_society(question: str) -> OwlRolePlaying:
         ),
         "video": ModelFactory.create(
             model_platform=ModelPlatformType.QWEN,
-            model_type=ModelType.QWEN_MAX,
+            model_type=ModelType.QWEN_VL_MAX,
             model_config_dict={"temperature": 0},
         ),
         "image": ModelFactory.create(
             model_platform=ModelPlatformType.QWEN,
-            model_type=ModelType.QWEN_MAX,
+            model_type=ModelType.QWEN_VL_MAX,
             model_config_dict={"temperature": 0},
         ),
         "search": ModelFactory.create(
