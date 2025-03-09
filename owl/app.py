@@ -6,7 +6,6 @@ import threading
 import time
 from datetime import datetime
 import queue
-import re
 from pathlib import Path
 import json
 import signal
@@ -22,20 +21,20 @@ process_lock = threading.Lock()
 # 脚本选项
 SCRIPTS = {
     "Qwen Mini (中文)": "run_qwen_mini_zh.py",
-    "Qwen": "run_qwen.py",
+    "Qwen （中文）": "run_qwen_zh.py",
     "Mini": "run_mini.py",
-    "DeepSeek": "run_deepseek.py",
-    "默认": "run.py",
+    "DeepSeek （中文）": "run_deepseek_zh.py",
+    "Default": "run.py",
     "GAIA Roleplaying": "run_gaia_roleplaying.py"
 }
 
 # 脚本描述
 SCRIPT_DESCRIPTIONS = {
     "Qwen Mini (中文)": "使用阿里云Qwen模型的中文版本，适合中文问答和任务",
-    "Qwen": "使用阿里云Qwen模型，支持多种工具和功能",
+    "Qwen （中文）": "使用阿里云Qwen模型，支持多种工具和功能",
     "Mini": "轻量级版本，使用OpenAI GPT-4o模型",
-    "DeepSeek": "使用DeepSeek模型，适合复杂推理任务",
-    "默认": "默认OWL实现，使用OpenAI GPT-4o模型和全套工具",
+    "DeepSeek （中文）": "使用DeepSeek模型，适合非多模态任务",
+    "Default": "默认OWL实现，使用OpenAI GPT-4o模型和全套工具",
     "GAIA Roleplaying": "GAIA基准测试实现，用于评估模型能力"
 }
 
@@ -46,7 +45,7 @@ ENV_GROUPS = {
             "name": "OPENAI_API_KEY", 
             "label": "OpenAI API密钥", 
             "type": "password", 
-            "required": True,
+            "required": False,
             "help": "OpenAI API密钥，用于访问GPT模型。获取方式：https://platform.openai.com/api-keys"
         },
         {
@@ -176,6 +175,7 @@ def save_env_vars(env_vars):
     for key, value in env_vars.items():
         if value:  # 只保存非空值
             # 确保值是字符串形式，并用引号包裹
+            value = str(value)  # 确保值是字符串
             if not (value.startswith('"') and value.endswith('"')) and not (value.startswith("'") and value.endswith("'")):
                 value = f'"{value}"'
             existing_content[key] = value
@@ -243,7 +243,9 @@ def run_script(script_dropdown, question, progress=gr.Progress()):
     """运行选定的脚本并返回输出"""
     global current_process
     
-    script_name = SCRIPTS[script_dropdown]
+    script_name = SCRIPTS.get(script_dropdown)
+    if not script_name:
+        return "❌ 无效的脚本选择", "", "", "", None
     
     if not question.strip():
         return "请输入问题！", "", "", "", None
@@ -280,14 +282,17 @@ def run_script(script_dropdown, question, progress=gr.Progress()):
     
     # 创建线程来读取输出
     def read_output():
-        with open(log_file, "w", encoding="utf-8") as f:
-            for line in iter(current_process.stdout.readline, ""):
-                if line:
-                    # 写入日志文件
-                    f.write(line)
-                    f.flush()
-                    # 添加到队列
-                    log_queue.put(line)
+        try:
+            with open(log_file, "w", encoding="utf-8") as f:
+                for line in iter(current_process.stdout.readline, ""):
+                    if line:
+                        # 写入日志文件
+                        f.write(line)
+                        f.flush()
+                        # 添加到队列
+                        log_queue.put(line)
+        except Exception as e:
+            log_queue.put(f"读取输出时出错: {str(e)}\n")
     
     # 启动读取线程
     threading.Thread(target=read_output, daemon=True).start()
@@ -305,7 +310,10 @@ def run_script(script_dropdown, question, progress=gr.Progress()):
         if time.time() - start_time > timeout:
             with process_lock:
                 if current_process.poll() is None:
-                    current_process.terminate()
+                    if os.name == 'nt':
+                        current_process.send_signal(signal.CTRL_BREAK_EVENT)
+                    else:
+                        current_process.terminate()
                     log_queue.put("执行超时，已终止进程\n")
             break
         
@@ -355,32 +363,41 @@ def extract_answer(logs):
 def extract_chat_history(logs):
     """尝试从日志中提取聊天历史"""
     try:
-        for i, log in enumerate(logs):
+        chat_json_str = ""
+        capture_json = False
+        
+        for log in logs:
             if "chat_history" in log:
-                # 尝试找到JSON格式的聊天历史
+                # 开始捕获JSON
                 start_idx = log.find("[")
                 if start_idx != -1:
-                    # 尝试解析JSON
-                    json_str = log[start_idx:].strip()
-                    # 查找下一行中可能的结束括号
-                    if json_str[-1] != "]" and i+1 < len(logs):
-                        for j in range(i+1, min(i+10, len(logs))):
-                            end_idx = logs[j].find("]")
-                            if end_idx != -1:
-                                json_str += logs[j][:end_idx+1]
-                                break
-                    
-                    try:
-                        chat_data = json.loads(json_str)
-                        # 格式化为Gradio聊天组件可用的格式
-                        formatted_chat = []
-                        for msg in chat_data:
-                            if "role" in msg and "content" in msg:
-                                role = "用户" if msg["role"] == "user" else "助手"
-                                formatted_chat.append([role, msg["content"]])
-                        return formatted_chat
-                    except json.JSONDecodeError:
-                        pass
+                    capture_json = True
+                    chat_json_str = log[start_idx:]
+            elif capture_json:
+                # 继续捕获JSON直到找到匹配的结束括号
+                chat_json_str += log
+                if "]" in log:
+                    # 找到结束括号，尝试解析JSON
+                    end_idx = chat_json_str.rfind("]") + 1
+                    if end_idx > 0:
+                        try:
+                            # 清理可能的额外文本
+                            json_str = chat_json_str[:end_idx].strip()
+                            chat_data = json.loads(json_str)
+                            
+                            # 格式化为Gradio聊天组件可用的格式
+                            formatted_chat = []
+                            for msg in chat_data:
+                                if "role" in msg and "content" in msg:
+                                    role = "用户" if msg["role"] == "user" else "助手"
+                                    formatted_chat.append([role, msg["content"]])
+                            return formatted_chat
+                        except json.JSONDecodeError:
+                            # 如果解析失败，继续捕获
+                            pass
+                        except Exception:
+                            # 其他错误，停止捕获
+                            capture_json = False
     except Exception:
         pass
     return None
@@ -400,17 +417,19 @@ def create_ui():
         )
         
         with gr.Tabs() as tabs:
-            with gr.TabItem("运行模型"):
+            with gr.TabItem("运行模式"):
                 with gr.Row():
                     with gr.Column(scale=1):
+                        # 确保默认值是SCRIPTS中存在的键
+                        default_script = list(SCRIPTS.keys())[0] if SCRIPTS else None
                         script_dropdown = gr.Dropdown(
                             choices=list(SCRIPTS.keys()),
-                            value=list(SCRIPTS.keys())[0],
-                            label="选择模型"
+                            value=default_script,
+                            label="选择模式"
                         )
                         
                         script_info = gr.Textbox(
-                            value=get_script_info(list(SCRIPTS.keys())[0]),
+                            value=get_script_info(default_script) if default_script else "",
                             label="模型描述",
                             interactive=False
                         )
@@ -452,9 +471,9 @@ def create_ui():
                 
                 # 示例问题
                 examples = [
-                    ["Qwen Mini (中文)", "打开小红书上浏览推荐栏目下的前三个笔记内容，不要登陆，之后给我一个总结报告"],
-                    ["Mini", "What was the volume in m^3 of the fish bag that was calculated in the University of Leicester paper `Can Hiccup Supply Enough Fish to Maintain a Dragon's Diet?`"],
-                    ["默认", "What is the current weather in New York?"]
+                    ["Qwen Mini (中文)", "浏览亚马逊并找出一款对程序员有吸引力的产品。请提供产品名称和价格"],
+                    ["DeepSeek （中文）", "请分析GitHub上CAMEL-AI项目的最新统计数据。找出该项目的星标数量、贡献者数量和最近的活跃度。然后，创建一个简单的Excel表格来展示这些数据，并生成一个柱状图来可视化这些指标。最后，总结CAMEL项目的受欢迎程度和发展趋势。"],
+                    ["Default", "Navigate to Amazon.com and identify one product that is attractive to coders. Please provide me with the product name and price. No need to verify your answer."]
                 ]
                 
                 gr.Examples(
@@ -505,14 +524,14 @@ def create_ui():
                                 if var["type"] == "password":
                                     env_inputs[var["name"]] = gr.Textbox(
                                         value=env_vars.get(var["name"], ""),
-                                        label=var["label"] + (" (必填)" if var.get("required", False) else ""),
+                                        label=var["label"],
                                         placeholder=f"请输入{var['label']}",
                                         type="password"
                                     )
                                 else:
                                     env_inputs[var["name"]] = gr.Textbox(
                                         value=env_vars.get(var["name"], ""),
-                                        label=var["label"] + (" (必填)" if var.get("required", False) else ""),
+                                        label=var["label"],
                                         placeholder=f"请输入{var['label']}"
                                     )
                 

@@ -27,7 +27,7 @@ def main():
         
         # 创建并启动应用
         app = create_ui()
-        app.launch(share=False)
+        app.queue().launch(share=False)
         
     except ImportError as e:
         print(f"错误: 无法导入必要的模块。请确保已安装所有依赖项: {e}")
