@@ -13,15 +13,12 @@ from camel.toolkits import (
     ExcelToolkit
     )
 from camel.types import ModelPlatformType, ModelType
-from camel.configs import ChatGPTConfig
+# from camel.configs import ChatGPTConfig
 
-from typing import List, Dict
 
-from retry import retry
 from loguru import logger
 
 from utils import OwlRolePlaying, run_society
-import os
 
 
 
@@ -34,13 +31,13 @@ def construct_society(question: str) -> OwlRolePlaying:
     user_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4O,
-        model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
+        # model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
     assistant_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4O,
-        model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
+        # model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
     tools_list = [
