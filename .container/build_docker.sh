@@ -65,16 +65,6 @@ if [ ! -f "$COMPOSE_FILE" ]; then
     exit 1
 fi
 
-# 检查Docker Compose命令
-if command -v docker-compose &> /dev/null; then
-    COMPOSE_CMD="docker-compose"
-elif docker compose version &> /dev/null; then
-    COMPOSE_CMD="docker compose"
-else
-    echo "错误: 未找到Docker Compose命令"
-    exit 1
-fi
-
 # 设置Docker BuildKit环境变量
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
@@ -94,45 +84,66 @@ mkdir -p "$CACHE_DIR"
 BUILD_TIME=$(date +"%Y%m%d_%H%M%S")
 BUILD_ARGS="$BUILD_ARGS --build-arg BUILD_TIME=$BUILD_TIME"
 
+# 获取脚本所在目录
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 获取项目根目录（脚本所在目录的父目录）
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+echo "脚本目录: $SCRIPT_DIR"
+echo "项目根目录: $PROJECT_ROOT"
+
+# 切换到项目根目录
+cd "$PROJECT_ROOT"
+
+# 检查Docker Compose命令
+if command -v docker-compose &> /dev/null; then
+    COMPOSE_CMD="docker-compose"
+    echo "使用 docker-compose 命令"
+elif docker compose version &> /dev/null; then
+    COMPOSE_CMD="docker compose"
+    echo "使用 docker compose 命令"
+else
+    echo "错误: 未找到Docker Compose命令"
+    echo "请安装Docker Compose: https://docs.docker.com/compose/install/"
+    exit 1
+fi
+
 # 检测CPU核心数，用于并行构建
 CPU_CORES=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)
 if [ $CPU_CORES -gt 2 ]; then
     PARALLEL_FLAG="--parallel"
-    echo "检测到$CPU_CORES个CPU核心，启用并行构建..."
+    echo "检测到${CPU_CORES}个CPU核心，启用并行构建..."
 else
     PARALLEL_FLAG=""
 fi
 
-# 构建Docker镜像
-echo "开始构建Docker镜像..."
-
 # 构建命令基础部分
-BUILD_CMD="$COMPOSE_CMD build $PARALLEL_FLAG $BUILD_ARGS"
+BUILD_CMD="$COMPOSE_CMD -f \"$SCRIPT_DIR/docker-compose.yml\" build $PARALLEL_FLAG --build-arg BUILDKIT_INLINE_CACHE=1"
 
-# 添加重新构建选项
-if [ $REBUILD -eq 1 ]; then
-    BUILD_CMD="$BUILD_CMD --no-cache"
-    echo "强制重新构建镜像..."
-fi
-
-# 添加服务名称（如果指定）
-if [ ! -z "$SERVICE" ]; then
-    BUILD_CMD="$BUILD_CMD $SERVICE"
-    echo "构建服务: $SERVICE"
+# 根据操作系统类型执行不同的命令
+if [[ "$OS_TYPE" == "Darwin" ]]; then
+    # macOS
+    echo "在macOS上构建Docker镜像..."
+    eval $BUILD_CMD
+elif [[ "$OS_TYPE" == "Linux" ]]; then
+    # Linux
+    echo "在Linux上构建Docker镜像..."
+    eval $BUILD_CMD
+elif [[ "$OS_TYPE" == MINGW* ]] || [[ "$OS_TYPE" == CYGWIN* ]] || [[ "$OS_TYPE" == MSYS* ]]; then
+    # Windows
+    echo "在Windows上构建Docker镜像..."
+    eval $BUILD_CMD
 else
-    echo "构建所有服务"
+    echo "未知操作系统，尝试使用标准命令构建..."
+    eval $BUILD_CMD
 fi
-
-# 执行构建命令
-echo "执行: $BUILD_CMD"
-$BUILD_CMD
 
 # 检查构建结果
 if [ $? -eq 0 ]; then
     echo "Docker镜像构建成功！"
     echo "构建时间: $BUILD_TIME"
     echo "可以使用以下命令启动容器："
-    echo "$COMPOSE_CMD up -d"
+    echo "$COMPOSE_CMD -f \"$SCRIPT_DIR/docker-compose.yml\" up -d"
 else
     echo "Docker镜像构建失败，请检查错误信息。"
     exit 1
