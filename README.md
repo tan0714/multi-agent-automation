@@ -276,9 +276,9 @@ Join us for further discussions!
 
 # ❓ FAQ
 
-**Q: Why is my Chrome browser showing a blank screen even though there's output in the console?**
+**Q: Why don't I see Chrome running locally after starting the example script?**
 
-A: This is expected behavior. When OWL determines that a task can be completed using non-browser tools (like search, code analysis, etc.), the browser window may remain blank. The browser is only activated when web interaction is necessary. We plan to implement lazy loading in future updates to improve this user experience.
+A: If OWL determines that a task can be completed using non-browser tools (such as search or code execution), the browser will not be launched. The browser window will only appear when OWL determines that browser-based interaction is necessary.
 
 # ⭐ Star History
 
