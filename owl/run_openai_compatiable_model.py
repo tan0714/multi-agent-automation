@@ -11,7 +11,7 @@ from camel.toolkits import (
     SearchToolkit,
     WebToolkit,
 )
-from camel.types import ModelPlatformType, ModelType
+from camel.types import ModelPlatformType
 
 from utils import OwlRolePlaying, run_society
 
