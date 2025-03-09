@@ -165,13 +165,19 @@ docker-compose exec owl bash -c "xvfb-python run.py"
 
 # 🚀 快速开始
    
-运行以下最小示例：
+运行以下示例：
 
 ```bash
 python owl/run.py
 ```
 
-你可以通过修改 `run.py` 来运行自定义任务的 OWL 智能体：
+我们还提供了一个最小化示例，只需配置LLM的API密钥即可运行：
+
+```bash
+python owl/run_mini.py
+```
+
+你可以通过修改 `run.py` 脚本来运行自己的任务：
 
 ```python
 # Define your own task
@@ -183,11 +189,29 @@ answer, chat_history, token_count = run_society(society)
 logger.success(f"Answer: {answer}")
 ```
 
+上传文件时，只需提供文件路径和问题：
+
+```python
+# 处理本地文件（例如，文件路径为 `tmp/example.docx`）
+question = "给定的 DOCX 文件中有什么内容？文件路径如下：tmp/example.docx"
+
+society = construct_society(question)
+answer, chat_history, token_count = run_society(society)
+
+logger.success(f"答案：{answer}")
+```
+
+OWL 将自动调用与文档相关的工具来处理文件并提取答案。
+
+
+OWL 将自动调用与文档相关的工具来处理文件并提取答案。
+
 你可以尝试以下示例任务：
 - "查询苹果公司的最新股票价格"
 - "分析关于气候变化的最新推文情绪"
 - "帮我调试这段 Python 代码：[在此粘贴你的代码]"
 - "总结这篇研究论文的主要观点：[论文URL]"
+- 
 # 🧪 实验
 
 我们提供了一个脚本用于复现 GAIA 上的实验结果。  

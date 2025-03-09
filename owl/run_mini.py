@@ -4,16 +4,10 @@ load_dotenv()
 from camel.models import ModelFactory
 from camel.toolkits import (
     WebToolkit, 
-    DocumentProcessingToolkit, 
-    VideoAnalysisToolkit, 
-    AudioAnalysisToolkit, 
-    CodeExecutionToolkit, 
-    ImageAnalysisToolkit, 
     SearchToolkit,
-    ExcelToolkit
+    FunctionTool
     )
 from camel.types import ModelPlatformType, ModelType
-# from camel.configs import ChatGPTConfig
 
 
 from loguru import logger
@@ -31,28 +25,20 @@ def construct_society(question: str) -> OwlRolePlaying:
     user_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4O,
-        # model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
     assistant_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4O,
-        # model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(), # [Optional] the config for model
     )
 
     tools_list = [
         *WebToolkit(
-            headless=False, # Set to True if you want to run in headless mode (e.g. on a remote server)
+            headless=False, 
             web_agent_model=assistant_model, 
             planning_agent_model=assistant_model
         ).get_tools(),
-        *DocumentProcessingToolkit().get_tools(),
-        *VideoAnalysisToolkit(model=assistant_model).get_tools(),  # This requires OpenAI Key
-        *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
-        *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
-        *ImageAnalysisToolkit(model=assistant_model).get_tools(),
-        *SearchToolkit(model=assistant_model).get_tools(),
-        *ExcelToolkit().get_tools()
+        FunctionTool(SearchToolkit(model=assistant_model).search_duckduckgo),
     ]
 
     user_role_name = 'user'

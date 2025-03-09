@@ -26,7 +26,7 @@ def construct_society(question: str) -> OwlRolePlaying:
     
     user_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
-        model_type="qwq-32b",
+        model_type="qwen-max",
         api_key=os.getenv("QWEN_API_KEY"),
         url="https://dashscope.aliyuncs.com/compatible-mode/v1",
         model_config_dict={"temperature": 0.4, "max_tokens": 4096},
@@ -34,7 +34,7 @@ def construct_society(question: str) -> OwlRolePlaying:
 
     assistant_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
-        model_type="qwq-32b",
+        model_type="qwen-max",
         api_key=os.getenv("QWEN_API_KEY"),
         url="https://dashscope.aliyuncs.com/compatible-mode/v1",
         model_config_dict={"temperature": 0.4, "max_tokens": 4096},
@@ -79,7 +79,7 @@ def construct_society(question: str) -> OwlRolePlaying:
 
 
 # Example case
-question = "What was the volume in m^3 of the fish bag that was calculated in the University of Leicester paper `Can Hiccup Supply Enough Fish to Maintain a Dragon’s Diet?` "
+question = "what is the weather in beijing today?"
 
 society = construct_society(question)
 answer, chat_history, token_count = run_society(society)

@@ -5,11 +5,9 @@ from camel.configs import ChatGPTConfig
 from utils import GAIABenchmark
 
 from dotenv import load_dotenv
-from retry import retry
 from loguru import logger
 
 import os
-import shutil
 
 load_dotenv()
 

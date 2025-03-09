@@ -64,7 +64,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 - [📋 Table of Contents](#-table-of-contents)
 - [🔥 News](#-news)
 - [🎬 Demo Video](#-demo-video)
-- [✨️ Core Features](#-code-features)
+- [✨️ Core Features](#-core-features)
 - [🛠️ Installation](#️-installation)
   - [**Clone the Github repository**](#clone-the-github-repository)
   - [**Set up Environment**](#set-up-environment)
@@ -139,7 +139,10 @@ playwright install
 In the `owl/.env_template` file, you will find all the necessary API keys along with the websites where you can register for each service. To use these API services, follow these steps:
 
 1. *Copy and Rename*: Duplicate the `.env_example` file and rename the copy to `.env`.
-2. *Fill in Your Keys*: Open the `.env` file and insert your API keys in the corresponding fields. 
+```bash
+cp owl/.env_template .env
+```
+2. *Fill in Your Keys*: Open the `.env` file and insert your API keys in the corresponding fields.  (For the minimal example (`run_mini.py`), you only need to configure the LLM API key (e.g., OPENAI_API_KEY).)
 3. *For using more other models*: please refer to our CAMEL models docs:https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel
 
 
@@ -171,11 +174,18 @@ For more detailed Docker usage instructions, including cross-platform support, o
 
 
    
-Run the following minimal example:
+Run the following demo case:
 
 ```bash
 python owl/run.py
 ```
+
+For a simpler version that only requires an LLM API key, you can try our minimal example:
+
+```bash
+python owl/run_mini.py
+```
+
 You can run OWL agent with your own task by modifying the `run.py` script:
 
 ```python
@@ -187,6 +197,21 @@ answer, chat_history, token_count = run_society(society)
 
 logger.success(f"Answer: {answer}")
 ```
+
+For uploading files, simply provide the file path along with your question:
+
+```python
+# Task with a local file (e.g., file path: `tmp/example.docx`)
+question = "What is in the given DOCX file? Here is the file path: tmp/example.docx"
+
+society = construct_society(question)
+answer, chat_history, token_count = run_society(society)
+
+logger.success(f"Answer: {answer}")
+```
+
+OWL will then automatically invoke document-related tools to process the file and extract the answer.
+
 
 Example tasks you can try:
 - "Find the latest stock price for Apple Inc."
