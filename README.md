@@ -249,9 +249,14 @@ The web interface is built using Gradio and runs locally on your machine. No dat
 
 # 🧪 Experiments
 
-We provided a script to reproduce the results on GAIA. 
-You can check the `run_gaia_roleplaying.py` file and run the following command:
+To reproduce OWL's GAIA benchmark score of 58.18:
 
+1. Switch to the `gaia58.18` branch:
+```bash
+git checkout gaia58.18
+```
+
+1. Run the evaluation script:
 ```bash
 python run_gaia_roleplaying.py
 ```

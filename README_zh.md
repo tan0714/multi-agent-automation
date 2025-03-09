@@ -244,9 +244,15 @@ python run_app.py
 
 # 🧪 实验
 
-我们提供了一个脚本用于复现 GAIA 上的实验结果。  
-你可以查看 `run_gaia_roleplaying.py` 文件，并运行以下命令：
+我们提供了一个脚本用于复现 GAIA 上的实验结果。
+要复现我们在 GAIA 基准测试中获得的 58.18 分：
 
+1. 切换到 `gaia58.18` 分支：
+```bash
+git checkout gaia58.18
+```
+
+2. 运行评估脚本：
 ```bash
 python run_gaia_roleplaying.py
 ```
