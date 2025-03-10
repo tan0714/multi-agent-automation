@@ -245,21 +245,32 @@ def terminate_process():
 
     with process_lock:
         if current_process is not None and current_process.poll() is None:
-            # 在Windows上使用CTRL_BREAK_EVENT，在Unix上使用SIGTERM
-            if os.name == "nt":
-                current_process.send_signal(signal.CTRL_BREAK_EVENT)
-            else:
-                current_process.terminate()
-
-            # 等待进程终止
             try:
-                current_process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                # 如果进程没有在5秒内终止，强制终止
-                current_process.kill()
+                # 在Windows上使用taskkill强制终止进程树
+                if os.name == "nt":
+                    # 获取进程ID
+                    pid = current_process.pid
+                    # 使用taskkill命令终止进程及其子进程
+                    subprocess.run(f"taskkill /F /T /PID {pid}", shell=True)
+                else:
+                    # 在Unix上使用SIGTERM和SIGKILL
+                    current_process.terminate()
+                    try:
+                        current_process.wait(timeout=3)
+                    except subprocess.TimeoutExpired:
+                        current_process.kill()
 
-            log_queue.put("进程已终止\n")
-            return "✅ 进程已终止"
+                # 等待进程终止
+                try:
+                    current_process.wait(timeout=2)
+                except subprocess.TimeoutExpired:
+                    pass  # 已经尝试强制终止，忽略超时
+
+                log_queue.put("进程已终止\n")
+                return "✅ 进程已终止"
+            except Exception as e:
+                log_queue.put(f"终止进程时出错: {str(e)}\n")
+                return f"❌ 终止进程时出错: {str(e)}"
         else:
             return "❌ 没有正在运行的进程"
 
@@ -296,6 +307,10 @@ def run_script(script_dropdown, question, progress=gr.Progress()):
 
     # 创建环境变量副本并添加问题
     env = os.environ.copy()
+    # 确保问题是字符串类型
+    if not isinstance(question, str):
+        question = str(question)
+    # 保留换行符，但确保是有效的字符串
     env["OWL_QUESTION"] = question
 
     # 启动进程
@@ -488,12 +503,17 @@ def create_ui():
                         )
 
                         question_input = gr.Textbox(
-                            lines=5, placeholder="请输入您的问题...", label="问题"
+                            lines=8, 
+                            placeholder="请输入您的问题...", 
+                            label="问题",
+                            elem_id="question_input",
+                            show_copy_button=True
                         )
 
                         gr.Markdown(
                             """
                             > **注意**: 您输入的问题将替换脚本中的默认问题。系统会自动处理问题的替换，确保您的问题被正确使用。
+                            > 支持多行输入，换行将被保留。
                             """
                         )
 
