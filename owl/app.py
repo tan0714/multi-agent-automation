@@ -461,7 +461,7 @@ def create_ui():
             """
         )
 
-        with gr.Tabs() as tabs:
+        with gr.Tabs():
             with gr.TabItem("运行模式"):
                 with gr.Row():
                     with gr.Column(scale=1):
