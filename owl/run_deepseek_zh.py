@@ -81,6 +81,11 @@ def construct_society(question: str) -> OwlRolePlaying:
             model_type=ModelType.DEEPSEEK_CHAT,
             model_config_dict={"temperature": 0},
         ),
+        "document": ModelFactory.create(
+            model_platform=ModelPlatformType.DEEPSEEK,
+            model_type=ModelType.DEEPSEEK_CHAT,
+            model_config_dict={"temperature": 0},
+        ),
     }
 
     # Configure toolkits
@@ -89,7 +94,7 @@ def construct_society(question: str) -> OwlRolePlaying:
         SearchToolkit().search_duckduckgo,
         SearchToolkit().search_wiki,
         *ExcelToolkit().get_tools(),
-        *DocumentProcessingToolkit().get_tools(),
+        *DocumentProcessingToolkit(model=models["document"]).get_tools(),
     ]
 
     # Configure agent roles and parameters

@@ -17,6 +17,7 @@ from camel.toolkits.function_tool import FunctionTool
 from camel.toolkits import ImageAnalysisToolkit, ExcelToolkit
 from camel.utils import retry_on_error
 from camel.logger import get_logger
+from camel.models import BaseModelBackend
 from docx2markdown._docx_to_markdown import docx_to_markdown
 from chunkr_ai import Chunkr
 import requests
@@ -40,8 +41,10 @@ class DocumentProcessingToolkit(BaseToolkit):
     This class provides method for processing docx, pdf, pptx, etc. It cannot process excel files.
     """
 
-    def __init__(self, cache_dir: Optional[str] = None):
-        self.image_tool = ImageAnalysisToolkit()
+    def __init__(
+        self, cache_dir: Optional[str] = None, model: Optional[BaseModelBackend] = None
+    ):
+        self.image_tool = ImageAnalysisToolkit(model=model)
         # self.audio_tool = AudioAnalysisToolkit()
         self.excel_tool = ExcelToolkit()
 
