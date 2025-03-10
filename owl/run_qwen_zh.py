@@ -80,6 +80,11 @@ def construct_society(question: str) -> OwlRolePlaying:
             model_type=ModelType.QWEN_VL_MAX,
             model_config_dict={"temperature": 0},
         ),
+        "document": ModelFactory.create(
+            model_platform=ModelPlatformType.QWEN,
+            model_type=ModelType.QWEN_VL_MAX,
+            model_config_dict={"temperature": 0},
+        ),
     }
 
     # Configure toolkits
@@ -97,7 +102,7 @@ def construct_society(question: str) -> OwlRolePlaying:
         SearchToolkit().search_google,  # Comment this out if you don't have google search
         SearchToolkit().search_wiki,
         *ExcelToolkit().get_tools(),
-        *DocumentProcessingToolkit().get_tools(),
+        *DocumentProcessingToolkit(model=models["document"]).get_tools(),
     ]
 
     # Configure agent roles and parameters
