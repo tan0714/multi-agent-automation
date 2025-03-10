@@ -39,6 +39,7 @@ SCRIPTS = {
     "DeepSeek （中文）": "run_deepseek_zh.py",
     "Default": "run.py",
     "GAIA Roleplaying": "run_gaia_roleplaying.py",
+    "OpenAI Compatible": "run_openai_compatiable_model.py",
 }
 
 # 脚本描述
@@ -49,6 +50,7 @@ SCRIPT_DESCRIPTIONS = {
     "DeepSeek （中文）": "使用DeepSeek模型，适合非多模态任务",
     "Default": "默认OWL实现，使用OpenAI GPT-4o模型和全套工具",
     "GAIA Roleplaying": "GAIA基准测试实现，用于评估模型能力",
+    "OpenAI Compatible": "使用兼容OpenAI API的第三方模型，支持自定义API端点",
 }
 
 # 环境变量分组
@@ -503,11 +505,11 @@ def create_ui():
                         )
 
                         question_input = gr.Textbox(
-                            lines=8, 
-                            placeholder="请输入您的问题...", 
+                            lines=8,
+                            placeholder="请输入您的问题...",
                             label="问题",
                             elem_id="question_input",
-                            show_copy_button=True
+                            show_copy_button=True,
                         )
 
                         gr.Markdown(
