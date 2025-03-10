@@ -67,9 +67,9 @@
 - [🎬 演示视频](#-演示视频)
 - [✨️ 核心功能](#-核心功能)
 - [🛠️ 安装](#️-安装)
-  - [**克隆 Github 仓库**](#克隆-github-仓库)
-  - [**设置环境**](#设置环境)
-  - [**安装依赖**](#安装依赖)
+  - [**选项1：使用 uv（推荐）**](#选项1使用-uv推荐)
+  - [**选项2：使用 venv 和 pip**](#选项2使用-venv-和-pip)
+  - [**选项3：使用 conda**](#选项3使用-conda)
   - [**设置环境变量**](#设置环境变量)
   - [**使用Docker运行**](#使用docker运行)
 - [🚀 快速开始](#-快速开始)
@@ -103,7 +103,7 @@ https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-13
 
 # 🛠️ 安装
 
-## **克隆 Github 仓库**
+## 选项1：使用 uv（推荐）
 
 ```bash
 # 克隆 GitHub 仓库
@@ -130,6 +130,54 @@ uv pip install -e .
 
 # 完成后退出虚拟环境
 deactivate
+```
+
+## 选项2：使用 venv 和 pip
+
+```bash
+# 克隆 GitHub 仓库
+git clone https://github.com/camel-ai/owl.git
+
+# 进入项目目录
+cd owl
+
+# 创建虚拟环境
+# 对于 Python 3.10（也适用于 3.11、3.12）
+python3.10 -m venv .venv
+
+# 激活虚拟环境
+# 对于 macOS/Linux
+source .venv/bin/activate
+# 对于 Windows
+.venv\Scripts\activate
+
+# 从 requirements.txt 安装
+pip install -r requirements.txt
+```
+
+## 选项3：使用 conda
+
+```bash
+# 克隆 GitHub 仓库
+git clone https://github.com/camel-ai/owl.git
+
+# 进入项目目录
+cd owl
+
+# 创建 conda 环境
+conda create -n owl python=3.10
+
+# 激活 conda 环境
+conda activate owl
+
+# 选项1：作为包安装（推荐）
+pip install -e .
+
+# 选项2：从 requirements.txt 安装
+pip install -r requirements.txt
+
+# 完成后退出 conda 环境
+conda deactivate
 ```
 
 ## **设置环境变量**  

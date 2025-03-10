@@ -104,6 +104,8 @@ https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-13
 
 # 🛠️ Installation
 
+## Option 1: Using uv (Recommended)
+
 ```bash
 # Clone github repo
 git clone https://github.com/camel-ai/owl.git
@@ -129,6 +131,54 @@ uv pip install -e .
 
 # Exit the virtual environment when done
 deactivate
+```
+
+## Option 2: Using venv and pip
+
+```bash
+# Clone github repo
+git clone https://github.com/camel-ai/owl.git
+
+# Change directory into project directory
+cd owl
+
+# Create a virtual environment
+# For Python 3.10 (also works with 3.11, 3.12)
+python3.10 -m venv .venv
+
+# Activate the virtual environment
+# For macOS/Linux
+source .venv/bin/activate
+# For Windows
+.venv\Scripts\activate
+
+# Install from requirements.txt
+pip install -r requirements.txt
+```
+
+## Option 3: Using conda
+
+```bash
+# Clone github repo
+git clone https://github.com/camel-ai/owl.git
+
+# Change directory into project directory
+cd owl
+
+# Create a conda environment
+conda create -n owl python=3.10
+
+# Activate the conda environment
+conda activate owl
+
+# Option 1: Install as a package (recommended)
+pip install -e .
+
+# Option 2: Install from requirements.txt
+pip install -r requirements.txt
+
+# Exit the conda environment when done
+conda deactivate
 ```
 
 ## **Setup Environment Variables** 
