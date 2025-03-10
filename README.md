@@ -147,8 +147,6 @@ cp owl/.env_template .env
 
 ## **Running with Docker**
 
-If you prefer to run the OWL project using Docker, we provide full Docker support:
-
 ```bash
 # Clone the repository
 git clone https://github.com/camel-ai/owl.git
@@ -158,14 +156,22 @@ cd owl
 cp owl/.env_template owl/.env
 # Edit the .env file and fill in your API keys
 
-# Build and run the Docker container
-docker-compose up -d
 
+# Option 1: Using docker-compose directly
+cd .container
+docker-compose up -d
 # Run OWL inside the container
 docker-compose exec owl bash -c "xvfb-python run.py"
+
+# Option 2: Build and run using the provided scripts
+cd .container
+chmod +x build_docker.sh
+./build_docker.sh
+# Run OWL inside the container
+./run_in_docker.sh "your question"
 ```
 
-For more detailed Docker usage instructions, including cross-platform support, optimized configurations, and troubleshooting, please refer to [DOCKER_README.md](DOCKER_README_en.md).
+For more detailed Docker usage instructions, including cross-platform support, optimized configurations, and troubleshooting, please refer to [DOCKER_README.md](.container/DOCKER_README_en.md).
 
 # 🚀 Quick Start
 

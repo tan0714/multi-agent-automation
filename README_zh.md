@@ -155,14 +155,21 @@ cd owl
 cp owl/.env_template owl/.env
 # 编辑.env文件，填入您的API密钥
 
-# 构建并运行Docker容器
+# 选项1：直接使用docker-compose
+cd .container
 docker-compose up -d
-
 # 在容器中运行OWL
 docker-compose exec owl bash -c "xvfb-python run.py"
+
+# 选项2：使用提供的脚本构建和运行
+cd .container
+chmod +x build_docker.sh
+./build_docker.sh
+# 在容器中运行OWL
+./run_in_docker.sh "您的问题"
 ```
 
-更多详细的Docker使用说明，包括跨平台支持、优化配置和故障排除，请参阅 [DOCKER_README.md](DOCKER_README.md)
+更多详细的Docker使用说明，包括跨平台支持、优化配置和故障排除，请参阅 [DOCKER_README.md](.container/DOCKER_README.md)
 
 # 🚀 快速开始
    
