@@ -246,6 +246,9 @@ python owl/run_deepseek.py
 
 # Run with other OpenAI-compatible models
 python owl/run_openai_compatiable_model.py
+
+# Run with Ollama API
+python owl/run_ollama.py
 ```
 
 For a simpler version that only requires an LLM API key, you can try our minimal example:

@@ -40,6 +40,7 @@ SCRIPTS = {
     "Default": "run.py",
     "GAIA Roleplaying": "run_gaia_roleplaying.py",
     "OpenAI Compatible": "run_openai_compatiable_model.py",
+    "Ollama": "run_ollama.py",
 }
 
 # 脚本描述
@@ -51,6 +52,7 @@ SCRIPT_DESCRIPTIONS = {
     "Default": "默认OWL实现，使用OpenAI GPT-4o模型和全套工具",
     "GAIA Roleplaying": "GAIA基准测试实现，用于评估模型能力",
     "OpenAI Compatible": "使用兼容OpenAI API的第三方模型，支持自定义API端点",
+    "Ollama": "使用Ollama API",
 }
 
 # 环境变量分组
@@ -84,6 +86,13 @@ ENV_GROUPS = {
             "required": False,
             "help": "DeepSeek API密钥，用于访问DeepSeek模型。获取方式：https://platform.deepseek.com/api_keys",
         },
+        {
+  	    "name": "OLLAMA_API_KEY",
+	    "label": "Ollama API秘钥",
+	    "type": "password",
+	    "required": False,
+	    "help": "Ollama API秘钥，没啥用的",
+	},
     ],
     "搜索工具": [
         {

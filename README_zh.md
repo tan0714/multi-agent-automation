@@ -246,6 +246,9 @@ python owl/run_deepseek.py
 
 # 使用其他 OpenAI 兼容模型运行
 python owl/run_openai_compatiable_model.py
+
+# 使用 Ollama API 运行
+python owl/run_ollama.py
 ```
 
 你可以通过修改 `run.py` 脚本来运行自己的任务：
