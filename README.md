@@ -181,17 +181,47 @@ pip install -r requirements.txt
 conda deactivate
 ```
 
-## **Setup Environment Variables** 
+## **Setup Environment Variables**
 
-In the `owl/.env_template` file, you will find all the necessary API keys along with the websites where you can register for each service. To use these API services, follow these steps:
+OWL requires various API keys to interact with different services. The `owl/.env_template` file contains placeholders for all necessary API keys along with links to the services where you can register for them.
 
-1. *Copy and Rename*: Duplicate the `.env_template` file and rename the copy to `.env`.
-```bash
-cp owl/.env_template .env
-```
-2. *Fill in Your Keys*: Open the `.env` file and insert your API keys in the corresponding fields.  (For the minimal example (`run_mini.py`), you only need to configure the LLM API key (e.g., OPENAI_API_KEY).)
-3. *For using more other models*: please refer to our CAMEL models docs:https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel
+### Option 1: Using a `.env` File (Recommended)
 
+1. **Copy and Rename the Template**:
+   ```bash
+   cd owl
+   cp .env_template .env
+   ```
+
+2. **Configure Your API Keys**:
+   Open the `.env` file in your preferred text editor and insert your API keys in the corresponding fields.
+   
+   > **Note**: For the minimal example (`run_mini.py`), you only need to configure the LLM API key (e.g., `OPENAI_API_KEY`).
+
+### Option 2: Setting Environment Variables Directly
+
+Alternatively, you can set environment variables directly in your terminal:
+
+- **macOS/Linux (Bash/Zsh)**:
+  ```bash
+  export OPENAI_API_KEY="your-openai-api-key-here"
+  ```
+
+- **Windows (Command Prompt)**:
+  ```batch
+  set OPENAI_API_KEY="your-openai-api-key-here"
+  ```
+
+- **Windows (PowerShell)**:
+  ```powershell
+  $env:OPENAI_API_KEY = "your-openai-api-key-here"
+  ```
+
+> **Note**: Environment variables set directly in the terminal will only persist for the current session.
+
+### Additional Models
+
+For information on configuring other AI models beyond OpenAI, please refer to our [CAMEL models documentation](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel).
 
 > **Note**: For optimal performance, we strongly recommend using OpenAI models. Our experiments show that other models may result in significantly lower performance on complex tasks and benchmarks.
 

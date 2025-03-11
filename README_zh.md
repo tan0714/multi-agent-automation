@@ -1,6 +1,6 @@
 <h1 align="center">
 	🦉 OWL: Optimized Workforce Learning for General Multi-Agent Assistance in Real-World Task Automation
-  🦉 OWL: 优化劳动力学习的通用智能体，用于处理现实世界的自动化任务
+	🦉 OWL: 优化劳动力学习的通用智能体，用于处理现实世界的自动化任务
 </h1>
 
 
@@ -180,15 +180,47 @@ pip install -r requirements.txt
 conda deactivate
 ```
 
-## **设置环境变量**  
+## **设置环境变量**
 
-在 `owl/.env_template` 文件中，你可以找到所有必要的 API 密钥以及各服务的注册网址。要使用这些 API 服务，请按照以下步骤操作：
+OWL 需要各种 API 密钥来与不同的服务进行交互。`owl/.env_template` 文件包含了所有必要 API 密钥的占位符，以及可以注册这些服务的链接。
 
-1. *复制并重命名*: 复制 `.env_template` 文件，并将副本重命名为 `.env`。
-2. *填写你的密钥*: 打开 `.env` 文件，在相应字段中填入你的 API 密钥。 
-3. *如需使用更多其他模型*：请参考我们CAMEL的models文档：https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel
+### 选项 1：使用 `.env` 文件（推荐）
 
-> **注意**：为获得最佳性能，我们强烈建议使用 OpenAI 模型。我们通过测试发现，其他模型在处理复杂任务和基准测试时可能会导致性能显著降低。
+1. **复制并重命名模板**：
+   ```bash
+   cd owl
+   cp .env_template .env
+   ```
+
+2. **配置你的 API 密钥**：
+   在你喜欢的文本编辑器中打开 `.env` 文件，并在相应字段中插入你的 API 密钥。
+   
+   > **注意**：对于最小示例（`run_mini.py`），你只需要配置 LLM API 密钥（例如，`OPENAI_API_KEY`）。
+
+### 选项 2：直接设置环境变量
+
+或者，你可以直接在终端中设置环境变量：
+
+- **macOS/Linux (Bash/Zsh)**：
+  ```bash
+  export OPENAI_API_KEY="你的-openai-api-密钥"
+  ```
+
+- **Windows (命令提示符)**：
+  ```batch
+  set OPENAI_API_KEY="你的-openai-api-密钥"
+  ```
+
+- **Windows (PowerShell)**：
+  ```powershell
+  $env:OPENAI_API_KEY = "你的-openai-api-密钥"
+  ```
+
+> **注意**：直接在终端中设置的环境变量仅在当前会话中有效。
+
+### 其他模型
+
+有关配置 OpenAI 以外的其他 AI 模型的信息，请参阅我们的 [CAMEL 模型文档](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel)。
 
 ## **使用Docker运行**
 
