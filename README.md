@@ -394,6 +394,9 @@ OWL now includes a web-based user interface that makes it easier to interact wit
 
 ```bash
 python run_app.py
+
+# For English Version
+python run_app_en.py
 ```
 
 The web interface provides the following features:
