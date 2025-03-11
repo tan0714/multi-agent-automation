@@ -490,6 +490,7 @@ We welcome contributions from the community! Here's how you can help:
 3. Submit pull requests with your improvements
 
 **Current Issues Open for Contribution:**
+- [#1812](https://github.com/camel-ai/camel/issues/1812)
 - [#1802](https://github.com/camel-ai/camel/issues/1802)
 - [#1798](https://github.com/camel-ai/camel/issues/1798)
 - [#1770](https://github.com/camel-ai/camel/issues/1770)

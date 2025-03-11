@@ -480,6 +480,7 @@ python run_gaia_roleplaying.py
 3. 提交包含您改进的拉取请求
 
 **当前开放贡献的问题：**
+- [#1812](https://github.com/camel-ai/camel/issues/1812)
 - [#1802](https://github.com/camel-ai/camel/issues/1802)
 - [#1798](https://github.com/camel-ai/camel/issues/1798)
 - [#1770](https://github.com/camel-ai/camel/issues/1770)
