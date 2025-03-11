@@ -519,7 +519,7 @@ A: See our [Contributing](#-contributing) section for details on how to get invo
 
 # 📚 Exploring CAMEL Dependency
 
-OWL is built on top of the CAMEL-AI Framework, here's how you can explore the CAMEL source code and understand how it works with OWL:
+OWL is built on top of the [CAMEL](https://github.com/camel-ai/camel) Framework, here's how you can explore the CAMEL source code and understand how it works with OWL:
 
 ## Accessing CAMEL Source Code
 
