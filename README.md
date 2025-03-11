@@ -239,10 +239,10 @@ OWL supports various LLM backends. You can use the following scripts to run with
 
 ```bash
 # Run with Qwen model
-python owl/run_qwen.py
+python owl/run_qwen_zh.py
 
 # Run with Deepseek model
-python owl/run_deepseek.py
+python owl/run_deepseek_zh.py
 
 # Run with other OpenAI-compatible models
 python owl/run_openai_compatiable_model.py
