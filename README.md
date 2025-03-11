@@ -85,6 +85,8 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 
 # 🔥 News
 
+- **[2025.03.11]**: We added MCPToolkit, FileWriteToolkit, and TerminalToolkit to enhance OWL agents with MCP tool calling, file writing capabilities, and terminal command execution.
+- **[2025.03.09]**: We added a web-based user interface that makes it easier to interact with the system.
 - **[2025.03.07]**: We open-source the codebase of 🦉 OWL project.
 
 # 🎬 Demo Video
