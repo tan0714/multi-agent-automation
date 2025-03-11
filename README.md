@@ -265,6 +265,10 @@ python owl/run.py
 
 ## Running with Different Models
 
+### Additional Models
+
+For information on configuring other AI models beyond OpenAI, please refer to our [CAMEL models documentation](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel).
+
 OWL supports various LLM backends. You can use the following scripts to run with different models:
 
 ```bash
@@ -318,6 +322,61 @@ Example tasks you can try:
 - "Analyze the sentiment of recent tweets about climate change"
 - "Help me debug this Python code: [your code here]"
 - "Summarize the main points from this research paper: [paper URL]"
+
+# 🧰 Configuring Toolkits
+
+OWL supports various toolkits that can be customized by modifying the `tools` list in your script:
+
+```python
+# Configure toolkits
+tools = [
+    *WebToolkit(headless=False).get_tools(),  # Browser automation
+    *VideoAnalysisToolkit(model=models["video"]).get_tools(),
+    *AudioAnalysisToolkit().get_tools(),  # Requires OpenAI Key
+    *CodeExecutionToolkit(sandbox="subprocess").get_tools(),
+    *ImageAnalysisToolkit(model=models["image"]).get_tools(),
+    SearchToolkit().search_duckduckgo,
+    SearchToolkit().search_google,  # Comment out if unavailable
+    SearchToolkit().search_wiki,
+    *ExcelToolkit().get_tools(),
+    *DocumentProcessingToolkit(model=models["document"]).get_tools(),
+    *FileWriteToolkit(output_dir="./").get_tools(),
+]
+```
+
+## Available Toolkits
+
+Key toolkits include:
+- **WebToolkit**: Browser automation
+- **VideoAnalysisToolkit**: Video processing
+- **AudioAnalysisToolkit**: Audio processing
+- **CodeExecutionToolkit**: Python code execution
+- **ImageAnalysisToolkit**: Image analysis
+- **SearchToolkit**: Web searches (Google, DuckDuckGo, Wikipedia)
+- **DocumentProcessingToolkit**: Document parsing (PDF, DOCX, etc.)
+
+Additional specialized toolkits: ArxivToolkit, GitHubToolkit, GoogleMapsToolkit, MathToolkit, NetworkXToolkit, NotionToolkit, RedditToolkit, WeatherToolkit, and more. For a complete list, see the [CAMEL toolkits documentation](https://docs.camel-ai.org/key_modules/tools.html#built-in-toolkits).
+
+## Customizing Your Configuration
+
+To customize available tools:
+
+```python
+# 1. Import toolkits
+from camel.toolkits import WebToolkit, SearchToolkit, CodeExecutionToolkit
+
+# 2. Configure tools list
+tools = [
+    *WebToolkit(headless=True).get_tools(),
+    SearchToolkit().search_wiki,
+    *CodeExecutionToolkit(sandbox="subprocess").get_tools(),
+]
+
+# 3. Pass to assistant agent
+assistant_agent_kwargs = {"model": models["assistant"], "tools": tools}
+```
+
+Selecting only necessary toolkits optimizes performance and reduces resource usage.
 
 # 🌐 Web Interface
 

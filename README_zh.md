@@ -267,6 +267,10 @@ python owl/run_mini.py
 
 ## 使用不同的模型
 
+### 其他模型
+
+有关配置 OpenAI 以外的其他 AI 模型的信息，请参阅我们的 [CAMEL 模型文档](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel)。
+
 OWL 支持多种 LLM 后端。您可以使用以下脚本来运行不同的模型：
 
 ```bash
@@ -314,6 +318,61 @@ OWL 将自动调用与文档相关的工具来处理文件并提取答案。
 - "分析关于气候变化的最新推文情绪"
 - "帮我调试这段 Python 代码：[在此粘贴你的代码]"
 - "总结这篇研究论文的主要观点：[论文URL]"
+
+# 🧰 配置工具包
+
+OWL支持多种工具包，可通过修改脚本中的`tools`列表进行自定义：
+
+```python
+# 配置工具包
+tools = [
+    *WebToolkit(headless=False).get_tools(),  # 浏览器自动化
+    *VideoAnalysisToolkit(model=models["video"]).get_tools(),
+    *AudioAnalysisToolkit().get_tools(),  # 需要OpenAI API密钥
+    *CodeExecutionToolkit(sandbox="subprocess").get_tools(),
+    *ImageAnalysisToolkit(model=models["image"]).get_tools(),
+    SearchToolkit().search_duckduckgo,
+    SearchToolkit().search_google,  # 如果不可用请注释
+    SearchToolkit().search_wiki,
+    *ExcelToolkit().get_tools(),
+    *DocumentProcessingToolkit(model=models["document"]).get_tools(),
+    *FileWriteToolkit(output_dir="./").get_tools(),
+]
+```
+
+## 主要工具包
+
+关键工具包包括：
+- **WebToolkit**：浏览器自动化
+- **VideoAnalysisToolkit**：视频处理
+- **AudioAnalysisToolkit**：音频处理
+- **CodeExecutionToolkit**：Python代码执行
+- **ImageAnalysisToolkit**：图像分析
+- **SearchToolkit**：网络搜索（Google、DuckDuckGo、维基百科）
+- **DocumentProcessingToolkit**：文档解析（PDF、DOCX等）
+
+其他专用工具包：ArxivToolkit、GitHubToolkit、GoogleMapsToolkit、MathToolkit、NetworkXToolkit、NotionToolkit、RedditToolkit、WeatherToolkit等。完整工具包列表请参阅[CAMEL工具包文档](https://docs.camel-ai.org/key_modules/tools.html#built-in-toolkits)。
+
+## 自定义配置
+
+自定义可用工具的方法：
+
+```python
+# 1. 导入工具包
+from camel.toolkits import WebToolkit, SearchToolkit, CodeExecutionToolkit
+
+# 2. 配置工具列表
+tools = [
+    *WebToolkit(headless=True).get_tools(),
+    SearchToolkit().search_wiki,
+    *CodeExecutionToolkit(sandbox="subprocess").get_tools(),
+]
+
+# 3. 传递给助手代理
+assistant_agent_kwargs = {"model": models["assistant"], "tools": tools}
+```
+
+选择必要的工具包可优化性能并减少资源使用。
 
 # 🌐 网页界面
 
