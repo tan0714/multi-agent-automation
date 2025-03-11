@@ -243,6 +243,67 @@ def add_custom_env_var(name, value, var_type):
     return f"✅ 已添加环境变量 {name}", ENV_GROUPS["自定义环境变量"]
 
 
+def update_custom_env_var(name, value, var_type):
+    """更改自定义环境变量"""
+    if not name:
+        return "❌ 环境变量名不能为空", None
+
+    # 检查环境变量是否存在于自定义环境变量组中
+    found = False
+    for i, var in enumerate(ENV_GROUPS["自定义环境变量"]):
+        if var["name"] == name:
+            # 更新类型
+            ENV_GROUPS["自定义环境变量"][i]["type"] = var_type
+            found = True
+            break
+
+    if not found:
+        return f"❌ 自定义环境变量 {name} 不存在", None
+
+    # 保存环境变量值
+    env_vars = {name: value}
+    save_env_vars(env_vars)
+
+    # 返回成功消息和更新后的环境变量组
+    return f"✅ 已更新环境变量 {name}", ENV_GROUPS["自定义环境变量"]
+
+
+def delete_custom_env_var(name):
+    """删除自定义环境变量"""
+    if not name:
+        return "❌ 环境变量名不能为空", None
+
+    # 检查环境变量是否存在于自定义环境变量组中
+    found = False
+    for i, var in enumerate(ENV_GROUPS["自定义环境变量"]):
+        if var["name"] == name:
+            # 从自定义环境变量组中删除
+            del ENV_GROUPS["自定义环境变量"][i]
+            found = True
+            break
+
+    if not found:
+        return f"❌ 自定义环境变量 {name} 不存在", None
+
+    # 从.env文件中删除该环境变量
+    env_path = Path(".env")
+    if env_path.exists():
+        with open(env_path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+        
+        with open(env_path, "w", encoding="utf-8") as f:
+            for line in lines:
+                if not line.strip().startswith(f"{name}="):
+                    f.write(line)
+    
+    # 从当前进程的环境变量中删除
+    if name in os.environ:
+        del os.environ[name]
+
+    # 返回成功消息和更新后的环境变量组
+    return f"✅ 已删除环境变量 {name}", ENV_GROUPS["自定义环境变量"]
+
+
 def terminate_process():
     """终止当前运行的进程"""
     global current_process
@@ -583,12 +644,63 @@ def create_ui():
                         visible=len(ENV_GROUPS["自定义环境变量"]) > 0,
                     )
 
-                    # 添加环境变量按钮点击事件
-                    add_var_button.click(
-                        fn=add_custom_env_var,
-                        inputs=[new_var_name, new_var_value, new_var_type],
-                        outputs=[add_var_status, custom_vars_list],
-                    )
+                # 更改和删除自定义环境变量部分
+                with gr.Accordion("更改或删除自定义环境变量", open=True, visible=len(ENV_GROUPS["自定义环境变量"]) > 0) as update_delete_accordion:
+                    with gr.Row():
+                        # 创建下拉菜单，显示所有自定义环境变量
+                        custom_var_dropdown = gr.Dropdown(
+                            choices=[var["name"] for var in ENV_GROUPS["自定义环境变量"]],
+                            label="选择环境变量",
+                            interactive=True,
+                        )
+                        update_var_value = gr.Textbox(
+                            label="新的环境变量值", placeholder="输入新值"
+                        )
+                        update_var_type = gr.Dropdown(
+                            choices=["text", "password"], value="text", label="类型"
+                        )
+
+                    with gr.Row():
+                        update_var_button = gr.Button("更新环境变量", variant="primary")
+                        delete_var_button = gr.Button("删除环境变量", variant="stop")
+                    
+                    update_var_status = gr.Textbox(label="操作状态", interactive=False)
+
+                # 添加环境变量按钮点击事件
+                add_var_button.click(
+                    fn=add_custom_env_var,
+                    inputs=[new_var_name, new_var_value, new_var_type],
+                    outputs=[add_var_status, custom_vars_list],
+                ).then(
+                    fn=lambda vars: {"visible": len(vars) > 0},
+                    inputs=[custom_vars_list],
+                    outputs=[update_delete_accordion],
+                )
+
+                # 更新环境变量按钮点击事件
+                update_var_button.click(
+                    fn=update_custom_env_var,
+                    inputs=[custom_var_dropdown, update_var_value, update_var_type],
+                    outputs=[update_var_status, custom_vars_list],
+                )
+
+                # 删除环境变量按钮点击事件
+                delete_var_button.click(
+                    fn=delete_custom_env_var,
+                    inputs=[custom_var_dropdown],
+                    outputs=[update_var_status, custom_vars_list],
+                ).then(
+                    fn=lambda vars: {"visible": len(vars) > 0},
+                    inputs=[custom_vars_list],
+                    outputs=[update_delete_accordion],
+                )
+
+                # 当自定义环境变量列表更新时，更新下拉菜单选项
+                custom_vars_list.change(
+                    fn=lambda vars: {"choices": [var["name"] for var in vars], "value": None},
+                    inputs=[custom_vars_list],
+                    outputs=[custom_var_dropdown],
+                )
 
                 # 现有环境变量配置
                 for group_name, vars in ENV_GROUPS.items():
