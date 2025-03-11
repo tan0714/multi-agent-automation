@@ -500,8 +500,7 @@ To take on an issue, simply leave a comment stating your interest.
 Join us ([*Discord*](https://discord.camel-ai.org/) or [*WeChat*](https://ghli.org/camel/wechat.png)) in pushing the boundaries of finding the scaling laws of agents. 
 
 Join us for further discussions!
-<!-- ![](./assets/community.png) -->
-![](./assets/community_7.jpg)
+![](./assets/community.jpg)
 <!-- ![](./assets/meetup.jpg) -->
 
 # ❓ FAQ
