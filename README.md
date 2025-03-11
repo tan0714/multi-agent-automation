@@ -251,7 +251,7 @@ python owl/run_openai_compatiable_model.py
 For a simpler version that only requires an LLM API key, you can try our minimal example:
 
 ```bash
-python owl/run_mini_zh.py
+python owl/run_mini.py
 ```
 
 You can run OWL agent with your own task by modifying the `run.py` script:

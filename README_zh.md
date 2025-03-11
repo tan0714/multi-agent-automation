@@ -239,10 +239,10 @@ OWL 支持多种 LLM 后端。您可以使用以下脚本来运行不同的模�
 
 ```bash
 # 使用 Qwen 模型运行
-python owl/run_qwen.py
+python owl/run_qwen_zh.py
 
 # 使用 Deepseek 模型运行
-python owl/run_deepseek.py
+python owl/run_deepseek_zh.py
 
 # 使用其他 OpenAI 兼容模型运行
 python owl/run_openai_compatiable_model.py
