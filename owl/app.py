@@ -86,13 +86,6 @@ ENV_GROUPS = {
             "required": False,
             "help": "DeepSeek API密钥，用于访问DeepSeek模型。获取方式：https://platform.deepseek.com/api_keys",
         },
-        {
-  	    "name": "OLLAMA_API_KEY",
-	    "label": "Ollama API秘钥",
-	    "type": "password",
-	    "required": False,
-	    "help": "Ollama API秘钥，没啥用的",
-	},
     ],
     "搜索工具": [
         {

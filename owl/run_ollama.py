@@ -12,7 +12,6 @@
 # limitations under the License.
 # ========= Copyright 2023-2024 @ CAMEL-AI.org. All Rights Reserved. =========
 # run_ollama.py by tj-scripts（https://github.com/tj-scripts）
-import os
 
 from dotenv import load_dotenv
 from camel.models import ModelFactory
@@ -22,6 +21,7 @@ from camel.toolkits import (
     ImageAnalysisToolkit,
     SearchToolkit,
     WebToolkit,
+    FileWriteToolkit,
 )
 from camel.types import ModelPlatformType
 
@@ -47,39 +47,34 @@ def construct_society(question: str) -> OwlRolePlaying:
     # Create models for different components
     models = {
         "user": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
-            model_type="qwen2.5:3b",
-            api_key=os.getenv("OLLAMA_API_KEY"),
+            model_platform=ModelPlatformType.OLLAMA,
+            model_type="qwen2.5:72b",
             url="http://localhost:11434/v1",
-            model_config_dict={"temperature": 0.8, "max_tokens": 4096},
+            model_config_dict={"temperature": 0.8, "max_tokens": 1000000},
         ),
         "assistant": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
-            model_type="qwen2.5:3b",
-            api_key=os.getenv("OLLAMA_API_KEY"),
+            model_platform=ModelPlatformType.OLLAMA,
+            model_type="qwen2.5:72b",
             url="http://localhost:11434/v1",
-            model_config_dict={"temperature": 0.2, "max_tokens": 4096},
+            model_config_dict={"temperature": 0.2, "max_tokens": 1000000},
         ),
         "web": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
+            model_platform=ModelPlatformType.OLLAMA,
             model_type="llava:latest",
-            api_key=os.getenv("QWEN_API_KEY"),
             url="http://localhost:11434/v1",
-            model_config_dict={"temperature": 0.4, "max_tokens": 4096},
+            model_config_dict={"temperature": 0.4, "max_tokens": 1000000},
         ),
         "planning": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
-            model_type="qwen2.5:3b",
-            api_key=os.getenv("ollama"),
+            model_platform=ModelPlatformType.OLLAMA,
+            model_type="qwen2.5:72b",
             url="http://localhost:11434/v1",
-            model_config_dict={"temperature": 0.4, "max_tokens": 4096},
+            model_config_dict={"temperature": 0.4, "max_tokens": 1000000},
         ),
         "image": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
+            model_platform=ModelPlatformType.OLLAMA,
             model_type="llava:latest",
-            api_key=os.getenv("QWEN_API_KEY"),
             url="http://localhost:11434/v1",
-            model_config_dict={"temperature": 0.4, "max_tokens": 4096},
+            model_config_dict={"temperature": 0.4, "max_tokens": 1000000},
         ),
     }
 
@@ -93,9 +88,10 @@ def construct_society(question: str) -> OwlRolePlaying:
         *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
         *ImageAnalysisToolkit(model=models["image"]).get_tools(),
         SearchToolkit().search_duckduckgo,
-        #SearchToolkit().search_google,  # Comment this out if you don't have google search
+        # SearchToolkit().search_google,  # Comment this out if you don't have google search
         SearchToolkit().search_wiki,
         *ExcelToolkit().get_tools(),
+        *FileWriteToolkit(output_dir="./").get_tools(),
     ]
 
     # Configure agent roles and parameters

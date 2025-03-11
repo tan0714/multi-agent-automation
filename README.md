@@ -247,7 +247,7 @@ python owl/run_deepseek_zh.py
 # Run with other OpenAI-compatible models
 python owl/run_openai_compatiable_model.py
 
-# Run with Ollama API
+# Run with Ollama
 python owl/run_ollama.py
 ```
 
