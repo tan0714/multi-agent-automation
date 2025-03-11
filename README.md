@@ -451,6 +451,8 @@ If you find this repo useful, please cite:
 ```
 
 # 🔥 Community
+Join us ([*Discord*](https://discord.camel-ai.org/) or [*WeChat*](https://ghli.org/camel/wechat.png)) in pushing the boundaries of finding the scaling laws of agents. 
+
 Join us for further discussions!
 <!-- ![](./assets/community.png) -->
 ![](./assets/community_7.jpg)
