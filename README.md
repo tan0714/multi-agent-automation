@@ -81,6 +81,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 - [🤝 Contributing](#-contributing)
 - [🔥 Community](#-community)
 - [❓ FAQ](#-faq)
+- [📚 Exploring CAMEL Dependency](#-exploring-camel-dependency)
 - [⭐ Star History](#-star-history)
 
 
@@ -499,6 +500,18 @@ A: OWL supports Python 3.10, 3.11, and 3.12.
 **Q: How can I contribute to the project?**
 
 A: See our [Contributing](#-contributing) section for details on how to get involved. We welcome contributions of all kinds, from code improvements to documentation updates.
+
+# 📚 Exploring CAMEL Dependency
+
+OWL is built on top of the CAMEL-AI Framework, here's how you can explore the CAMEL source code and understand how it works with OWL:
+
+## Accessing CAMEL Source Code
+
+```bash
+# Clone the CAMEL repository
+git clone https://github.com/camel-ai/camel.git
+cd camel
+```
 
 # ⭐ Star History
 

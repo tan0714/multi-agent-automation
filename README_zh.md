@@ -82,6 +82,7 @@
 - [🤝 贡献](#-贡献)
 - [🔥 社区](#-社区)
 - [❓ 常见问题](#-常见问题)
+- [📚 探索 CAMEL 依赖](#-探索-camel-依赖)
 - [⭐ Star History](#-star-history)
 
 
@@ -489,6 +490,18 @@ A: OWL支持Python 3.10、3.11和3.12。为了与所有依赖项获得最佳兼�
 **Q: 我如何为项目做贡献？**
 
 A: 请参阅我们的[贡献](#-贡献)部分，了解如何参与的详细信息。我们欢迎各种形式的贡献，从代码改进到文档更新。
+
+# 📚 探索 CAMEL 依赖
+
+OWL 是基于 CAMEL-AI 框架构建的，以下是如何探索 CAMEL 源代码并了解其与 OWL 的工作方式：
+
+## 访问 CAMEL 源代码
+
+```bash
+# 克隆 CAMEL 仓库
+git clone https://github.com/camel-ai/camel.git
+cd camel
+```
 
 # ⭐ Star History
 
