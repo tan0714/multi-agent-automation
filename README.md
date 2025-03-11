@@ -89,7 +89,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 
 # 🎬 Demo Video
 
-https://private-user-images.githubusercontent.com/55657767/420211368-f29f477d-7eef-46da-8d7a-8f3bcf506da2.mp4
+https://github.com/user-attachments/assets/2a2a825d-39ea-45c5-9ba1-f9d58efbc372
 
 https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-136a-485f-8df3-f10d9b4e63ec.mp4
 
