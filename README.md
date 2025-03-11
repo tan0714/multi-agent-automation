@@ -87,6 +87,23 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 
 # 🔥 News
 
+<div align="center" style="background-color: #fffacd; padding: 15px; border-radius: 10px; border: 2px solid #ffd700; margin: 20px 0;">
+  <h3 style="color: #d81b60; margin: 0; font-size: 1.3em;">
+    🌟🌟🌟 <b>COMMUNITY CALL FOR USE CASES!</b> 🌟🌟🌟
+  </h3>
+  <p style="font-size: 1.1em; margin: 10px 0;">
+    We're inviting the community to contribute innovative use cases for OWL! <br>
+    The <b>top ten submissions</b> will receive special community gifts and recognition.
+  </p>
+  <p>
+    <a href="https://github.com/camel-ai/owl/tree/main/community_usecase/COMMUNITY_CALL_FOR_USE_CASES.md" style="background-color: #d81b60; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">Learn More & Submit</a>
+  </p>
+  <p style="margin: 5px 0;">
+    Submission deadline: <b>March 31, 2025</b>
+  </p>
+</div>
+
+- **[2025.03.12]**: Launched our Community Call for Use Cases initiative! See the highlighted announcement above.
 - **[2025.03.11]**: We added MCPToolkit, FileWriteToolkit, and TerminalToolkit to enhance OWL agents with MCP tool calling, file writing capabilities, and terminal command execution.
 - **[2025.03.09]**: We added a web-based user interface that makes it easier to interact with the system.
 - **[2025.03.07]**: We open-sourced the codebase of the 🦉 OWL project.
@@ -473,9 +490,9 @@ We welcome contributions from the community! Here's how you can help:
 3. Submit pull requests with your improvements
 
 **Current Issues Open for Contribution:**
-- [#1772](https://github.com/camel-ai/camel/issues/1772)
-- [#1793](https://github.com/camel-ai/camel/issues/1793)
-- [#1803](https://github.com/camel-ai/camel/issues/1803)
+- [#1802](https://github.com/camel-ai/camel/issues/1802)
+- [#1798](https://github.com/camel-ai/camel/issues/1798)
+- [#1770](https://github.com/camel-ai/camel/issues/1770)
 
 To take on an issue, simply leave a comment stating your interest.
 

@@ -88,6 +88,23 @@
 
 # 🔥 新闻
 
+<div align="center" style="background-color: #fffacd; padding: 15px; border-radius: 10px; border: 2px solid #ffd700; margin: 20px 0;">
+  <h3 style="color: #d81b60; margin: 0; font-size: 1.3em;">
+    🌟🌟🌟 <b>OWL社区用例征集令！</b> 🌟🌟🌟
+  </h3>
+  <p style="font-size: 1.1em; margin: 10px 0;">
+    我们请社区成员贡献创新的OWL用例！<br>
+    <b>前十名提交</b>将获得特别社区礼物和认可。
+  </p>
+  <p>
+    <a href="https://github.com/camel-ai/owl/tree/main/community_usecase/COMMUNITY_CALL_FOR_USE_CASES.md" style="background-color: #d81b60; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">了解更多并提交</a>
+  </p>
+  <p style="margin: 5px 0;">
+    提交截止日期：<b>2025年3月31日</b>
+  </p>
+</div>
+
+- **[2025.03.12]**: 启动了我们的社区用例征集计划！请查看上方的高亮公告。
 - **[2025.03.11]**: 我们添加了 MCPToolkit、FileWriteToolkit 和 TerminalToolkit，增强 OWL Agent的工具调用、文件写入能力和终端命令执行功能。
 - **[2025.03.09]**: 我们添加了基于网页的用户界面，使系统交互变得更加简便。
 - **[2025.03.07]**: 我们开源了 🦉 OWL 项目的代码库。
@@ -463,9 +480,9 @@ python run_gaia_roleplaying.py
 3. 提交包含您改进的拉取请求
 
 **当前开放贡献的问题：**
-- [#1772](https://github.com/camel-ai/camel/issues/1772)
-- [#1793](https://github.com/camel-ai/camel/issues/1793)
-- [#1803](https://github.com/camel-ai/camel/issues/1803)
+- [#1802](https://github.com/camel-ai/camel/issues/1802)
+- [#1798](https://github.com/camel-ai/camel/issues/1798)
+- [#1770](https://github.com/camel-ai/camel/issues/1770)
 
 要认领一个问题，只需在该问题下留言表明您的兴趣即可。
 
