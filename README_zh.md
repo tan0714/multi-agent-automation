@@ -218,10 +218,6 @@ OWL 需要各种 API 密钥来与不同的服务进行交互。`owl/.env_templat
 
 > **注意**：直接在终端中设置的环境变量仅在当前会话中有效。
 
-### 其他模型
-
-有关配置 OpenAI 以外的其他 AI 模型的信息，请参阅我们的 [CAMEL 模型文档](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel)。
-
 ## **使用Docker运行**
 
 如果您希望使用Docker运行OWL项目，我们提供了完整的Docker支持：
@@ -267,11 +263,19 @@ python owl/run_mini.py
 
 ## 使用不同的模型
 
-### 其他模型
+### 模型要求
 
-有关配置 OpenAI 以外的其他 AI 模型的信息，请参阅我们的 [CAMEL 模型文档](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel)。
+- **工具调用能力**：OWL 需要具有强大工具调用能力的模型来与各种工具包交互。模型必须能够理解工具描述、生成适当的工具调用，并处理工具输出。
 
-OWL 支持多种 LLM 后端。您可以使用以下脚本来运行不同的模型：
+- **多模态理解能力**：对于涉及网页交互、图像分析或视频处理的任务，需要具备多模态能力的模型来解释视觉内容和上下文。
+
+#### 支持的模型
+
+有关配置模型的信息，请参阅我们的 [CAMEL 模型文档](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel)。
+
+> **注意**：为获得最佳性能，我们强烈推荐使用 OpenAI 模型（GPT-4 或更高版本）。我们的实验表明，其他模型在复杂任务和基准测试上可能表现明显较差，尤其是那些需要多模态理解和工具使用的任务。
+
+OWL 支持多种 LLM 后端，但功能可能因模型的工具调用和多模态能力而异。您可以使用以下脚本来运行不同的模型：
 
 ```bash
 # 使用 Qwen 模型运行
@@ -321,6 +325,8 @@ OWL 将自动调用与文档相关的工具来处理文件并提取答案。
 
 # 🧰 配置工具包
 
+> **重要提示**：有效使用工具包需要具备强大工具调用能力的模型。对于多模态工具包（Web、图像、视频），模型还必须具备多模态理解能力。
+
 OWL支持多种工具包，可通过修改脚本中的`tools`列表进行自定义：
 
 ```python
@@ -343,11 +349,15 @@ tools = [
 ## 主要工具包
 
 关键工具包包括：
-- **WebToolkit**：浏览器自动化
-- **VideoAnalysisToolkit**：视频处理
-- **AudioAnalysisToolkit**：音频处理
-- **CodeExecutionToolkit**：Python代码执行
-- **ImageAnalysisToolkit**：图像分析
+
+### 多模态工具包（需要模型具备多模态能力）
+- **WebToolkit**：浏览器自动化，用于网页交互和导航
+- **VideoAnalysisToolkit**：视频处理和内容分析
+- **ImageAnalysisToolkit**：图像分析和解释
+
+### 基于文本的工具包
+- **AudioAnalysisToolkit**：音频处理（需要 OpenAI API）
+- **CodeExecutionToolkit**：Python 代码执行和评估
 - **SearchToolkit**：网络搜索（Google、DuckDuckGo、维基百科）
 - **DocumentProcessingToolkit**：文档解析（PDF、DOCX等）
 

@@ -219,11 +219,7 @@ Alternatively, you can set environment variables directly in your terminal:
 
 > **Note**: Environment variables set directly in the terminal will only persist for the current session.
 
-### Additional Models
 
-For information on configuring other AI models beyond OpenAI, please refer to our [CAMEL models documentation](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel).
-
-> **Note**: For optimal performance, we strongly recommend using OpenAI models. Our experiments show that other models may result in significantly lower performance on complex tasks and benchmarks.
 
 ## **Running with Docker**
 
@@ -265,11 +261,19 @@ python owl/run.py
 
 ## Running with Different Models
 
-### Additional Models
+### Model Requirements
 
-For information on configuring other AI models beyond OpenAI, please refer to our [CAMEL models documentation](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel).
+- **Tool Calling**: OWL requires models with robust tool calling capabilities to interact with various toolkits. Models must be able to understand tool descriptions, generate appropriate tool calls, and process tool outputs.
 
-OWL supports various LLM backends. You can use the following scripts to run with different models:
+- **Multimodal Understanding**: For tasks involving web interaction, image analysis, or video processing, models with multimodal capabilities are required to interpret visual content and context.
+
+#### Supported Models
+
+For information on configuring AI models, please refer to our [CAMEL models documentation](https://docs.camel-ai.org/key_modules/models.html#supported-model-platforms-in-camel).
+
+> **Note**: For optimal performance, we strongly recommend using OpenAI models (GPT-4 or later versions). Our experiments show that other models may result in significantly lower performance on complex tasks and benchmarks, especially those requiring advanced multi-modal understanding and tool use.
+
+OWL supports various LLM backends, though capabilities may vary depending on the model's tool calling and multimodal abilities. You can use the following scripts to run with different models:
 
 ```bash
 # Run with Qwen model
@@ -325,6 +329,8 @@ Example tasks you can try:
 
 # 🧰 Configuring Toolkits
 
+> **Important**: Effective use of toolkits requires models with strong tool calling capabilities. For multimodal toolkits (Web, Image, Video), models must also have multimodal understanding abilities.
+
 OWL supports various toolkits that can be customized by modifying the `tools` list in your script:
 
 ```python
@@ -347,11 +353,15 @@ tools = [
 ## Available Toolkits
 
 Key toolkits include:
-- **WebToolkit**: Browser automation
-- **VideoAnalysisToolkit**: Video processing
-- **AudioAnalysisToolkit**: Audio processing
-- **CodeExecutionToolkit**: Python code execution
-- **ImageAnalysisToolkit**: Image analysis
+
+### Multimodal Toolkits (Require multimodal model capabilities)
+- **WebToolkit**: Browser automation for web interaction and navigation
+- **VideoAnalysisToolkit**: Video processing and content analysis
+- **ImageAnalysisToolkit**: Image analysis and interpretation
+
+### Text-Based Toolkits
+- **AudioAnalysisToolkit**: Audio processing (requires OpenAI API)
+- **CodeExecutionToolkit**: Python code execution and evaluation
 - **SearchToolkit**: Web searches (Google, DuckDuckGo, Wikipedia)
 - **DocumentProcessingToolkit**: Document parsing (PDF, DOCX, etc.)
 
