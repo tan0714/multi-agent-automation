@@ -492,7 +492,7 @@ A: 请参阅我们的[贡献](#-贡献)部分，了解如何参与的详细信�
 
 # 📚 探索 CAMEL 依赖
 
-OWL 是基于 CAMEL-AI 框架构建的，以下是如何探索 CAMEL 源代码并了解其与 OWL 的工作方式：
+OWL 是基于 [CAMEL](https://github.com/camel-ai/camel) 框架构建的，以下是如何探索 CAMEL 源代码并了解其与 OWL 的工作方式：
 
 ## 访问 CAMEL 源代码
 
