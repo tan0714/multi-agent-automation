@@ -385,6 +385,10 @@ python run_gaia_roleplaying.py
 
 A: 当OWL判断某个任务可以使用非浏览器工具（如搜索、代码分析等）完成时，浏览器就不会启动。只有在判断需要使用浏览器工具的时候，本地才会弹出浏览器窗口，并进行浏览器模拟交互。
 
+# ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=camel-ai/owl&type=Date)](https://star-history.com/#camel-ai/owl&Date)
+
 [docs-image]: https://img.shields.io/badge/Documentation-EB3ECC
 [docs-url]: https://camel-ai.github.io/camel/index.html
 [star-image]: https://img.shields.io/github/stars/camel-ai/owl?label=stars&logo=github&color=brightgreen
