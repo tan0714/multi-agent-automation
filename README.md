@@ -71,13 +71,14 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
   - [**Install Dependencies**](#install-dependencies)
   - [**Setup Environment Variables**](#setup-environment-variables)
   - [**Running with Docker**](#running-with-docker)
-  
 - [🚀 Quick Start](#-quick-start)
+- [🧰 Toolkits and Capabilities](#-toolkits-and-capabilities)
 - [🌐 Web Interface](#-web-interface)
 - [🧪 Experiments](#-experiments)
 - [⏱️ Future Plans](#️-future-plans)
 - [📄 License](#-license)
 - [🖊️ Cite](#️-cite)
+- [🤝 Contributing](#-contributing)
 - [🔥 Community](#-community)
 - [❓ FAQ](#-faq)
 - [⭐ Star History](#-star-history)
@@ -87,7 +88,8 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
 
 - **[2025.03.11]**: We added MCPToolkit, FileWriteToolkit, and TerminalToolkit to enhance OWL agents with MCP tool calling, file writing capabilities, and terminal command execution.
 - **[2025.03.09]**: We added a web-based user interface that makes it easier to interact with the system.
-- **[2025.03.07]**: We open-source the codebase of 🦉 OWL project.
+- **[2025.03.07]**: We open-sourced the codebase of the 🦉 OWL project.
+- **[2025.03.03]**: OWL achieved the #1 position among open-source frameworks on the GAIA benchmark with a score of 58.18.
 
 # 🎬 Demo Video
 
@@ -105,6 +107,8 @@ https://private-user-images.githubusercontent.com/55657767/420212194-e813fc05-13
 - **Built-in Toolkits**: Access to a comprehensive set of built-in toolkits including ArxivToolkit, AudioAnalysisToolkit, CodeExecutionToolkit, DalleToolkit, DataCommonsToolkit, ExcelToolkit, GitHubToolkit, GoogleMapsToolkit, GoogleScholarToolkit, ImageAnalysisToolkit, MathToolkit, NetworkXToolkit, NotionToolkit, OpenAPIToolkit, RedditToolkit, SearchToolkit, SemanticScholarToolkit, SymPyToolkit, VideoAnalysisToolkit, WeatherToolkit, WebToolkit, and many more for specialized tasks.
 
 # 🛠️ Installation
+
+OWL supports multiple installation methods to fit your workflow preferences. Choose the option that works best for you.
 
 ## Option 1: Using uv (Recommended)
 
@@ -253,9 +257,7 @@ For more detailed Docker usage instructions, including cross-platform support, o
 
 # 🚀 Quick Start
 
-
-   
-Run the following demo case:
+After installation and setting up your environment variables, you can start using OWL right away:
 
 ```bash
 python owl/run.py
@@ -323,13 +325,17 @@ print(f"\033[94mAnswer: {answer}\033[0m")
 OWL will then automatically invoke document-related tools to process the file and extract the answer.
 
 
-Example tasks you can try:
+### Example Tasks
+
+Here are some tasks you can try with OWL:
+
 - "Find the latest stock price for Apple Inc."
 - "Analyze the sentiment of recent tweets about climate change"
 - "Help me debug this Python code: [your code here]"
 - "Summarize the main points from this research paper: [paper URL]"
+- "Create a data visualization for this dataset: [dataset path]"
 
-# 🧰 Configuring Toolkits
+# 🧰 Toolkits and Capabilities
 
 > **Important**: Effective use of toolkits requires models with strong tool calling capabilities. For multimodal toolkits (Web, Image, Video), models must also have multimodal understanding abilities.
 
@@ -392,16 +398,19 @@ Selecting only necessary toolkits optimizes performance and reduces resource usa
 
 # 🌐 Web Interface
 
-OWL now includes a web-based user interface that makes it easier to interact with the system. To start the web interface, run:
+OWL includes an intuitive web-based user interface that makes it easier to interact with the system. 
+
+## Starting the Web UI
 
 ```bash
+# Start the Chinese version
 python run_app.py
 
-# For English Version
+# Start the English version
 python run_app_en.py
 ```
 
-The web interface provides the following features:
+## Features
 
 - **Easy Model Selection**: Choose between different models (OpenAI, Qwen, DeepSeek, etc.)
 - **Environment Variable Management**: Configure your API keys and other settings directly from the UI
@@ -415,21 +424,25 @@ The web interface is built using Gradio and runs locally on your machine. No dat
 To reproduce OWL's GAIA benchmark score of 58.18:
 
 1. Switch to the `gaia58.18` branch:
-```bash
-git checkout gaia58.18
-```
+   ```bash
+   git checkout gaia58.18
+   ```
 
-1. Run the evaluation script:
-```bash
-python run_gaia_roleplaying.py
-```
+2. Run the evaluation script:
+   ```bash
+   python run_gaia_roleplaying.py
+   ```
+
+This will execute the same configuration that achieved our top-ranking performance on the GAIA benchmark.
 
 # ⏱️ Future Plans
 
-- [ ] Write a technical blog post detailing our exploration and insights in multi-agent collaboration in real-world tasks.
-- [ ] Enhance the toolkit ecosystem with more specialized tools for domain-specific tasks.
-- [ ] Develop more sophisticated agent interaction patterns and communication protocols
+We're continuously working to improve OWL. Here's what's on our roadmap:
 
+- [ ] Write a technical blog post detailing our exploration and insights in multi-agent collaboration in real-world tasks
+- [ ] Enhance the toolkit ecosystem with more specialized tools for domain-specific tasks
+- [ ] Develop more sophisticated agent interaction patterns and communication protocols
+- [ ] Improve performance on complex multi-step reasoning tasks
 
 # 📄 License
 
@@ -478,6 +491,14 @@ Join us for further discussions!
 **Q: Why don't I see Chrome running locally after starting the example script?**
 
 A: If OWL determines that a task can be completed using non-browser tools (such as search or code execution), the browser will not be launched. The browser window will only appear when OWL determines that browser-based interaction is necessary.
+
+**Q: Which Python version should I use?**
+
+A: OWL supports Python 3.10, 3.11, and 3.12. 
+
+**Q: How can I contribute to the project?**
+
+A: See our [Contributing](#-contributing) section for details on how to get involved. We welcome contributions of all kinds, from code improvements to documentation updates.
 
 # ⭐ Star History
 
