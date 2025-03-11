@@ -447,6 +447,21 @@ python run_gaia_roleplaying.py
 }
 ```
 
+# 🤝 贡献
+
+我们欢迎社区的贡献！以下是您可以提供帮助的方式：
+
+1. 阅读我们的[贡献指南](https://github.com/camel-ai/camel/blob/master/CONTRIBUTING.md)
+2. 查看[开放的问题](https://github.com/camel-ai/camel/issues)或创建新的问题
+3. 提交包含您改进的拉取请求
+
+**当前开放贡献的问题：**
+- [#1772](https://github.com/camel-ai/camel/issues/1772)
+- [#1793](https://github.com/camel-ai/camel/issues/1793)
+- [#1803](https://github.com/camel-ai/camel/issues/1803)
+
+要认领一个问题，只需在该问题下留言表明您的兴趣即可。
+
 # 🔥 社区
 加入我们的 ([*Discord*](https://discord.camel-ai.org/) 或 [*微信*](https://ghli.org/camel/wechat.png)) 社区，一起探索智能体扩展规律的边界。
 

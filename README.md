@@ -450,6 +450,21 @@ If you find this repo useful, please cite:
 }
 ```
 
+# 🤝 Contributing
+
+We welcome contributions from the community! Here's how you can help:
+
+1. Read our [Contribution Guidelines](https://github.com/camel-ai/camel/blob/master/CONTRIBUTING.md)
+2. Check [open issues](https://github.com/camel-ai/camel/issues) or create new ones
+3. Submit pull requests with your improvements
+
+**Current Issues Open for Contribution:**
+- [#1772](https://github.com/camel-ai/camel/issues/1772)
+- [#1793](https://github.com/camel-ai/camel/issues/1793)
+- [#1803](https://github.com/camel-ai/camel/issues/1803)
+
+To take on an issue, simply leave a comment stating your interest.
+
 # 🔥 Community
 Join us ([*Discord*](https://discord.camel-ai.org/) or [*WeChat*](https://ghli.org/camel/wechat.png)) in pushing the boundaries of finding the scaling laws of agents. 
 
