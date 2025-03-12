@@ -53,12 +53,12 @@ def construct_society(question: str) -> OwlRolePlaying:
     models = {
         "user": ModelFactory.create(
             model_platform=ModelPlatformType.QWEN,
-            model_type=ModelType.QWEN_VL_MAX,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
         "assistant": ModelFactory.create(
             model_platform=ModelPlatformType.QWEN,
-            model_type=ModelType.QWEN_VL_MAX,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
         "web": ModelFactory.create(
@@ -68,7 +68,7 @@ def construct_society(question: str) -> OwlRolePlaying:
         ),
         "planning": ModelFactory.create(
             model_platform=ModelPlatformType.QWEN,
-            model_type=ModelType.QWEN_VL_MAX,
+            model_type=ModelType.QWEN_MAX,
             model_config_dict={"temperature": 0},
         ),
         "video": ModelFactory.create(
