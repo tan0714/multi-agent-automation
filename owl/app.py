@@ -148,33 +148,45 @@ def load_env_vars():
 
     # 加载.env文件中可能存在的其他环境变量
     if Path(".env").exists():
-        with open(".env", "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, value = line.split("=", 1)
-                    key = key.strip()
-                    value = value.strip().strip("\"'")
+        try:
+            with open(".env", "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        try:
+                            key, value = line.split("=", 1)
+                            key = key.strip()
+                            value = value.strip()
 
-                    # 检查是否是已知的环境变量
-                    known_var = False
-                    for group in ENV_GROUPS.values():
-                        if any(var["name"] == key for var in group):
-                            known_var = True
-                            break
+                            # 处理引号包裹的值
+                            if (value.startswith('"') and value.endswith('"')) or (
+                                value.startswith("'") and value.endswith("'")
+                            ):
+                                value = value[1:-1]  # 移除首尾的引号
 
-                    # 如果不是已知的环境变量，添加到自定义环境变量组
-                    if not known_var and key not in env_vars:
-                        ENV_GROUPS["自定义环境变量"].append(
-                            {
-                                "name": key,
-                                "label": key,
-                                "type": "text",
-                                "required": False,
-                                "help": "用户自定义环境变量",
-                            }
-                        )
-                        env_vars[key] = value
+                            # 检查是否是已知的环境变量
+                            known_var = False
+                            for group in ENV_GROUPS.values():
+                                if any(var["name"] == key for var in group):
+                                    known_var = True
+                                    break
+
+                            # 如果不是已知的环境变量，添加到自定义环境变量组
+                            if not known_var and key not in env_vars:
+                                ENV_GROUPS["自定义环境变量"].append(
+                                    {
+                                        "name": key,
+                                        "label": key,
+                                        "type": "text",
+                                        "required": False,
+                                        "help": "用户自定义环境变量",
+                                    }
+                                )
+                                env_vars[key] = value
+                        except Exception as e:
+                            print(f"解析环境变量行时出错: {line}, 错误: {str(e)}")
+        except Exception as e:
+            print(f"加载.env文件时出错: {str(e)}")
 
     return env_vars
 
@@ -186,33 +198,49 @@ def save_env_vars(env_vars):
     existing_content = {}
 
     if env_path.exists():
-        with open(env_path, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, value = line.split("=", 1)
-                    existing_content[key.strip()] = value.strip()
+        try:
+            with open(env_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        try:
+                            key, value = line.split("=", 1)
+                            existing_content[key.strip()] = value.strip()
+                        except Exception as e:
+                            print(f"解析环境变量行时出错: {line}, 错误: {str(e)}")
+        except Exception as e:
+            print(f"读取.env文件时出错: {str(e)}")
 
     # 更新环境变量
     for key, value in env_vars.items():
-        if value:  # 只保存非空值
-            # 确保值是字符串形式，并用引号包裹
+        if value is not None:  # 允许空字符串值，但不允许None
+            # 确保值是字符串形式
             value = str(value)  # 确保值是字符串
 
-            # 先移除现有的引号（如果有）
-            stripped_value = value.strip("\"'")
-
-            # 用双引号包裹值，确保特殊字符被正确处理
-            quoted_value = f'"{stripped_value}"'
-            existing_content[key] = quoted_value
-
-            # 同时更新当前进程的环境变量（使用未引用的值）
-            os.environ[key] = stripped_value
+            # 检查值是否已经被引号包裹
+            if (value.startswith('"') and value.endswith('"')) or (
+                value.startswith("'") and value.endswith("'")
+            ):
+                # 已经被引号包裹，保持原样
+                existing_content[key] = value
+                # 更新环境变量时移除引号
+                os.environ[key] = value[1:-1]
+            else:
+                # 没有被引号包裹，添加双引号
+                # 用双引号包裹值，确保特殊字符被正确处理
+                quoted_value = f'"{value}"'
+                existing_content[key] = quoted_value
+                # 同时更新当前进程的环境变量（使用未引用的值）
+                os.environ[key] = value
 
     # 写入.env文件
-    with open(env_path, "w", encoding="utf-8") as f:
-        for key, value in existing_content.items():
-            f.write(f"{key}={value}\n")
+    try:
+        with open(env_path, "w", encoding="utf-8") as f:
+            for key, value in existing_content.items():
+                f.write(f"{key}={value}\n")
+    except Exception as e:
+        print(f"写入.env文件时出错: {str(e)}")
+        return f"❌ 保存环境变量失败: {str(e)}"
 
     return "✅ 环境变量已保存"
 
@@ -291,22 +319,36 @@ def delete_custom_env_var(name):
     # 从.env文件中删除该环境变量
     env_path = Path(".env")
     if env_path.exists():
-        with open(env_path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
+        try:
+            with open(env_path, "r", encoding="utf-8") as f:
+                lines = f.readlines()
 
-        with open(env_path, "w", encoding="utf-8") as f:
-            for line in lines:
-                # 更精确地匹配环境变量行
-                # 检查是否为非注释行且包含变量名=
-                line_stripped = line.strip()
-                if line_stripped.startswith("#") or "=" not in line_stripped:
-                    f.write(line)  # 保留注释行和不包含=的行
-                    continue
+            with open(env_path, "w", encoding="utf-8") as f:
+                for line in lines:
+                    try:
+                        # 更精确地匹配环境变量行
+                        line_stripped = line.strip()
+                        # 检查是否为注释行或空行
+                        if not line_stripped or line_stripped.startswith("#"):
+                            f.write(line)  # 保留注释行和空行
+                            continue
 
-                # 提取变量名并检查是否与要删除的变量匹配
-                var_name = line_stripped.split("=", 1)[0].strip()
-                if var_name != name:
-                    f.write(line)  # 保留不匹配的变量
+                        # 检查是否包含等号
+                        if "=" not in line_stripped:
+                            f.write(line)  # 保留不包含等号的行
+                            continue
+
+                        # 提取变量名并检查是否与要删除的变量匹配
+                        var_name = line_stripped.split("=", 1)[0].strip()
+                        if var_name != name:
+                            f.write(line)  # 保留不匹配的变量
+                    except Exception as e:
+                        print(f"处理.env文件行时出错: {line}, 错误: {str(e)}")
+                        # 出错时保留原行
+                        f.write(line)
+        except Exception as e:
+            print(f"删除环境变量时出错: {str(e)}")
+            return f"❌ 删除环境变量失败: {str(e)}", None
 
     # 从当前进程的环境变量中删除
     if name in os.environ:

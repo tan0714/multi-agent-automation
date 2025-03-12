@@ -148,33 +148,49 @@ def load_env_vars():
 
     # Load other environment variables that may exist in the .env file
     if Path(".env").exists():
-        with open(".env", "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, value = line.split("=", 1)
-                    key = key.strip()
-                    value = value.strip().strip("\"'")
+        try:
+            with open(".env", "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        try:
+                            key, value = line.split("=", 1)
+                            key = key.strip()
+                            value = value.strip()
 
-                    # Check if it's a known environment variable
-                    known_var = False
-                    for group in ENV_GROUPS.values():
-                        if any(var["name"] == key for var in group):
-                            known_var = True
-                            break
+                            # Handle quoted values
+                            if (value.startswith('"') and value.endswith('"')) or (
+                                value.startswith("'") and value.endswith("'")
+                            ):
+                                value = value[
+                                    1:-1
+                                ]  # Remove quotes at the beginning and end
 
-                    # If it's not a known environment variable, add it to the custom environment variables group
-                    if not known_var and key not in env_vars:
-                        ENV_GROUPS["Custom Environment Variables"].append(
-                            {
-                                "name": key,
-                                "label": key,
-                                "type": "text",
-                                "required": False,
-                                "help": "User-defined environment variable",
-                            }
-                        )
-                        env_vars[key] = value
+                            # Check if it's a known environment variable
+                            known_var = False
+                            for group in ENV_GROUPS.values():
+                                if any(var["name"] == key for var in group):
+                                    known_var = True
+                                    break
+
+                            # If it's not a known environment variable, add it to the custom environment variables group
+                            if not known_var and key not in env_vars:
+                                ENV_GROUPS["Custom Environment Variables"].append(
+                                    {
+                                        "name": key,
+                                        "label": key,
+                                        "type": "text",
+                                        "required": False,
+                                        "help": "User-defined environment variable",
+                                    }
+                                )
+                                env_vars[key] = value
+                        except Exception as e:
+                            print(
+                                f"Error parsing environment variable line: {line}, error: {str(e)}"
+                            )
+        except Exception as e:
+            print(f"Error loading .env file: {str(e)}")
 
     return env_vars
 
@@ -186,33 +202,51 @@ def save_env_vars(env_vars):
     existing_content = {}
 
     if env_path.exists():
-        with open(env_path, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, value = line.split("=", 1)
-                    existing_content[key.strip()] = value.strip()
+        try:
+            with open(env_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        try:
+                            key, value = line.split("=", 1)
+                            existing_content[key.strip()] = value.strip()
+                        except Exception as e:
+                            print(
+                                f"Error parsing environment variable line: {line}, error: {str(e)}"
+                            )
+        except Exception as e:
+            print(f"Error reading .env file: {str(e)}")
 
     # Update environment variables
     for key, value in env_vars.items():
-        if value:  # Only save non-empty values
-            # Ensure the value is a string and wrapped in quotes
+        if value is not None:  # Allow empty string values, but not None
+            # Ensure the value is a string
             value = str(value)  # Ensure the value is a string
 
-            # First remove existing quotes (if any)
-            stripped_value = value.strip("\"'")
-
-            # Wrap the value in double quotes to ensure special characters are handled correctly
-            quoted_value = f'"{stripped_value}"'
-            existing_content[key] = quoted_value
-
-            # Also update the environment variable for the current process (using the unquoted value)
-            os.environ[key] = stripped_value
+            # Check if the value is already wrapped in quotes
+            if (value.startswith('"') and value.endswith('"')) or (
+                value.startswith("'") and value.endswith("'")
+            ):
+                # Already wrapped in quotes, keep as is
+                existing_content[key] = value
+                # Update environment variable by removing quotes
+                os.environ[key] = value[1:-1]
+            else:
+                # Not wrapped in quotes, add double quotes
+                # Wrap the value in double quotes to ensure special characters are handled correctly
+                quoted_value = f'"{value}"'
+                existing_content[key] = quoted_value
+                # Also update the environment variable for the current process (using the unquoted value)
+                os.environ[key] = value
 
     # Write to .env file
-    with open(env_path, "w", encoding="utf-8") as f:
-        for key, value in existing_content.items():
-            f.write(f"{key}={value}\n")
+    try:
+        with open(env_path, "w", encoding="utf-8") as f:
+            for key, value in existing_content.items():
+                f.write(f"{key}={value}\n")
+    except Exception as e:
+        print(f"Error writing to .env file: {str(e)}")
+        return f"❌ Failed to save environment variables: {str(e)}"
 
     return "✅ Environment variables saved"
 
@@ -228,7 +262,7 @@ def add_custom_env_var(name, value, var_type):
             return f"❌ Environment variable {name} already exists", None
 
     # Add to custom environment variables group
-    ENV_GROUPS["自定义环境变量"].append(
+    ENV_GROUPS["Custom Environment Variables"].append(
         {
             "name": name,
             "label": name,
@@ -295,22 +329,38 @@ def delete_custom_env_var(name):
     # Delete the environment variable from .env file
     env_path = Path(".env")
     if env_path.exists():
-        with open(env_path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
+        try:
+            with open(env_path, "r", encoding="utf-8") as f:
+                lines = f.readlines()
 
-        with open(env_path, "w", encoding="utf-8") as f:
-            for line in lines:
-                # More precisely match environment variable lines
-                # Check if it's a non-comment line and contains variable_name=
-                line_stripped = line.strip()
-                if line_stripped.startswith("#") or "=" not in line_stripped:
-                    f.write(line)  # Keep comment lines and lines without =
-                    continue
+            with open(env_path, "w", encoding="utf-8") as f:
+                for line in lines:
+                    try:
+                        # More precisely match environment variable lines
+                        line_stripped = line.strip()
+                        # Check if it's a comment line or empty line
+                        if not line_stripped or line_stripped.startswith("#"):
+                            f.write(line)  # Keep comment lines and empty lines
+                            continue
 
-                # Extract variable name and check if it matches the variable to be deleted
-                var_name = line_stripped.split("=", 1)[0].strip()
-                if var_name != name:
-                    f.write(line)  # Keep variables that don't match
+                        # Check if it contains an equals sign
+                        if "=" not in line_stripped:
+                            f.write(line)  # Keep lines without equals sign
+                            continue
+
+                        # Extract variable name and check if it matches the variable to be deleted
+                        var_name = line_stripped.split("=", 1)[0].strip()
+                        if var_name != name:
+                            f.write(line)  # Keep variables that don't match
+                    except Exception as e:
+                        print(
+                            f"Error processing .env file line: {line}, error: {str(e)}"
+                        )
+                        # Keep the original line when an error occurs
+                        f.write(line)
+        except Exception as e:
+            print(f"Error deleting environment variable: {str(e)}")
+            return f"❌ Failed to delete environment variable: {str(e)}", None
 
     # Delete from current process environment variables
     if name in os.environ:
