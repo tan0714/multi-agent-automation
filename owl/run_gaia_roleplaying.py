@@ -52,6 +52,8 @@ def main():
     # Create cache directory
     cache_dir = "tmp/"
     os.makedirs(cache_dir, exist_ok=True)
+    result_dir = "results/"
+    os.makedirs(result_dir, exist_ok=True)
 
     # Create models for different components
     models = {

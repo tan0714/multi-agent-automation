@@ -300,11 +300,6 @@ class OwlGAIARolePlaying(OwlRolePlaying):
                 ),
             )
         user_msg = self._reduce_message_options(user_response.msgs)
-        if (
-            "n" in self.user_agent.model_config_dict.keys()
-            and self.user_agent.model_config_dict["n"] > 1
-        ):
-            self.user_agent.record_message(user_msg)
 
         modified_user_msg = deepcopy(user_msg)
 
