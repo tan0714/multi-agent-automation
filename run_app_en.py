@@ -25,21 +25,21 @@ from pathlib import Path
 
 def main():
     """Main function to launch the OWL Intelligent Assistant Platform"""
-    # 确保当前目录是项目根目录
+    # Ensure the current directory is the project root
     project_root = Path(__file__).resolve().parent
     os.chdir(project_root)
 
-    # 创建日志目录
+    # Create log directory
     log_dir = project_root / "logs"
     log_dir.mkdir(exist_ok=True)
 
-    # 导入并运行应用
+    # Add project root to Python path
     sys.path.insert(0, str(project_root))
 
     try:
         from owl.app_en import create_ui
 
-        # 创建并启动应用
+        # Create and launch the application
         app = create_ui()
         app.queue().launch(share=False)
 
