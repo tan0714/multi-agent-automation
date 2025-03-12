@@ -95,7 +95,7 @@ class GAIABenchmark(BaseBenchmark):
             json.dump(constructed_data, f, indent=4)
         f.close()
 
-        print(f"infofully dumped tasks to {save_path}")
+        print(f"Successfully dumped tasks to {save_path}")
 
     def load(self, force_download=False):
         r"""Load the GAIA dataset.
