@@ -11,81 +11,58 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ========= Copyright 2023-2024 @ CAMEL-AI.org. All Rights Reserved. =========
-
 from dotenv import load_dotenv
 
-
-import os
-
 from camel.models import ModelFactory
-from camel.logger import get_logger
 from camel.toolkits import (
-    AudioAnalysisToolkit,
-    CodeExecutionToolkit,
-    ExcelToolkit,
-    ImageAnalysisToolkit,
     SearchToolkit,
-    VideoAnalysisToolkit,
     WebToolkit,
     FileWriteToolkit,
+    TerminalToolkit
 )
 from camel.types import ModelPlatformType, ModelType
-from camel.configs import ChatGPTConfig
-
-from utils import GAIABenchmark
 from camel.logger import set_log_level
 
-set_log_level(level="DEBUG")
+from utils import OwlRolePlaying, run_society
 
 load_dotenv()
+set_log_level(level="DEBUG")
+import os
+# Get current script directory
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
-logger = get_logger(__name__)
+def construct_society(question: str) -> OwlRolePlaying:
+    r"""Construct a society of agents based on the given question.
 
-# Configuration
-LEVEL = 1
-SAVE_RESULT = True
-test_idx = [0]
+    Args:
+        question (str): The task or question to be addressed by the society.
 
-
-def main():
-    """Main function to run the GAIA benchmark."""
-    # Create cache directory
-    cache_dir = "tmp/"
-    os.makedirs(cache_dir, exist_ok=True)
-    result_dir = "results/"
-    os.makedirs(result_dir, exist_ok=True)
+    Returns:
+        OwlRolePlaying: A configured society of agents ready to address the
+            question.
+    """
 
     # Create models for different components
     models = {
         "user": ModelFactory.create(
             model_platform=ModelPlatformType.OPENAI,
             model_type=ModelType.GPT_4O,
-            model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(),
+            model_config_dict={"temperature": 0},
         ),
         "assistant": ModelFactory.create(
             model_platform=ModelPlatformType.OPENAI,
             model_type=ModelType.GPT_4O,
-            model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(),
+            model_config_dict={"temperature": 0},
         ),
         "web": ModelFactory.create(
             model_platform=ModelPlatformType.OPENAI,
             model_type=ModelType.GPT_4O,
-            model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(),
+            model_config_dict={"temperature": 0},
         ),
         "planning": ModelFactory.create(
             model_platform=ModelPlatformType.OPENAI,
             model_type=ModelType.GPT_4O,
-            model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(),
-        ),
-        "video": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
-            model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(),
-        ),
-        "image": ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O,
-            model_config_dict=ChatGPTConfig(temperature=0, top_p=1).as_dict(),
+            model_config_dict={"temperature": 0},
         ),
     }
 
@@ -96,43 +73,46 @@ def main():
             web_agent_model=models["web"],
             planning_agent_model=models["planning"],
         ).get_tools(),
-        *VideoAnalysisToolkit(
-            model=models["video"]
-        ).get_tools(),  # This requires OpenAI Key
-        *AudioAnalysisToolkit().get_tools(),  # This requires OpenAI Key
-        *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
-        *ImageAnalysisToolkit(model=models["image"]).get_tools(),
-        *SearchToolkit().get_tools(),
-        *ExcelToolkit().get_tools(),
+        SearchToolkit().search_duckduckgo,
+        SearchToolkit().search_wiki,
         *FileWriteToolkit(output_dir="./").get_tools(),
+        *TerminalToolkit().get_tools(),
     ]
 
     # Configure agent roles and parameters
     user_agent_kwargs = {"model": models["user"]}
     assistant_agent_kwargs = {"model": models["assistant"], "tools": tools}
 
-    # Initialize benchmark
-    benchmark = GAIABenchmark(data_dir="data/gaia", save_to="results/result.json")
+    # Configure task parameters
+    task_kwargs = {
+        "task_prompt": question,
+        "with_task_specify": False,
+    }
 
-    # Print benchmark information
-    print(f"Number of validation examples: {len(benchmark.valid)}")
-    print(f"Number of test examples: {len(benchmark.test)}")
-
-    # Run benchmark
-    result = benchmark.run(
-        on="valid",
-        level=LEVEL,
-        idx=test_idx,
-        save_result=SAVE_RESULT,
+    # Create and return the society
+    society = OwlRolePlaying(
+        **task_kwargs,
         user_role_name="user",
         user_agent_kwargs=user_agent_kwargs,
         assistant_role_name="assistant",
         assistant_agent_kwargs=assistant_agent_kwargs,
     )
 
-    # Output results
-    logger.info(f"Correct: {result['correct']}, Total: {result['total']}")
-    logger.info(f"Accuracy: {result['accuracy']}")
+    return society
+
+
+def main():
+    r"""Main function to run the OWL system with an example question."""
+    # Example research question
+    question = f"""打开百度搜索，总结一下camel-ai的camel框架的github star、fork数目等，并把数字用plot包写成python文件保存到"+{os.path.join
+(base_dir, 'final_output')}+"，用本地终端执行python文件显示图出来给我"""
+
+    # Construct and run the society
+    society = construct_society(question)
+    answer, chat_history, token_count = run_society(society)
+
+    # Output the result
+    print(f"\033[94mAnswer: {answer}\nChat History: {chat_history}\ntoken_count:{token_count}\033[0m")
 
 
 if __name__ == "__main__":
