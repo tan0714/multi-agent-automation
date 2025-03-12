@@ -440,10 +440,11 @@ def run_script(script_dropdown, question, progress=gr.Progress()):
     log_file = log_dir / f"{script_name.replace('.py', '')}_{timestamp}.log"
 
     # Build command
+    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     cmd = [
         sys.executable,
-        os.path.join("owl", "script_adapter.py"),
-        os.path.join("owl", script_name),
+        os.path.join(base_path, "owl", "script_adapter.py"),
+        os.path.join(base_path, "owl", script_name),
     ]
 
     # Create a copy of environment variables and add the question
@@ -626,7 +627,7 @@ def create_ui():
         gr.Markdown(
             """
             # 🦉 OWL Intelligent Assistant Platform
-            
+
             Select a model and enter your question, the system will run the corresponding script and display the results.
             """
         )
@@ -889,7 +890,7 @@ def create_ui():
         gr.Markdown(
             """
             ### 📝 Instructions
-            
+
             - Select a model and enter your question
             - Click the "Run" button to start execution
             - To stop execution, click the "Stop" button
@@ -898,9 +899,9 @@ def create_ui():
             - View conversation history in the "Chat History" tab (if available)
             - Configure API keys and other environment variables in the "Environment Variable Configuration" tab
             - You can add custom environment variables to meet special requirements
-            
+
             ### ⚠️ Notes
-            
+
             - Running some models may require API keys, please make sure you have set the corresponding environment variables in the "Environment Variable Configuration" tab
             - Some scripts may take a long time to run, please be patient
             - If execution exceeds 30 minutes, the process will automatically terminate

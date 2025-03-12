@@ -426,10 +426,13 @@ def run_script(script_dropdown, question, progress=gr.Progress()):
     log_file = log_dir / f"{script_name.replace('.py', '')}_{timestamp}.log"
 
     # 构建命令
+    # 获取当前脚本所在的基础路径
+    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     cmd = [
         sys.executable,
-        os.path.join("owl", "script_adapter.py"),
-        os.path.join("owl", script_name),
+        os.path.join(base_path, "owl", "script_adapter.py"),
+        os.path.join(base_path, "owl", script_name),
     ]
 
     # 创建环境变量副本并添加问题
@@ -610,7 +613,7 @@ def create_ui():
         gr.Markdown(
             """
             # 🦉 OWL 智能助手运行平台
-            
+
             选择一个模型并输入您的问题，系统将运行相应的脚本并显示结果。
             """
         )
@@ -860,7 +863,7 @@ def create_ui():
         gr.Markdown(
             """
             ### 📝 使用说明
-            
+
             - 选择一个模型并输入您的问题
             - 点击"运行"按钮开始执行
             - 如需终止运行，点击"终止"按钮
@@ -869,9 +872,9 @@ def create_ui():
             - 在"聊天历史"标签页查看对话历史（如果有）
             - 在"环境变量配置"标签页配置API密钥和其他环境变量
             - 您可以添加自定义环境变量，满足特殊需求
-            
+
             ### ⚠️ 注意事项
-            
+
             - 运行某些模型可能需要API密钥，请确保在"环境变量配置"标签页中设置了相应的环境变量
             - 某些脚本可能需要较长时间运行，请耐心等待
             - 如果运行超过30分钟，进程将自动终止
