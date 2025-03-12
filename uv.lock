@@ -482,7 +482,7 @@ wheels = [
 
 [[package]]
 name = "camel-ai"
-version = "0.2.26"
+version = "0.2.27"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
@@ -499,9 +499,9 @@ dependencies = [
     { name = "pyyaml" },
     { name = "tiktoken" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/66/42/d3f4717fdde1db9945a7e976ce44bc4b11fe3a127a43dade1e43e5cf055c/camel_ai-0.2.26.tar.gz", hash = "sha256:7e6bdcef4aed9c594a1ff8f3393bc6763502c5732bca94ccea30190094f808c6", size = 438859 }
+sdist = { url = "https://files.pythonhosted.org/packages/ff/27/2bce666ae7f7d0db276d037b3afe84a460e782438e5cacc08de20417233b/camel_ai-0.2.27.tar.gz", hash = "sha256:4689245ad48f51e5e602d2651cf463afe212bcf046633a19c2189574c1f3481a", size = 441363 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fe/a3/9429c143793161cd1e6474ad8f9d124a52ab61ee5a16422bb314e046d85e/camel_ai-0.2.26-py3-none-any.whl", hash = "sha256:4ed0161a5ca0d21b6208ca5955bf70ef52de16f1a6841f8e405b1a22c066bafb", size = 742899 },
+    { url = "https://files.pythonhosted.org/packages/b0/fa/94f5b41cb6babc81aac00494b170ec2bea058b6c00f477ceb3e886c49177/camel_ai-0.2.27-py3-none-any.whl", hash = "sha256:c4a6597791faf2f2161c56c2579e60850557b126135b29af77ebd08fa0774e0b", size = 746387 },
 ]
 
 [package.optional-dependencies]
@@ -3575,7 +3575,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "camel-ai", extras = ["all"], specifier = "==0.2.26" },
+    { name = "camel-ai", extras = ["all"], specifier = "==0.2.27" },
     { name = "chunkr-ai", specifier = ">=0.0.41" },
     { name = "docx2markdown", specifier = ">=0.1.1" },
     { name = "gradio", specifier = ">=3.50.2" },
@@ -4257,6 +4257,7 @@ sdist = { url = "https://files.pythonhosted.org/packages/06/47/b61c1c44b87cbdaee
 wheels = [
     { url = "https://files.pythonhosted.org/packages/61/9b/98ef4b98309e9db3baa9fe572f0e61b6130bb9852d13189970f35b703499/pymupdf-1.25.3-cp39-abi3-macosx_10_9_x86_64.whl", hash = "sha256:96878e1b748f9c2011aecb2028c5f96b5a347a9a91169130ad0133053d97915e", size = 19343576 },
     { url = "https://files.pythonhosted.org/packages/14/62/4e12126db174c8cfbf692281cda971cc4046c5f5226032c2cfaa6f83e08d/pymupdf-1.25.3-cp39-abi3-macosx_11_0_arm64.whl", hash = "sha256:6ef753005b72ebfd23470f72f7e30f61e21b0b5e748045ec5b8f89e6e3068d62", size = 18580114 },
+    { url = "https://files.pythonhosted.org/packages/ec/c5/cf7ecf005e4f8ba3664d6aaa0613adeba4c2ab524832c452c69857e7184f/pymupdf-1.25.3-cp39-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:cbff443d899f37b17f1e67563cc03673d50b4bf33ccc237e73d34f18f3a07ccf", size = 19442580 },
     { url = "https://files.pythonhosted.org/packages/52/de/bd1418e31f73d37b8381cd5deacfd681e6be702b8890e123e83724569ee1/pymupdf-1.25.3-cp39-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:46d90c4f9e62d1856e8db4b9f04a202ff4a7f086a816af73abdc86adb7f5e25a", size = 19999825 },
     { url = "https://files.pythonhosted.org/packages/42/ee/3c449b0de061440ba1ac984aa845315e9e2dca0ff2003c5adfc6febff203/pymupdf-1.25.3-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:a5de51efdbe4d486b6c1111c84e8a231cbfb426f3d6ff31ab530ad70e6f39756", size = 21123157 },
     { url = "https://files.pythonhosted.org/packages/83/53/71faaaf91c56f2883b13f3dd849bf2697f012eb35eb7b952d62734cff41f/pymupdf-1.25.3-cp39-abi3-win32.whl", hash = "sha256:bca72e6089f985d800596e22973f79cc08af6cbff1d93e5bda9248326a03857c", size = 15094211 },
