@@ -12,7 +12,7 @@
 # limitations under the License.
 # ========= Copyright 2023-2024 @ CAMEL-AI.org. All Rights Reserved. =========
 from dotenv import load_dotenv
-
+import os
 from camel.models import ModelFactory
 from camel.toolkits import (
     SearchToolkit,
@@ -27,7 +27,8 @@ from utils import OwlRolePlaying, run_society
 
 load_dotenv()
 set_log_level(level="DEBUG")
-
+# Get current script directory
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
 def construct_society(question: str) -> OwlRolePlaying:
     r"""Construct a society of agents based on the given question.
@@ -102,7 +103,10 @@ def construct_society(question: str) -> OwlRolePlaying:
 def main():
     r"""Main function to run the OWL system with an example question."""
     # Example research question
-    question = "Open Google Search, summarize the number of GitHub stars, forks, etc., of the camel framework of camel-ai, and write the numbers into a Python file using the plot package, save it locally, and execute the Python file with the local terminal to display the graph for me."
+    question = f"""Open Google Search, summarize the number of GitHub stars, forks, etc., of the camel framework of camel-ai, 
+    and write the numbers into a Python file using the plot package, 
+    save it to "+{os.path.join(base_dir, 'final_output')}+", 
+    and execute the Python file with the local terminal to display the graph for me."""
 
     # Construct and run the society
     society = construct_society(question)

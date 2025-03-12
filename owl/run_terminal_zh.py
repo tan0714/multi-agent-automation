@@ -27,7 +27,9 @@ from utils import OwlRolePlaying, run_society
 
 load_dotenv()
 set_log_level(level="DEBUG")
-
+import os
+# Get current script directory
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
 def construct_society(question: str) -> OwlRolePlaying:
     r"""Construct a society of agents based on the given question.
@@ -102,8 +104,11 @@ def construct_society(question: str) -> OwlRolePlaying:
 def main():
     r"""Main function to run the OWL system with an example question."""
     # Example research question
-    question = "打开谷歌搜索，总结一下camel-ai的camel框架的github star、fork数目等，并把数字用plot包写成python文件保存到本地，用本地终端执行python文件显示图出来给我"
-
+    question = f"""打开百度搜索，总结一下camel-ai的camel框架的github star、fork数目等，并把数字用plot包写成python文件保存到"+{os.path.join
+(base_dir, 'final_output')}+"，用本地终端执行python文件显示图出来给我"""
+#     question=f"""Create 'app.log' in the logs directory at '{os.path.join
+# (base_dir, 'logs')}' with content: 'INFO: Application started successfully at 
+# 2024-03-10'"""
     # Construct and run the society
     society = construct_society(question)
     answer, chat_history, token_count = run_society(society)
