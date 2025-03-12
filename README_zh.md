@@ -484,6 +484,7 @@ python run_gaia_roleplaying.py
 - [#1770](https://github.com/camel-ai/camel/issues/1770)
 - [#1712](https://github.com/camel-ai/camel/issues/1712)
 - [#1537](https://github.com/camel-ai/camel/issues/1537)
+- [#1827](https://github.com/camel-ai/camel/issues/1827)
 
 要认领一个问题，只需在该问题下留言表明您的兴趣即可。
 

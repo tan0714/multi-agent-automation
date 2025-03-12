@@ -493,6 +493,7 @@ We welcome contributions from the community! Here's how you can help:
 - [#1770](https://github.com/camel-ai/camel/issues/1770)
 - [#1712](https://github.com/camel-ai/camel/issues/1712)
 - [#1537](https://github.com/camel-ai/camel/issues/1537)
+- [#1827](https://github.com/camel-ai/camel/issues/1827)
 
 To take on an issue, simply leave a comment stating your interest.
 
