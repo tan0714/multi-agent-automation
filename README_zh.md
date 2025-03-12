@@ -413,7 +413,8 @@ assistant_agent_kwargs = {"model": models["assistant"], "tools": tools}
 OWL 现在包含一个基于网页的用户界面，使与系统交互变得更加容易。要启动网页界面，请运行：
 
 ```bash
-python run_app.py
+# 中文版本
+python run_app_zh.py
 
 # 英文版本
 python run_app_en.py
