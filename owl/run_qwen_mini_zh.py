@@ -39,19 +39,19 @@ def construct_society(question: str) -> OwlRolePlaying:
 
     user_model = ModelFactory.create(
         model_platform=ModelPlatformType.QWEN,
-        model_type=ModelType.QWEN_VL_MAX,
+        model_type=ModelType.QWEN_MAX,
         model_config_dict={"temperature": 0},
     )
 
     assistant_model = ModelFactory.create(
         model_platform=ModelPlatformType.QWEN,
-        model_type=ModelType.QWEN_VL_MAX,
+        model_type=ModelType.QWEN_MAX,
         model_config_dict={"temperature": 0},
     )
 
     planning_model = ModelFactory.create(
         model_platform=ModelPlatformType.QWEN,
-        model_type=ModelType.QWEN_VL_MAX,
+        model_type=ModelType.QWEN_MAX,
         model_config_dict={"temperature": 0},
     )
 
