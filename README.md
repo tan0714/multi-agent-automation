@@ -103,7 +103,7 @@ Our vision is to revolutionize how AI agents collaborate to solve real-world tas
   </p>
 </div>
 
-- **[2025.03.12]**: Launched our Community Call for Use Cases initiative! See the highlighted announcement above.
+- **[2025.03.12]**: Added Bocha search in SearchToolkit, integrated Volcano Engine model platform, and enhanced Azure and OpenAI Compatible models with structured output and tool calling.
 - **[2025.03.11]**: We added MCPToolkit, FileWriteToolkit, and TerminalToolkit to enhance OWL agents with MCP tool calling, file writing capabilities, and terminal command execution.
 - **[2025.03.09]**: We added a web-based user interface that makes it easier to interact with the system.
 - **[2025.03.07]**: We open-sourced the codebase of the 🦉 OWL project.
@@ -490,10 +490,9 @@ We welcome contributions from the community! Here's how you can help:
 3. Submit pull requests with your improvements
 
 **Current Issues Open for Contribution:**
-- [#1812](https://github.com/camel-ai/camel/issues/1812)
-- [#1802](https://github.com/camel-ai/camel/issues/1802)
-- [#1798](https://github.com/camel-ai/camel/issues/1798)
 - [#1770](https://github.com/camel-ai/camel/issues/1770)
+- [#1712](https://github.com/camel-ai/camel/issues/1712)
+- [#1537](https://github.com/camel-ai/camel/issues/1537)
 
 To take on an issue, simply leave a comment stating your interest.
 
