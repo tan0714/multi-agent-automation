@@ -106,9 +106,7 @@ def main():
     # Example research question
     question = f"""打开百度搜索，总结一下camel-ai的camel框架的github star、fork数目等，并把数字用plot包写成python文件保存到"+{os.path.join
 (base_dir, 'final_output')}+"，用本地终端执行python文件显示图出来给我"""
-#     question=f"""Create 'app.log' in the logs directory at '{os.path.join
-# (base_dir, 'logs')}' with content: 'INFO: Application started successfully at 
-# 2024-03-10'"""
+
     # Construct and run the society
     society = construct_society(question)
     answer, chat_history, token_count = run_society(society)

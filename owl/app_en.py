@@ -41,6 +41,7 @@ SCRIPTS = {
     "GAIA Roleplaying": "run_gaia_roleplaying.py",
     "OpenAI Compatible": "run_openai_compatiable_model.py",
     "Ollama": "run_ollama.py",
+    "Terminal": "run_terminal.py",
 }
 
 # Script descriptions
@@ -53,6 +54,7 @@ SCRIPT_DESCRIPTIONS = {
     "GAIA Roleplaying": "GAIA benchmark implementation, used to evaluate model capabilities",
     "OpenAI Compatible": "Uses third-party models compatible with OpenAI API, supports custom API endpoints",
     "Ollama": "Uses Ollama API",
+    "Terminal": "Uses local terminal to execute python files",
 }
 
 # Environment variable groups

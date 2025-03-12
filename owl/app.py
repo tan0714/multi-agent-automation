@@ -41,6 +41,7 @@ SCRIPTS = {
     "GAIA Roleplaying": "run_gaia_roleplaying.py",
     "OpenAI Compatible": "run_openai_compatiable_model.py",
     "Ollama": "run_ollama.py",
+    "Terminal": "run_terminal_zh.py",
 }
 
 # 脚本描述
@@ -53,6 +54,7 @@ SCRIPT_DESCRIPTIONS = {
     "GAIA Roleplaying": "GAIA基准测试实现，用于评估模型能力",
     "OpenAI Compatible": "使用兼容OpenAI API的第三方模型，支持自定义API端点",
     "Ollama": "使用Ollama API",
+    "Terminal": "使用本地终端执行python文件",
 }
 
 # 环境变量分组
