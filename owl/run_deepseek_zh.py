@@ -23,10 +23,10 @@ from dotenv import load_dotenv
 
 from camel.models import ModelFactory
 from camel.toolkits import (
-    CodeExecutionToolkit,
     ExcelToolkit,
     SearchToolkit,
     FileWriteToolkit,
+    CodeExecutionToolkit,
 )
 from camel.types import ModelPlatformType, ModelType
 
@@ -62,31 +62,6 @@ def construct_society(question: str) -> OwlRolePlaying:
             model_type=ModelType.DEEPSEEK_CHAT,
             model_config_dict={"temperature": 0},
         ),
-        "web": ModelFactory.create(
-            model_platform=ModelPlatformType.DEEPSEEK,
-            model_type=ModelType.DEEPSEEK_CHAT,
-            model_config_dict={"temperature": 0},
-        ),
-        "planning": ModelFactory.create(
-            model_platform=ModelPlatformType.DEEPSEEK,
-            model_type=ModelType.DEEPSEEK_CHAT,
-            model_config_dict={"temperature": 0},
-        ),
-        "video": ModelFactory.create(
-            model_platform=ModelPlatformType.DEEPSEEK,
-            model_type=ModelType.DEEPSEEK_CHAT,
-            model_config_dict={"temperature": 0},
-        ),
-        "image": ModelFactory.create(
-            model_platform=ModelPlatformType.DEEPSEEK,
-            model_type=ModelType.DEEPSEEK_CHAT,
-            model_config_dict={"temperature": 0},
-        ),
-        "document": ModelFactory.create(
-            model_platform=ModelPlatformType.DEEPSEEK,
-            model_type=ModelType.DEEPSEEK_CHAT,
-            model_config_dict={"temperature": 0},
-        ),
     }
 
     # Configure toolkits
@@ -95,7 +70,6 @@ def construct_society(question: str) -> OwlRolePlaying:
         SearchToolkit().search_duckduckgo,
         SearchToolkit().search_wiki,
         *ExcelToolkit().get_tools(),
-        *DocumentProcessingToolkit(model=models["document"]).get_tools(),
         *FileWriteToolkit(output_dir="./").get_tools(),
     ]
 
@@ -126,9 +100,7 @@ def main():
     r"""Main function to run the OWL system with an example question."""
     # Example research question
     question = (
-        "请分析GitHub上CAMEL-AI项目的最新统计数据。找出该项目的星标数量、"
-        "贡献者数量和最近的活跃度。然后，创建一个简单的Excel表格来展示这些数据，"
-        "并生成一个柱状图来可视化这些指标。最后，总结CAMEL项目的受欢迎程度和发展趋势。"
+        "搜索OWL项目最近的新闻并生成一篇报告，最后保存到本地。"
     )
 
     # Construct and run the society
