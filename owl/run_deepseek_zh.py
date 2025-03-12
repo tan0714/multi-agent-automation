@@ -23,8 +23,10 @@ from dotenv import load_dotenv
 
 from camel.models import ModelFactory
 from camel.toolkits import (
+    ExcelToolkit,
     SearchToolkit,
     FileWriteToolkit,
+    CodeExecutionToolkit,
 )
 from camel.types import ModelPlatformType, ModelType
 
@@ -64,8 +66,10 @@ def construct_society(question: str) -> OwlRolePlaying:
 
     # Configure toolkits
     tools = [
+        *CodeExecutionToolkit(sandbox="subprocess", verbose=True).get_tools(),
         SearchToolkit().search_duckduckgo,
         SearchToolkit().search_wiki,
+        *ExcelToolkit().get_tools(),
         *FileWriteToolkit(output_dir="./").get_tools(),
     ]
 
