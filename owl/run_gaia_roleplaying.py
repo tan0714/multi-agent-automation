@@ -131,8 +131,8 @@ def main():
     )
 
     # Output results
-    logger.success(f"Correct: {result['correct']}, Total: {result['total']}")
-    logger.success(f"Accuracy: {result['accuracy']}")
+    logger.info(f"Correct: {result['correct']}, Total: {result['total']}")
+    logger.info(f"Accuracy: {result['accuracy']}")
 
 
 if __name__ == "__main__":
