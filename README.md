@@ -1,27 +1,25 @@
-# Multi-Agent Automation for Polygon Grants
+# Multi-Agent Automation for Polygon
 
-Extend to power AI agents in the Polygon grants ecosystem.
+Extend to power AI agents in the Polygon ecosystem.
 
 ## Core Capabilities
 
-1. **Decentralized Data Storage & RAG**  
-   - IPFS-backed vector stores for docs, proposals, and off-chain state  
-   - Retrieval-Augmented Generation pipelines for up-to-date context  
+### Decentralized Data Storage & RAG
+- IPFS-backed vector stores for proposals, docs and off-chain state  
+- Retrieval-Augmented Generation pipelines for context-aware drafting and Q&A  
 
-2. **Agent Orchestration**  
-   - Modular “skills” (e.g. grant sourcing, code review, community Q&A)  
-   - Stateful workflows with task queues and retries  
+### Agent Orchestration
+- Modular “skills” (e.g. proposal drafting, review, community support)  
+- Stateful workflows with task queues, retries and approval gates  
 
-3. **On-Chain Integration**  
-   - Read/write smart-contract calls 
-   - Automated grant application submissions and milestone tracking  
-   - Event listeners for token transfers, governance votes, and grant updates  
+### On-Chain Integration
+- **Proposal Registry**: anchor IPFS hashes in a registry contract; fetch active submissions via RPC  
+- **Governance Hooks**: listen for new proposals, vote periods and live tallies  
+- **Eligibility Checks**: verify token/NFT holdings or SBT attributes for roles  
+- **Milestone Tracking**: watch `milestoneApproved` events and trigger off-chain workflows  
+- **Transparency Anchoring**: publish audit logs and final decisions as on-chain events  
 
 ## Roadmap
-
 - **v1**: IPFS + Pinecone integration; simple RAG QA agent  
-- **v2**: Polygon tx builder; automated grant proposals  
-- **v3**: Governance bot; on-chain payment disbursement; cross-chain bridges  
-
----
-
+- **v2**: Polygon RPC & proposal-registry support; metadata anchoring  
+- **v3**: Automated proposal drafting; vote monitoring; milestone-driven workflows  
